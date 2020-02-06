@@ -17,4 +17,14 @@ describe('SERVER CONFIG CHECK', () => {
         done();
       });
   });
+
+  it('Should display a welcome message', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
 });

@@ -1,18 +1,13 @@
-const router = require("express").Router();
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { Router } from 'express';
+import swaggerOptions from '../../utils/api-specifications';
+import welcomeRoute from './welcome';
 
-router.use("/", require("./users"));
+const router = Router();
+const swaggerDoc = swaggerJsdoc(swaggerOptions);
 
-router.use(function(err, req, res, next) {
-    if (err.name === "ValidationError") {
-        return res.status(422).json({
-            errors: Object.keys(err.errors).reduce(function(errors, key) {
-                errors[key] = err.errors[key].message;
-                return errors;
-            }, {})
-        });
-    }
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+router.use('/api/v1', welcomeRoute);
 
-    return next(err);
-});
-
-module.exports = router;
+export default router;
