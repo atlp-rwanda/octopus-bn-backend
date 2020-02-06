@@ -2,6 +2,8 @@ Barefoot Nomad - Making company travel and accomodation easy and convinient.
 =======
 [![](https://img.shields.io/badge/Reviewed_by-Hound-a873d1.svg)](https://houndci.com)
 [![Coverage Status](https://coveralls.io/repos/github/andela/octopus-bn-backend/badge.svg?branch=ch-configure-coveralls-170947427)](https://coveralls.io/github/andela/octopus-bn-backend?branch=ch-configure-coveralls-170947427)
+[![Build Status](https://travis-ci.org/andela/octopus-bn-backend.svg?branch=develop)](https://travis-ci.org/andela/octopus-bn-backend)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a357c08fe45d5c492939/maintainability)](https://codeclimate.com/github/andela/octopus-bn-backend/maintainability)
 ## Vision
 Make company global travel and accommodation easy and convenient for the strong workforce of savvy members of staff, by leveraging the modern web.
 
