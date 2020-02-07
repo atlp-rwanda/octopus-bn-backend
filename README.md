@@ -46,5 +46,8 @@ Make company global travel and accommodation easy and convenient for the strong 
 7. Undoing Seeds
  * Run ``` npm run revertSeed ``` in termninal to undo all seeds data from the database
 
+### Api Documentation
+[Swagger Documentation](https://octopus-bn-backend-staging.herokuapp.com/api-docs)
+
 
 

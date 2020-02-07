@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import passport from 'passport';
 import errorhandler from 'errorhandler';
+import router from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -19,7 +20,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-
+app.use(router);
 // / catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
