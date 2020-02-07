@@ -16,7 +16,8 @@
     "revertSeed": "sequelize db:seed:undo:all",
     "clean": "rm -rf build && mkdir build",
     "build-src": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-src"
+    "build": "npm run clean && npm run build-src",
+    "docker": "docker-compose up --build"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
