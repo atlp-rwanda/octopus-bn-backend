@@ -55,6 +55,14 @@ class userController {
     }
   }
 
+  static async logout(req, res) {
+    localStorage.removeItem('Token', 0);
+    return res.status(200).json({
+      status: 200,
+      message: req.i18n.__('outSuccessfully'),
+    });
+  }
+
   /**
      * @description user signUp method
      * @param {object} req

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import isLoggedIn from '../../utils/isLoggedIn';
 
 const router = Router();
 
@@ -14,9 +15,7 @@ const router = Router();
  *     '200':
  *       description: 'Welcome to Barefoot Nomad'
  */
-router.get('/', (req, res) => {
-  res.send(req.i18n.__('Welcome'));
-});
+router.get('/', isLoggedIn);
 
 
 export default router;

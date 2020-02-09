@@ -1,4 +1,3 @@
-
 const profileCallback = async (accessToken, refreshToken, profile, cb) => {
   const method = profile.provider;
   const { id } = profile;
