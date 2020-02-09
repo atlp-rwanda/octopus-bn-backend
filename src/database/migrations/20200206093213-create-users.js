@@ -1,15 +1,14 @@
-
 export default {
   up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
     id: {
       allowNull: false,
       autoIncrement: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
     userID: {
+      type: Sequelize.STRING,
       allowNull: false,
       primaryKey: true,
-      type: Sequelize.STRING
     },
     method: {
       type: Sequelize.STRING
@@ -23,7 +22,6 @@ export default {
       type: Sequelize.STRING
     },
     email: {
-      allowNull: false,
       unique: true,
       type: Sequelize.STRING
     },

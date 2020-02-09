@@ -3,8 +3,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
+import methodOverride from 'method-override';
+import morgan from 'morgan';
 import errorhandler from 'errorhandler';
 import i18n from 'i18n-2';
+import session from 'express-session';
 import router from './routes/index';
 
 dotenv.config();
@@ -13,6 +16,13 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
+app.use(morgan('dev'));
+
+app.use(methodOverride());
+
+
+// initialize passport
+app.use(passport.initialize());
 
 i18n.expressBind(app, {
   locales: ['en', 'fr']
@@ -35,6 +45,15 @@ app.use((req, res, next) => {
 });
 
 app.use(router);
+
+app.use(
+  session({
+    secret: 'authorshaven',
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 // / catch 404 and forward to error handler
 app.use((req, res, next) => {

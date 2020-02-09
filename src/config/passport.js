@@ -1,26 +1,31 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const mongoose = require("mongoose");
-const User = mongoose.model("User");
+import dotenv from 'dotenv';
+import passport from 'passport';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import profileCallback from '../utils/profileCallback';
 
-passport.use(
-    new LocalStrategy(
-        {
-            usernameField: "user[email]",
-            passwordField: "user[password]"
-        },
-        function(email, password, done) {
-            User.findOne({ email: email })
-                .then(function(user) {
-                    if (!user || !user.validPassword(password)) {
-                        return done(null, false, {
-                            errors: { "email or password": "is invalid" }
-                        });
-                    }
 
-                    return done(null, user);
-                })
-                .catch(done);
-        }
-    )
-);
+dotenv.config();
+
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+passport.use('google', new GoogleStrategy({
+  name: 'google',
+  clientID: process.env.GOOGLE_APP_ID,
+  clientSecret: process.env.GOOGLE_APP_SECRET,
+  callbackURL: '/api/v1/auth/google/callback',
+  profileFields: ['id', 'emails', 'name', 'picture.type(large)'],
+}, profileCallback));
+
+
+passport.use('facebook', new FacebookStrategy({
+  name: 'facebook',
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: '/api/v1/auth/facebook/callback',
+  profileFields: ['id', 'emails', 'name', 'gender'],
+}, profileCallback));
+
+
+export default passport;
