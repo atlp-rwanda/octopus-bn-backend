@@ -65,7 +65,7 @@ const validateResult = (req, res, next) => {
   if (errorMessageArr.includes('email already taken')) {
     return res.status(409).json({
       status: 409,
-      message: 'email already taken',
+      message: req.i18n.__('EmailExist'),
     });
   }
 

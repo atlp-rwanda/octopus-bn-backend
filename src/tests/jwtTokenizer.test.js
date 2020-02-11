@@ -1,6 +1,6 @@
 import chai from 'chai';
 import { describe, it } from 'mocha';
-import { claims, mockToken } from './mockData/jwtTokenizer.mock';
+import { claims, mockToken } from './mock/jwtTokenizer.mock';
 import { encode, decode } from '../utils/jwtTokenizer';
 
 describe('JSON web token', () => {
