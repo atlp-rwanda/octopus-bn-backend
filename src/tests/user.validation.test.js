@@ -119,7 +119,7 @@ describe('User input validation', () => {
       .send({
         firstName: 'johanes',
         lastName: 'mukudwa',
-        email: 'a@andela.com',
+        email: 'octopus@andela.com',
         password: 'test123456',
       })
       .end((err, res) => {

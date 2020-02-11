@@ -1,11 +1,13 @@
 import express from 'express';
 import passport from 'passport';
-import '../../config/passport';
-import userController from '../../controllers/userController';
-
-import validation from '../../validation/user.validation';
+import 'config/passport';
+import userController from 'controllers/userController';
+import validation from 'validation/user.validation';
 
 const router = express.Router();
+const {
+  checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult
+} = validation;
 
 router.use(passport.initialize());
 
@@ -106,11 +108,55 @@ router.get('/google/callback', passport.authenticate('google', {
   // successRedirect: process.env.FRONT_END_SUCCESS_REDIRECT,
 }), userController.socialLogin);
 
-
-const {
-  checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult
-} = validation;
-
-router.post('/signup', checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult);
+/**
+ * @swagger
+ *
+ * /api/v1/auth/signup:
+ *   post:
+ *     security: []
+ *     summary: User registration
+ *     description: Register new users and verify their account via email
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *                 properties:
+ *                   userID:
+ *                     type: integer
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *     responses:
+ *       201:
+ *         description: created
+ */
+router.post('/signup', checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult, userController.signUp);
+router.get('/verify/:token', userController.verifyAccount);
 
 export default router;
