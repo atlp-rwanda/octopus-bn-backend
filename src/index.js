@@ -1,10 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import passport from 'passport';
 import errorhandler from 'errorhandler';
 import i18n from 'i18n-2';
 import router from './routes/index';
+
+dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
