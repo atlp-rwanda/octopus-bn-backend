@@ -3,12 +3,17 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import passport from 'passport';
 import errorhandler from 'errorhandler';
+import i18n from 'i18n-2';
 import router from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
+
+i18n.expressBind(app, {
+  locales: ['en', 'fr']
+});
 
 app.use(cors());
 app.use(require('morgan')('dev'));
@@ -20,10 +25,17 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
+app.use((req, res, next) => {
+  req.i18n.setLocaleFromQuery(req);
+  req.i18n.setLocaleFromCookie();
+  next();
+});
+
 app.use(router);
+
 // / catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  const err = new Error(req.i18n.__('NotFound'));
   err.status = 404;
   next(err);
 });

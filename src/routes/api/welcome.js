@@ -13,7 +13,8 @@ const router = Router();
  *       description: 'Welcome to Barefoot Nomad'
  */
 router.get('/', (req, res) => {
-  res.send('Welcome to Barefoot Nomad');
+  res.send(req.i18n.__('Welcome'));
 });
+
 
 export default router;
