@@ -1,13 +1,15 @@
 import express from 'express';
 import passport from 'passport';
 import 'config/passport';
-import userController from 'controllers/userController';
 import validation from 'validation/user.validation';
+import '../../config/passport';
+import userController from '../../controllers/userController';
 
 const router = express.Router();
 const {
   checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult
 } = validation;
+
 
 router.use(passport.initialize());
 

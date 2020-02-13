@@ -1,5 +1,5 @@
 {
-    "Welcome":"Welcome to Barefoot Nomad",
+	"Welcome":"Welcome to Barefoot Nomad",
     "NotFound":"Not Found",
     "AppDesc":"Making company travel and accomodation easy and convinient",
     "loginSuccessfully":"User login successfully",
