@@ -1,4 +1,6 @@
+import dotenv from 'dotenv';
 
+dotenv.config();
 export default (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
     userID: DataTypes.STRING,

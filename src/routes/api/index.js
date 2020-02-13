@@ -3,7 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import { Router } from 'express';
 import swaggerOptions from '../../utils/api-specifications';
 import welcomeRoute from './welcome';
-import userRoutes from './userRoutes';
+import userRoutes from './user.routes';
 
 const router = Router();
 const swaggerDoc = swaggerJsdoc(swaggerOptions);
