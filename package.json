@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node --require @babel/polyfill build/index.js",
     "dev": "nodemon --exec babel-node src/index.js",
+<<<<<<< HEAD
     "test": "NODE_ENV=test npm run migrateTest && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/polyfill --require @babel/register 'src/**/**test.js'  --timeout 200000 --exit",
+=======
+    "test": "NODE_ENV=test npm run migrateTest && NODE_ENV=test nyc --reporter=html --reporter=text mocha  --require @babel/register 'src/**/**test.js'  --timeout 200000 --exit",
+>>>>>>> feat(user): social login with facebook and google (#13)
     "migrateTest": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "lint": "eslint ./src",
     "lintFix": "eslint --fix ./src",
@@ -24,6 +28,11 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
+<<<<<<< HEAD
+=======
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
+>>>>>>> feat(user): social login with facebook and google (#13)
     "body-parser": "^1.19.0",
     "cors": "^2.8.4",
     "coveralls": "^3.0.9",
