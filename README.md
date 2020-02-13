@@ -30,21 +30,22 @@ Make company global travel and accommodation easy and convenient for the strong 
    * Download and install [pgAdmin](https://www.postgresql.org/download/)
    * Create two databases, one for testing and another for development.
    * Copy ``` DATABASE_DEV_URL=postgres://your_db_user:your_password@127.0.0.1:5432/your_dev_db_name ``` 
-          ``` DATABASE_TEST_URL=postgres://your_db_user:your_password@127.0.0.1:5432/your_test_db_name```
+          ``` DATABASE_TEST_URL=postgres://your_db_user:your_password@127.0.0.1:5432/your_test_db_name``` URLs
     from ```.env.example``` to ```.env```
-   * Edit it with your database user, password and database name.
-2. *** Creating Model and Migration ***
-   * Edit and run this command in terminal: ``` npx sequelize-cli model:generate --name Your-Model-name --attributes firstAttribute:string,secondAttribute:string,thirdAttribute:string ```
-3. *** Running Migrations ***
+   * Edit them with your real database user, password and database name.
+2. ***Running Migrations***
    * Run ``` npm run migrateDb ``` in terminal to fire up migration
-4. *** Undoing Migrations ***
+3. ***Undoing Migrations***
   * Run ``` npm run revertMigration ``` to undo all migrations
-5. *** Creating a seed ***
-  * Edit and run ``` npx sequelize-cli seed:generate --name seedDescription-tableName ``` command in terminal. This will create ``` XXXXXXXXXXXXXX-seedDescription-tableName.js ``` in ``` seeders``` folder.
-6. Running Seeds
+4. Running Seeds
  * Run ``` npm run seedDb ``` in terminal to run all seeds
-7. Undoing Seeds
+5. Undoing Seeds
  * Run ``` npm run revertSeed ``` in termninal to undo all seeds data from the database
+
+### Running server
+   * Run `npm run dev` in terminal
+### Running tests
+   * Run `npm run test` in terminal
 
 ### Api Documentation
 [Swagger Documentation](https://octopus-bn-backend-staging.herokuapp.com/api-docs)
