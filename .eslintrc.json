@@ -30,5 +30,12 @@
           "ClassDeclaration": true
       }
   }]
+},
+"settings" : {
+  "import/resolver": {
+    "node": {
+      "paths": ["./src"]
+    }
+  }
 }
 }

@@ -8,6 +8,8 @@ const router = Router();
  * /api/v1:
  *  get:
  *   description: Welcome message for users
+ *   tags:
+ *     - Default
  *   responses:
  *     '200':
  *       description: 'Welcome to Barefoot Nomad'
