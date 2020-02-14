@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
 const config = {
   development: {
     use_env_variable: 'DATABASE_DEV_URL',

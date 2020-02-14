@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 import localStorage from 'localStorage';
 import uuid from 'uuid/v4';
+import bcrypt from 'bcryptjs';
 import sendVerificationEmail from 'utils/email.helper';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
@@ -66,8 +67,9 @@ class userController {
       const {
         firstName, lastName, email, password
       } = req.body;
+      const hash = await bcrypt.hash(password, 10);
       const newUser = await Models.Users.create({
-        userID: uuid(), method: 'local', firstName, lastName, email, password, isVerified: false
+        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: false
       });
       const data = {
         userID: newUser.userID,
@@ -133,6 +135,65 @@ class userController {
       status: 200,
       message: req.i18n.__('onVerifySuccess')
     });
+  }
+
+
+  static async signin(req, res) {
+    try {
+      const { email, password } = req.body,
+        { Users } = Models,
+        registered = await Users.findOne({
+          where: {
+            email,
+          },
+        });
+
+      if (!registered) {
+        return res.status(401).json({
+          status: 401,
+          error: req.i18n.__('IncorrectEmailPassword'),
+        });
+      }
+
+      const { method } = registered;
+      if (method !== 'local') {
+        return res.status(422).json({
+          status: 422,
+          error: `Please use ${registered.method} to sign in`
+        });
+      }
+
+      const truePassword = await bcrypt.compareSync(password, registered.password);
+
+      if (!truePassword) {
+        return res.status(401).json({
+          status: 401,
+          error: req.i18n.__('IncorrectEmailPassword'),
+        });
+      }
+
+      // const { UserID } = registered;
+      // const token = serialize(email, UserID);
+      // res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
+      const token = encode({
+        email
+      });
+      localStorage.setItem('Token', token);
+      return res.status(200).json({
+        status: 200,
+        message: req.i18n.__('localLoginSuccess'),
+        token
+      });
+    } catch (error) {
+      /**
+         * This for the developer to know the problem while
+         * scanning user logs
+         */
+      return res.status(200).json({
+        status: 500,
+        error: req.i18n.__('internalServerError')
+      });
+    }
   }
 }
 

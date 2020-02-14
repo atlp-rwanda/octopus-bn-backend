@@ -1,8 +1,13 @@
+import dotenv from 'dotenv';
+
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const passport = require('passport');
 
+dotenv.config();
+
 const User = mongoose.model('User');
+
 router.get('/user', (req, res, next) => {
   User.findById(req.payload.id)
     .then((user) => {
@@ -54,17 +59,21 @@ router.post('/users/login', (req, res, next) => {
     if (err) {
       return next(err);
     }
+
     if (user) {
       return res.json({ user: user.toAuthJSON() });
     }
     return res.status(422).json(info);
   })(req, res, next);
 });
+
 router.post('/users', (req, res, next) => {
   const user = new User();
+
   user.username = req.body.user.username;
   user.email = req.body.user.email;
   user.setPassword(req.body.user.password);
+
   user.save()
     .then(() => res.json({ user: user.toAuthJSON() }))
     .catch(next);

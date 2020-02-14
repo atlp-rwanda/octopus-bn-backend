@@ -21,7 +21,7 @@ describe('SERVER CONFIG CHECK', () => {
   it('Should display a welcome message', (done) => {
     chai
       .request(app)
-      .get('/api/v1')
+      .get('/')
       .end((err, res) => {
         expect(res).to.have.status(200);
         done();

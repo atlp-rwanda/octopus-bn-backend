@@ -1,7 +1,7 @@
 import Chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../index';
-import { user, token } from './mockData/user.mock';
+import { user, token } from './mock/user.mock';
 
 Chai.use(chaiHttp);
 Chai.should();
