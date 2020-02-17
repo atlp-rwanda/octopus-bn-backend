@@ -195,4 +195,30 @@ router.get('/verify/:token', userController.verifyAccount);
  */
 router.post('/signin', checkValidEmail, checkPassword, userController.signin);
 
+/**
+ * @swagger
+ *
+ * /api/v1/auth/logout:
+ *   delete:
+ *     security: []
+ *     summary: Login
+ *     description: users can log out their accounts
+ *     tags:
+ *       - Users
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               token: string
+ *     responses:
+ *       200:
+ *         description: log out successfully
+ *  */
+
+router.delete('/logout', userController.logout);
 export default router;

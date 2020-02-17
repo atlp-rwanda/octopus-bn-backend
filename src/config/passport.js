@@ -15,7 +15,7 @@ passport.use('google', new GoogleStrategy({
   clientID: process.env.GOOGLE_APP_ID,
   clientSecret: process.env.GOOGLE_APP_SECRET,
   callbackURL: '/api/v1/auth/google/callback',
-  profileFields: ['id', 'emails', 'name', 'picture.type(large)'],
+  profileFields: ['id', 'emails', 'name'],
 }, profileCallback));
 
 
