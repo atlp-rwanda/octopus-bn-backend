@@ -19,8 +19,19 @@ export default (sequelize, DataTypes) => {
     managerEmail: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
     bio: DataTypes.STRING,
-    passportNumber: DataTypes.STRING
-
+    passportNumber: DataTypes.STRING,
+    role: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      defaultValue: 'requester',
+      values: [
+        'super_administrator',
+        'travel_administrator',
+        'travel_team_member',
+        'manager',
+        'requester'
+      ],
+    },
   }, {});
   Users.associate = () => {
     // associations can be defined here

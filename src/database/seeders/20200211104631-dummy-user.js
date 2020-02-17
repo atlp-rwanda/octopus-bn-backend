@@ -8,6 +8,7 @@ export default {
       isVerified: true,
       email: 'octapus@andela.com',
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'requester',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -16,9 +17,10 @@ export default {
       firstName: 'Octapus',
       lastName: 'Octapus',
       method: 'local',
-      isVerified: true,
-      email: 'octapususer@andela.com',
+      isVerified: false,
+      email: 'octopususer@andela.com',
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'requester',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -30,6 +32,7 @@ export default {
       isVerified: true,
       email: 'a@andela.com',
       password: 'dededenfefeefe',
+      role: 'requester',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -39,7 +42,8 @@ export default {
       firstName: 'Octopus',
       lastName: 'Octopus',
       email: 'octopus@andela.com',
-      password: '$2y$10$nY8Ke8P1ugVFw8jHImzpEeR2rRkcRu9IxPzlOXkrziBCHWHX7Rl7G',
+      password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'requester',
       isVerified: true,
       createdAt: new Date(),
       updatedAt: new Date()

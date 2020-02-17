@@ -35,10 +35,11 @@ describe('trips', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'octapususer@andela.com',
+        email: 'octopus@andela.com',
         password: 'password',
       })
       .end((err, res) => {
+        expect(res.body.status).to.be.equal(200);
         expect(res);
         done();
       });

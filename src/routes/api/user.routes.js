@@ -3,14 +3,14 @@ import passport from 'passport';
 import 'config/passport';
 import userController from 'controllers/userController';
 import validation from 'validation/user.validation';
-import checkUser from '../../middlewares/checkUser';
+import checkUser from 'middlewares/checkUser';
 
 const router = express.Router();
 const {
   checkFirstName, checkLastName, checkValidEmail, checkExistingEmail,
   checkPassword, validateResult, checkGender, checkDate, checkCurrency,
   checkLocale, checkResidence, checkDepartment, checkMangerEmail, checkImageUrl, checkBio,
-  checkPassportNumber
+  checkPassportNumber, checkRoles
 } = validation;
 
 router.use(passport.initialize());
@@ -162,6 +162,41 @@ router.get('/google/callback', passport.authenticate('google', {
  */
 router.post('/signup', checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult, userController.signUp);
 router.get('/verify/:token', userController.verifyAccount);
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/assign-roles:
+ *   post:
+ *     security: []
+ *     summary: Assign roles
+ *     description: Assign roles to users using their eamils
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Your role was upgraded
+ */
+router.post('/assign-roles', checkValidEmail, checkRoles, validateResult, checkUser, userController.assignRole);
 
 /**
  * @swagger
