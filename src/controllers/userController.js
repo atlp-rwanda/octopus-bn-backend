@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import sendVerificationEmail from 'utils/email.helper';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
-
+import i18n from '../utils/international';
 
 /**
  * @description This class contains all the methods relating to the user
@@ -40,7 +40,7 @@ class userController {
       localStorage.setItem('Token', Token);
       return res.status(200).json({
         status: 200,
-        message: req.i18n.__('loginSuccessfully'),
+        message: i18n.__('loginSuccessfully'),
         data: {
           email, userID, firstName, lastName, method, isVerified
         },
@@ -59,7 +59,7 @@ class userController {
     localStorage.removeItem('Token', 0);
     return res.status(200).json({
       status: 200,
-      message: req.i18n.__('outSuccessfully'),
+      message: i18n.__('outSuccessfully'),
     });
   }
 
@@ -95,7 +95,7 @@ class userController {
 
       return res.status(201).json({
         status: 201,
-        message: req.i18n.__('signUpSuccess'),
+        message: i18n.__('signUpSuccess'),
         data,
         token
       });
@@ -123,7 +123,7 @@ class userController {
     if (!emailExist) {
       return res.status(404).json({
         status: 404,
-        error: req.i18n.__('onVerifyFailure')
+        error: i18n.__('onVerifyFailure')
       });
     }
 
@@ -134,14 +134,14 @@ class userController {
 
       return res.status(200).json({
         status: 200,
-        message: req.i18n.__('onVerifySuccess'),
+        message: i18n.__('onVerifySuccess'),
         token
       });
     }
 
     return res.status(200).json({
       status: 200,
-      message: req.i18n.__('onVerifySuccess')
+      message: i18n.__('onVerifySuccess')
     });
   }
 
@@ -159,7 +159,7 @@ class userController {
       if (!registered) {
         return res.status(401).json({
           status: 401,
-          error: req.i18n.__('IncorrectEmailPassword'),
+          error: i18n.__('IncorrectEmailPassword'),
         });
       }
 
@@ -176,7 +176,7 @@ class userController {
       if (!truePassword) {
         return res.status(401).json({
           status: 401,
-          error: req.i18n.__('IncorrectEmailPassword'),
+          error: i18n.__('IncorrectEmailPassword'),
         });
       }
 
@@ -189,7 +189,7 @@ class userController {
       localStorage.setItem('Token', token);
       return res.status(200).json({
         status: 200,
-        message: req.i18n.__('localLoginSuccess'),
+        message: i18n.__('localLoginSuccess'),
         token
       });
     } catch (error) {
@@ -199,7 +199,66 @@ class userController {
          */
       return res.status(200).json({
         status: 500,
-        error: req.i18n.__('internalServerError')
+        error: i18n.__('internalServerError')
+      });
+    }
+  }
+
+  /**
+     * @description profile settings method
+     * @param {object} req
+     * @param {object} res
+     * @returns {object} updated record
+     * @memberof userController
+     */
+  static async updateProfile(req, res) {
+    try {
+      const { body, user } = req;
+      const { userID } = user;
+      const {
+        firstName,
+        lastName,
+        gender,
+        birthDate,
+        preferedLang,
+        preferedCurrency,
+        residence,
+        department,
+        managerEmail,
+        imageUrl,
+        bio,
+        passportNumber
+      } = body;
+      const result = await Models.Users.update(
+        {
+          firstName,
+          lastName,
+          gender,
+          birthDate,
+          preferedLang,
+          preferedCurrency,
+          residence,
+          department,
+          managerEmail,
+          imageUrl,
+          bio,
+          passportNumber
+        }, {
+          where: { userID },
+          returning: true,
+          plain: true
+        }
+      );
+
+      return res.status(200).json({
+        status: 200,
+        message: i18n.__('ProfileUpdated'),
+        data: result[1]
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 500,
+        error: i18n.__('internalServerError')
       });
     }
   }

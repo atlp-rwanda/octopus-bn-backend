@@ -1,5 +1,6 @@
 import path from 'path';
 import os from 'os';
+import i18n from './international';
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -7,7 +8,7 @@ const swaggerOptions = {
     info: {
       title: 'Barefoot Nomad',
       version: '1.0.0',
-      description: 'Making company travel and accomodation easy and convinient',
+      description: `${i18n.__('AppDesc')}`,
       license: {},
       contact: {}
     },

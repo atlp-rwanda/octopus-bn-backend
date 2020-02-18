@@ -9,7 +9,18 @@ export default (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    isVerified: DataTypes.BOOLEAN
+    isVerified: DataTypes.BOOLEAN,
+    gender: DataTypes.STRING,
+    birthDate: DataTypes.DATE,
+    preferedLang: DataTypes.STRING,
+    preferedCurrency: DataTypes.STRING,
+    residence: DataTypes.STRING,
+    department: DataTypes.STRING,
+    managerEmail: DataTypes.STRING,
+    imageUrl: DataTypes.STRING,
+    bio: DataTypes.STRING,
+    passportNumber: DataTypes.STRING
+
   }, {});
   Users.associate = () => {
     // associations can be defined here

@@ -3,7 +3,6 @@ import localStorage from 'localStorage';
 import Models from '../database/models';
 
 const { Users } = Models;
-
 const checkUser = async (req, res, next) => {
   const Token = await localStorage.getItem('Token');
   if (!Token) {
