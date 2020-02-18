@@ -11,5 +11,8 @@
 	"EmailExist": "email already taken",
 	"localLoginSuccess": "Successfully logged in",
 	"internalServerError": "This service is currently unavailable. Developers at barefoot nomad are maintaining it",
-	"outSuccessfully": "Logout successful"
+	"outSuccessfully": "Logout successful",
+	"requestSuccessfully": "Travel request successfully created",
+	"Pleaselog": "Please log in or sign up to continue",
+	"PleaseVerify":"Please Verify your email to continue"
 }

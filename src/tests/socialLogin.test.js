@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import app from '../index';
 import userController from '../controllers/userController';
 import Models from '../database/models';
-import facebookMock from './mock/facebookMoch';
+import facebookMock from './mock/facebookMock';
 import googleMock from './mock/googleMock';
 
 import invalid from './mock/socialInvalid';
