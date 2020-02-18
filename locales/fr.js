@@ -36,6 +36,9 @@
     "BioRequired": "Bio est requis",
     "PassportRequired":"Le numéro de passeport est requis",
     "PassportNun9Chars":"Le numéro de passeport doit comporter 9 caractères",
-    "PassportNunInvalid":"Le numéro de passeport n'est pas valide"
+    "PassportNunInvalid":"Le numéro de passeport n'est pas valide",
+    "emailSent" : "Nous vous avons envoyé un e-mail",
+    "passwordReset" : "Réinitialisation réussie du mot de passe",
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas"
 }
 

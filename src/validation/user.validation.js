@@ -93,6 +93,15 @@ const checkPassportNumber = [body('passportNumber').not().isEmpty({ ignore_white
   .withMessage(`${i18n.__('PassportNun9Chars')}`)
   .matches(/[a-zA-Z]{2}[0-9]{7}/)
   .withMessage(`${i18n.__('PassportNunInvalid')}`)];
+
+const checkConfirmPassword = [body('confirmPassword').not().isEmpty({ ignore_whitespace: true })
+  .withMessage('confirmPassword is required')
+  .bail()
+  .isAlphanumeric()
+  .withMessage('Password must be alphanumeric')
+  .isLength({ min: 8 })
+  .withMessage('password length must be longer than 8')];
+
 /**
 * @description this method validate user result
 * @param {object} req
@@ -128,7 +137,6 @@ export default {
   checkValidEmail,
   checkExistingEmail,
   checkPassword,
-  validateResult,
   checkGender,
   checkDate,
   checkCurrency,
@@ -139,5 +147,7 @@ export default {
   checkImageUrl,
   checkBio,
   checkPassportNumber,
-  checkRoles
+  checkRoles,
+  checkConfirmPassword,
+  validateResult
 };

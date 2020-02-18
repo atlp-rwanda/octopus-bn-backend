@@ -2,7 +2,7 @@
 import localStorage from 'localStorage';
 import uuid from 'uuid/v4';
 import bcrypt from 'bcryptjs';
-import { sendVerificationEmail, sendNotificationEmail } from 'utils/emailHelper';
+import { sendVerificationEmail, sendNotificationEmail, sendPasswordResetLink } from 'utils/emailHelper';
 import { successResponse, errorResponse } from 'utils/responses';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
@@ -213,10 +213,6 @@ class userController {
           error: i18n.__('IncorrectEmailPassword'),
         });
       }
-
-      // const { UserID } = registered;
-      // const token = serialize(email, UserID);
-      // res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
       const token = encode({
         email
       });
@@ -227,11 +223,88 @@ class userController {
         token
       });
     } catch (error) {
-      /**
-         * This for the developer to know the problem while
-         * scanning user logs
-         */
+      return res.status(500).json({
+        status: 500,
+        error: req.i18n.__('internalServerError')
+      });
+    }
+  }
+
+  /**
+       * @description forgot password
+       * @param {object} req
+       * @param {object} res
+       * @returns {object} json
+       * @memberof userController
+       */
+
+  static async forgotPassword(req, res) {
+    try {
+      const { email } = req.body,
+        { Users } = Models,
+        registered = await Users.findOne({
+          where: {
+            email,
+          },
+        });
+
+      if (!registered) {
+        return res.status(404).json({
+          status: 404,
+          error: req.i18n.__('onVerifyFailure')
+        });
+      }
+
+      const token = encode({ email });
+      const user = {
+        name: registered.firstName, email: registered.email, token
+      };
+
+      sendPasswordResetLink(user, req.headers.host);
       return res.status(200).json({
+        status: 200,
+        message: req.i18n.__('emailSent')
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 500,
+        error: req.i18n.__('internalServerError')
+      });
+    }
+  }
+
+  static async resetPassword(req, res) {
+    try {
+      const { password, confirmPassword } = req.body,
+        { token } = req.params,
+        payload = decode(token),
+        registered = await Models.Users.findOne({ where: { email: payload.email } });
+
+      if (!registered) {
+        return res.status(404).json({
+          status: 404,
+          error: req.i18n.__('onVerifyFailure')
+        });
+      }
+
+      if (password !== confirmPassword) {
+        return res.status(422).json({
+          status: 422,
+          error: req.i18n.__('passwordsDontMatch')
+        });
+      }
+      const hash = await bcrypt.hash(password, 10);
+
+      await Models.Users.update(
+        { password: hash }, { where: { email: payload.email } }
+      );
+
+      return res.status(200).json({
+        status: 200,
+        message: req.i18n.__('passwordReset')
+      });
+    } catch (error) {
+      return res.status(500).json({
         status: 500,
         error: i18n.__('internalServerError')
       });
