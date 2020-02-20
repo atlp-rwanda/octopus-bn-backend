@@ -40,7 +40,7 @@ export default {
       lastName: 'Octopus',
       email: 'octopus@andela.com',
       password: '$2y$10$nY8Ke8P1ugVFw8jHImzpEeR2rRkcRu9IxPzlOXkrziBCHWHX7Rl7G',
-      isVerified: false,
+      isVerified: true,
       createdAt: new Date(),
       updatedAt: new Date()
     }

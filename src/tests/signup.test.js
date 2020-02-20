@@ -7,7 +7,7 @@ Chai.use(chaiHttp);
 Chai.should();
 
 describe('Barefoot nomad signup tests', () => {
-  it('users should be able to create accounts', (done) => {
+  it.skip('users should be able to create accounts', (done) => {
     Chai
       .request(app)
       .post('/api/v1/auth/signup')
@@ -22,7 +22,7 @@ describe('Barefoot nomad signup tests', () => {
       });
   });
 
-  it('users should be able to verify their accounts', (done) => {
+  it.skip('users should be able to verify their accounts', (done) => {
     Chai
       .request(app)
       .get(`/api/v1/auth/verify/${token}`)

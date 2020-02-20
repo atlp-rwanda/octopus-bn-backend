@@ -3,10 +3,14 @@ import passport from 'passport';
 import 'config/passport';
 import userController from 'controllers/userController';
 import validation from 'validation/user.validation';
+import checkUser from '../../middlewares/checkUser';
 
 const router = express.Router();
 const {
-  checkFirstName, checkLastName, checkValidEmail, checkExistingEmail, checkPassword, validateResult
+  checkFirstName, checkLastName, checkValidEmail, checkExistingEmail,
+  checkPassword, validateResult, checkGender, checkDate, checkCurrency,
+  checkLocale, checkResidence, checkDepartment, checkMangerEmail, checkImageUrl, checkBio,
+  checkPassportNumber
 } = validation;
 
 router.use(passport.initialize());
@@ -221,4 +225,116 @@ router.post('/signin', checkValidEmail, checkPassword, userController.signin);
  *  */
 
 router.delete('/logout', userController.logout);
+/**
+ * @swagger
+ *
+ * /api/v1/auth/profile-settings:
+ *   put:
+ *     security: []
+ *     summary: Profile settings
+ *     description: User can be able to edit his/her profile
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: HAKORIMANA
+ *               lastName:
+ *                 type: string
+ *                 example: Emmanuel
+ *               gender:
+ *                 type: string
+ *                 example: M
+ *               birthDate:
+ *                 type: string
+ *                 example: 2020-02-18T07:02:55.101Z
+ *               preferedLang:
+ *                 type: string
+ *                 example: fr
+ *               preferedCurrency:
+ *                 type: string
+ *                 example: US
+ *               residence:
+ *                 type: string
+ *                 example: Kimihurura
+ *               department:
+ *                 type: string
+ *                 example: IT
+ *               managerEmail:
+ *                 type: string
+ *                 example: manager@barefoot.com
+ *               imageUrl:
+ *                 type: string
+ *                 example: https://www.google.com/profile.gif
+ *               bio:
+ *                 type: string
+ *                 example: I tackle software problems
+ *               passportNumber:
+ *                 type: string
+ *                 example: RK0884756
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   userID:
+ *                     type: string
+ *                   method:
+ *                     type: string
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: integer
+ *                   email:
+ *                     type: string
+ *                   password:
+ *                     type: object
+ *                   isVerified:
+ *                     type: boolean
+ *                   createdAt:
+ *                     type: string
+ *                   updatedAt:
+ *                     type: string
+ *                   gender:
+ *                     type: string
+ *                   birthDate:
+ *                     type: string
+ *                   preferedLang:
+ *                     type: string
+ *                   preferedCurrency:
+ *                     type: string
+ *                   residence:
+ *                     type: string
+ *                   department:
+ *                     type: string
+ *                   imageUrl:
+ *                     type: string
+ *                   managerEmail:
+ *                     type: string
+ *                   bio:
+ *                     type: string
+ *                   passportNumber:
+ *                     type: string
+ *     responses:
+ *       200:
+ *         description: Your profile is updated successfully
+ */
+router.put('/profile-settings', [checkUser, checkFirstName, checkLastName,
+  checkGender, checkDate, checkCurrency, checkLocale, checkResidence,
+  checkDepartment, checkMangerEmail, checkImageUrl, checkBio, checkPassportNumber,
+  validateResult], userController.updateProfile);
 export default router;
