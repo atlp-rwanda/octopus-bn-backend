@@ -37,9 +37,16 @@ class tripsController {
           returnDate
         },
         user: {
-          email
+          email, role
         }
       } = req;
+      if (role !== 'requester') {
+        return res.status(409).json({
+          status: 409,
+          error: 'with your role you are not allowed to send a trip request'
+        });
+      }
+
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
       await travelRequests.create(
@@ -72,7 +79,7 @@ class tripsController {
     } catch (error) {
       return res.status(error.status || 500).json({
         errors: {
-          error
+          error: error.detail
         }
       });
     }

@@ -10,8 +10,8 @@ const {
   checkFirstName, checkLastName, checkValidEmail, checkExistingEmail,
   checkPassword, checkGender, checkDate, checkCurrency,
   checkLocale, checkResidence, checkDepartment, checkMangerEmail, checkImageUrl, checkBio,
-  checkPassportNumber, checkRoles
-  , validateResult,
+  checkPassportNumber, checkRoles,
+  validateResult,
   checkConfirmPassword
 } = validation;
 

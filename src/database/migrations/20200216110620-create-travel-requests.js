@@ -16,7 +16,7 @@ export default {
     },
     type: {
       allowNull: false,
-      type: Sequelize.ENUM('one way'),
+      type: Sequelize.ENUM('one way', 'return'),
       defaultValue: 'one way',
     },
     passportNumber: {

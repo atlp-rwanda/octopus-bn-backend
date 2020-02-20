@@ -7,8 +7,8 @@ const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 
 const tripRequestValidator = (req, res, next) => {
   const schema = Joi.object().keys({
-    type: Joi.string().valid('one way').required().error(() => ({
-      message: 'type should not be empty. Only use the following values [one way] (Note: only one way trip requests allowed for now)'
+    type: Joi.string().valid('one way', 'return').required().error(() => ({
+      message: 'type should not be empty. Only use the following values [one way, return] (Note: only one way trip requests allowed for now)'
     })),
     passportNumber: Joi.string().regex(/[a-zA-Z]{2}[0-9]{7}/).required(),
     gender: Joi.string().valid('mole', 'other', 'female').required().error(() => ({
@@ -26,6 +26,10 @@ const tripRequestValidator = (req, res, next) => {
     departureDate: Joi.date().format('YYYY-MM-DD').min(moment().format('YYYY-MM-DD')).required()
       .error(() => ({
         message: 'No trips to the past, date format must be YYYY-MM-DD'
+      })),
+    returnDate: Joi.date().format('YYYY-MM-DD').min(Joi.ref('departureDate')).when('type', { is: Joi.string().regex(/^return$/), then: Joi.required(), otherwise: Joi.date().max(0) })
+      .error(() => ({
+        message: 'Only provide a return date on a return trip request, Please provide valid date for return, date format must be YYYY-MM-DD'
       })),
     reason: Joi.string().min(10).required()
   });
