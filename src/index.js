@@ -39,7 +39,6 @@ if (!isProduction) {
 }
 
 app.use((req, res, next) => {
-
   req.i18n.setLocaleFromQuery(req);
   req.i18n.setLocaleFromCookie();
   next();
