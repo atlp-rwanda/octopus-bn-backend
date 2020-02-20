@@ -67,8 +67,13 @@ export const sendNotificationEmail = async (name, email, role) => {
   const message = {
     to: `${email}`,
     from: 'barefoot@noreply',
-    subject: 'Barefoot Nomad Role Upgrade'
+    subject: 'Barefoot Nomad Role Upgrade',
+    html: emailTemplate
   };
+
+  sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  await sendGrid.send(message);
 };
 export const sendPasswordResetLink = async (user, host) => {
   const emailBody = generateEmail(

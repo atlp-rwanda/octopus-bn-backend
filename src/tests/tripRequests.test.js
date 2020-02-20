@@ -89,7 +89,7 @@ describe('trips', () => {
       .send({
         type: 'return',
         passportNumber: 'JP1239496',
-        gender: 'mole',
+        gender: 'male',
         fromCountry: 'rw',
         fromCity: 'Kigali',
         toCountry: 'USA',
@@ -106,13 +106,12 @@ describe('trips', () => {
         done();
       });
   });
-  it('It should request two trip way successfully', (done) => {
+  it('It should request return trip way successfully', (done) => {
     chai
       .request(app)
       .post('/api/v1/trips/request')
       .send(newReqReturn)
       .end((err, res) => {
-        console.log(res.body);
         expect(res.body).to.have.keys('status', 'message', 'data');
         expect(res.body.status).to.be.equal(201);
         expect(res.body.message).to.be.equal('Travel request successfully created');

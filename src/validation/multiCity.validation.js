@@ -5,7 +5,8 @@ import moment from 'moment';
 
 const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 
-const tripRequestValidator = (req, res, next) => {
+const multiCityValidator = (req, res, next) => {
+  const trips = req.body;
   const schema = Joi.object().keys({
     type: Joi.string().valid('one way', 'return').required().error(() => ({
       message: 'type should not be empty. Only use the following values [one way, return, multi city] (Note: only one way trip requests allowed for now)'
@@ -27,19 +28,26 @@ const tripRequestValidator = (req, res, next) => {
       .error(() => ({
         message: 'No trips to the past, date format must be YYYY-MM-DD'
       })),
-    returnDate: Joi.date().format('YYYY-MM-DD').min(Joi.ref('departureDate')).when('type', { is: Joi.string().regex(/^return$/), then: Joi.required(), otherwise: Joi.date().max(0) })
-      .error(() => ({
-        message: 'Only provide a return date on a return trip request, Please provide valid date for return, date format must be YYYY-MM-DD'
-      })),
     reason: Joi.string().min(10).required()
   });
-  const { error } = Joi.validate(req.body, schema);
-  if (error) {
+
+  const errors = trips.map((item) => {
+    let err;
+    Joi.validate(item, schema, (error) => {
+      if (error) {
+        err = error.details.map((e) => (e.message));
+      }
+    });
+    return err;
+  }).filter((item) => item != null);
+  if (errors.length > 0) {
     return res.status(400).json({
       status: 400,
-      error: error.details[0].message
+      error: errors
     });
   }
-  return next();
+
+  req.body = trips;
+  next();
 };
-export default tripRequestValidator;
+export default multiCityValidator;

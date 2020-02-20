@@ -57,6 +57,13 @@ class userController {
   }
 
   static async logout(req, res) {
+    const token = localStorage.getItem('Token');
+    if (!token) {
+      return res.status(403).json({
+        status: 403,
+        message: 'Please login first',
+      });
+    }
     localStorage.removeItem('Token', 0);
     return res.status(200).json({
       status: 200,

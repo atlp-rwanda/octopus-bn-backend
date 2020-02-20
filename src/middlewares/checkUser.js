@@ -1,5 +1,5 @@
-import { decode } from 'utils/jwtTokenizer';
 import localStorage from 'localStorage';
+import { decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
 
 const { Users } = Models;
