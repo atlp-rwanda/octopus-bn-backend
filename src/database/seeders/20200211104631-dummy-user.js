@@ -17,7 +17,7 @@ export default {
       firstName: 'Octapus',
       lastName: 'Octapus',
       method: 'local',
-      isVerified: false,
+      isVerified: true,
       email: 'octopususer@andela.com',
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
       role: 'requester',
@@ -45,6 +45,18 @@ export default {
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
       role: 'requester',
       isVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      userID: '123212965431',
+      firstName: 'Rusimbi',
+      lastName: 'Octapus',
+      method: 'local',
+      isVerified: true,
+      email: 'rusimbipatrick@outlook.com',
+      password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'requester',
       createdAt: new Date(),
       updatedAt: new Date()
     }

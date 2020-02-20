@@ -38,5 +38,8 @@
 	"BioRequired": "Bio is required",
 	"PassportRequired":"Passport number is required",
 	"PassportNun9Chars":"Passport number must be 9 characters long",
-	"PassportNunInvalid":"Passport number is invalid"
+	"PassportNunInvalid":"Passport number is invalid",
+	"emailSent" : "We have sent you an email",
+	"passwordReset" : "Password reset succesfully",
+	"passwordsDontMatch": "Passwords do not match"
 }

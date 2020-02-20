@@ -1,5 +1,8 @@
 import sendGrid from '@sendgrid/mail';
 import mailgen from 'mailgen';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const template = new mailgen({
   theme: 'salted',
@@ -64,7 +67,26 @@ export const sendNotificationEmail = async (name, email, role) => {
   const message = {
     to: `${email}`,
     from: 'barefoot@noreply',
-    subject: 'Barefoot Nomad Role Upgrade',
+    subject: 'Barefoot Nomad Role Upgrade'
+  };
+};
+export const sendPasswordResetLink = async (user, host) => {
+  const emailBody = generateEmail(
+    user.name,
+    'Sequel to your request for resetting your password',
+    'We have sent you a link to help you out',
+    'Click the link below to verify your password',
+    `http://${host}/api/v1/auth/reset-password/${user.token}`
+  );
+
+  // Generate an HTML email with the provided contents
+  const emailTemplate = template.generate(emailBody);
+
+  const message = {
+    to: `${user.email}`,
+    from: 'barefoot@noreply',
+    subject: 'Barefoot Nomad Password rest',
+    text: `Hello, ${user.name}.`,
     html: emailTemplate
   };
 

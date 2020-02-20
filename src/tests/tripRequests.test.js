@@ -35,7 +35,7 @@ describe('trips', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'octopus@andela.com',
+        email: 'octopususer@andela.com',
         password: 'password',
       })
       .end((err, res) => {

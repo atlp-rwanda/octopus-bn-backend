@@ -8,9 +8,11 @@ import checkUser from 'middlewares/checkUser';
 const router = express.Router();
 const {
   checkFirstName, checkLastName, checkValidEmail, checkExistingEmail,
-  checkPassword, validateResult, checkGender, checkDate, checkCurrency,
+  checkPassword, checkGender, checkDate, checkCurrency,
   checkLocale, checkResidence, checkDepartment, checkMangerEmail, checkImageUrl, checkBio,
   checkPassportNumber, checkRoles
+  , validateResult,
+  checkConfirmPassword
 } = validation;
 
 router.use(passport.initialize());
@@ -166,103 +168,6 @@ router.get('/verify/:token', userController.verifyAccount);
 /**
  * @swagger
  *
- * /api/v1/auth/assign-roles:
- *   post:
- *     security: []
- *     summary: Assign roles
- *     description: Assign roles to users using their eamils
- *     tags:
- *       - Users
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               role:
- *                 type: string
- *     produces:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: integer
- *               message:
- *                 type: string
- *     responses:
- *       200:
- *         description: Your role was upgraded
- */
-router.post('/assign-roles', checkValidEmail, checkRoles, validateResult, checkUser, userController.assignRole);
-
-/**
- * @swagger
- *
- * /api/v1/auth/signin:
- *   post:
- *     security: []
- *     summary: Login
- *     description: users can log into their accounts
- *     tags:
- *       - Users
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *     produces:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: integer
- *               message:
- *                 type: string
- *               token: string
- *     responses:
- *       200:
- *         description: login successfully
- */
-router.post('/signin', checkValidEmail, checkPassword, userController.signin);
-
-/**
- * @swagger
- *
- * /api/v1/auth/logout:
- *   delete:
- *     security: []
- *     summary: Login
- *     description: users can log out their accounts
- *     tags:
- *       - Users
- *     produces:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: integer
- *               message:
- *                 type: string
- *               token: string
- *     responses:
- *       200:
- *         description: log out successfully
- *  */
-
-router.delete('/logout', userController.logout);
-/**
- * @swagger
- *
  * /api/v1/auth/profile-settings:
  *   put:
  *     security: []
@@ -372,4 +277,170 @@ router.put('/profile-settings', [checkUser, checkFirstName, checkLastName,
   checkGender, checkDate, checkCurrency, checkLocale, checkResidence,
   checkDepartment, checkMangerEmail, checkImageUrl, checkBio, checkPassportNumber,
   validateResult], userController.updateProfile);
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/assign-roles:
+ *   post:
+ *     security: []
+ *     summary: Assign roles
+ *     description: Assign roles to users using their eamils
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Your role was upgraded
+ */
+router.post('/assign-roles', checkValidEmail, checkRoles, validateResult, checkUser, userController.assignRole);
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/signin:
+ *   post:
+ *     security: []
+ *     summary: Login
+ *     description: users can log into their accounts
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               token: string
+ *     responses:
+ *       200:
+ *         description: login successfully
+ */
+router.post('/signin', checkValidEmail, checkPassword, userController.signin);
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/logout:
+ *   delete:
+ *     security: []
+ *     summary: Login
+ *     description: users can log out their accounts
+ *     tags:
+ *       - Users
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               token: string
+ *     responses:
+ *       200:
+ *         description: log out successfully
+ *  */
+
+router.delete('/logout', userController.logout);
+
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/forgot-password:
+ *   post:
+ *     security: []
+ *     summary: forgot password
+ *     description: users request to reset a password
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: We have sent you an email
+ *  */
+router.post('/forgot-password', checkValidEmail, validateResult, userController.forgotPassword);
+/**
+ * @swagger
+ *
+ * /api/v1/auth/reset-password:
+ *   put:
+ *     security: []
+ *     summary: Reset password
+ *     description: users request to reset a password
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: We have sent you an email
+ *  */
+router.put('/reset-password/:token', checkPassword, checkConfirmPassword, validateResult, userController.resetPassword);
 export default router;
