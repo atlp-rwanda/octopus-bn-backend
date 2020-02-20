@@ -2,7 +2,8 @@
 import localStorage from 'localStorage';
 import uuid from 'uuid/v4';
 import bcrypt from 'bcryptjs';
-import sendVerificationEmail from 'utils/email.helper';
+import { sendVerificationEmail, sendNotificationEmail } from 'utils/emailHelper';
+import { successResponse, errorResponse } from 'utils/responses';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
 import i18n from '../utils/international';
@@ -91,6 +92,8 @@ class userController {
         name: newUser.firstName, email: newUser.email, token
       };
 
+      localStorage.setItem('Token', token);
+
       sendVerificationEmail(verificationData);
 
       return res.status(201).json({
@@ -108,12 +111,12 @@ class userController {
   }
 
   /**
-       * @description account verification
-       * @param {object} req
-       * @param {object} res
-       * @returns {object} json
-       * @memberof userController
-       */
+     * @description account verification
+     * @param {object} req
+     * @param {object} res
+     * @returns {object} json
+     * @memberof userController
+     */
   static async verifyAccount(req, res) {
     // eslint-disable-next-line prefer-destructuring
     const token = req.params.token;
@@ -143,6 +146,37 @@ class userController {
       status: 200,
       message: i18n.__('onVerifySuccess')
     });
+  }
+
+  /**
+     * @description update user roles
+     * @param {object} req
+     * @param {object} res
+     * @returns {object} json
+     * @memberof userController
+     */
+  static async assignRole(req, res) {
+    const { role } = req.user;
+    const userRole = req.body.role;
+    const userExist = await Models.Users.findOne({ where: { email: req.body.email } });
+    const errorMessage = 'You have to be loggen in as a super administrator to assign roles to users';
+
+    if (!userExist) {
+      return errorResponse(res, 404, 'The User you are assigning the role to don\'t exist');
+    }
+
+    if (role !== 'super_administrator') {
+      return errorResponse(res, 401, errorMessage);
+    }
+
+    await Models.Users.update({ role: req.body.role },
+      {
+        where: { email: req.body.email }
+      });
+
+    sendNotificationEmail(userExist.firstName, userExist.email, userRole);
+
+    return successResponse(res, 200, `Your role was upgraded to ${req.body.role}`);
   }
 
 

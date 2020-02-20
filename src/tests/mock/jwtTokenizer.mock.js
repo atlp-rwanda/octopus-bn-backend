@@ -1,5 +1,4 @@
-
-import { encode } from '../../utils/jwtTokenizer';
+import { encode } from 'utils/jwtTokenizer';
 
 export const claims = {
   email: 'octopus@andela.com',

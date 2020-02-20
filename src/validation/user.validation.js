@@ -33,6 +33,13 @@ const checkExistingEmail = [body('email', `${i18n.__('EmailTaken')}`)
     }
     return true;
   }))];
+
+const checkRoles = [body('role')
+  .not().isEmpty({ ignore_whitespace: true })
+  .withMessage('The role is required')
+  .matches('^travel_administrator$|^travel_team_member$|^manager$|^requester$')
+  .withMessage('The user role must be one of these roles: travel_administrator, travel_team_member, manager, requester')];
+
 const checkPassword = [body('password').not().isEmpty({ ignore_whitespace: true })
   .withMessage(`${i18n.__('PasswordRequired')}`)
   .bail()
@@ -101,7 +108,6 @@ const validateResult = (req, res, next) => {
     return next();
   }
   const { errors } = result;
-
   const errorMessageArr = errors.map((el) => el.msg);
 
   if (errorMessageArr.includes(`${i18n.__('EmailTaken')}`)) {
@@ -132,5 +138,6 @@ export default {
   checkMangerEmail,
   checkImageUrl,
   checkBio,
-  checkPassportNumber
+  checkPassportNumber,
+  checkRoles
 };

@@ -7,6 +7,20 @@ Chai.use(chaiHttp);
 Chai.should();
 
 describe('Profile settings', () => {
+  it('It should login successfuly', (done) => {
+    Chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'abdoulniyigena@gmail.com',
+        password: 'password',
+      })
+      .end((err, res) => {
+        res.body.should.have.status(200);
+        done();
+      });
+  });
+
   it('users should be able to edit their profile', (done) => {
     Chai
       .request(app)

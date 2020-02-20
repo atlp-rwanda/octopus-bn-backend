@@ -11,7 +11,7 @@ describe('Sign in tests', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'octapususer@andela.com',
+        email: 'octopususer@andela.com',
         password: 'password',
       })
       .end((err, res) => {

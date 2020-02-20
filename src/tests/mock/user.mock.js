@@ -1,8 +1,12 @@
+import { encode } from 'utils/jwtTokenizer';
+
 export const user = {
   firstName: 'Abdoul',
   lastName: 'Nuru',
-  email: 'abdoulniyigena@gmail.com',
+  email: 'nuruniyigena@gmail.com',
   password: 'abdoul1234'
 };
+export const email = 'nuruniyigena@gmail.com';
+export const role = 'manager';
 
-export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiIyODFjZDkyMC1mOTRiLTRlZDktYTVlNS1lOTQ3NmE5YzZmYzEiLCJmaXJzdE5hbWUiOiJBYmRvdWwiLCJsYXN0TmFtZSI6Ik51cnUiLCJlbWFpbCI6ImFiZG91bG5peWlnZW5hQGdtYWlsLmNvbSIsImlzVmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE1ODE2MDAxMDIsImV4cCI6MTU4MjIwNDkwMn0.br91XkDogceRn35w0cF8vEXAFCtKnpCR-g17q9FY_B4';
+export const token = encode({ email: 'nuruniyigena@gmail.com' });

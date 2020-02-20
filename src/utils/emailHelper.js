@@ -25,7 +25,14 @@ const generateEmail = (name, introduction, instructions, buttonTxt, link) => ({
   }
 });
 
-const sendVerificationEmail = async (info) => {
+const generateNotificationEmail = (name) => ({
+  body: {
+    name,
+    outro: 'Enjoy Barefoot Nomad Services.'
+  }
+});
+
+export const sendVerificationEmail = async (info) => {
   const emailBody = generateEmail(
     info.name,
     'Welcome to Barefoot Nomad',
@@ -48,4 +55,20 @@ const sendVerificationEmail = async (info) => {
   await sendGrid.send(message);
 };
 
-export default sendVerificationEmail;
+export const sendNotificationEmail = async (name, email, role) => {
+  const emailBody = generateNotificationEmail(
+    `${name} Your Role was upgraded to ${role}`
+  );
+  const emailTemplate = template.generate(emailBody);
+
+  const message = {
+    to: `${email}`,
+    from: 'barefoot@noreply',
+    subject: 'Barefoot Nomad Role Upgrade',
+    html: emailTemplate
+  };
+
+  sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  await sendGrid.send(message);
+};
