@@ -31,7 +31,7 @@ export default {
       method: 'seed',
       isVerified: true,
       email: 'a@andela.com',
-      password: 'dededenfefeefe',
+      password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
       role: 'requester',
       createdAt: new Date(),
       updatedAt: new Date()

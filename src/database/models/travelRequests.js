@@ -5,7 +5,7 @@ export default (sequelize, DataTypes) => {
   const travelRequests = sequelize.define('travelRequests', {
     requestId: { type: DataTypes.UUID, allowNull: false },
     userEmail: { type: DataTypes.STRING, allowNull: false },
-    type: { type: DataTypes.STRING, allowNull: false },
+    type: DataTypes.ENUM('one way', 'return'),
     passportNumber: { type: DataTypes.STRING, allowNull: false },
     gender: { type: DataTypes.STRING, allowNull: false },
     from: { type: DataTypes.STRING, allowNull: false },
