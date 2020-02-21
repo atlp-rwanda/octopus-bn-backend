@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-export default {
+
+module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.createTable('travelRequests', {
     id: {
       allowNull: false,
@@ -19,7 +19,7 @@ export default {
         model: 'Users',
         key: 'userID',
         as: 'userID',
-      },
+      }
     },
     type: {
       allowNull: false,
@@ -32,29 +32,24 @@ export default {
     },
     gender: {
       allowNull: false,
-      type: Sequelize.ENUM('male', 'female', 'other'),
+      type: Sequelize.STRING,
     },
     accommodation: {
-      allowNull: false,
       type: Sequelize.STRING
     },
     from: {
-      allowNull: false,
       type: Sequelize.STRING
     },
     to: {
-      allowNull: false,
       type: Sequelize.STRING
     },
     departureDate: {
-      allowNull: false,
       type: Sequelize.STRING
     },
     returnDate: {
       type: Sequelize.STRING
     },
     reason: {
-      allowNull: false,
       type: Sequelize.STRING
     },
     status: {
@@ -71,5 +66,5 @@ export default {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('travelRequests')
+  down: (queryInterface) => queryInterface.dropTable('traveRequests')
 };

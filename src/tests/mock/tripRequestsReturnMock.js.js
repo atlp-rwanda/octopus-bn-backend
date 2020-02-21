@@ -1,7 +1,7 @@
 export const newReqReturn = {
   type: 'return',
   passportNumber: 'JP1239496',
-  gender: 'mole',
+  gender: 'male',
   fromCountry: 'rw',
   fromCity: 'Kigali',
   toCountry: 'USA',
@@ -15,7 +15,7 @@ export const newReqReturn = {
 export const newReqReturnWrong = {
   type: 'return',
   passportNumber: 'JP1239496',
-  gender: 'mole',
+  gender: 'male',
   fromCountry: 'rw',
   fromCity: 'Kigali',
   toCountry: 'USA',

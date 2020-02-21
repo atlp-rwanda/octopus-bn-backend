@@ -33,8 +33,13 @@ export default (sequelize, DataTypes) => {
       ],
     },
   }, {});
-  Users.associate = () => {
+  Users.associate = (models) => {
     // associations can be defined here
+    Users.hasMany(models.travelRequests, {
+      foreignKey: 'userID',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
   };
   return Users;
 };

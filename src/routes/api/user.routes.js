@@ -409,10 +409,12 @@ router.delete('/logout', userController.logout);
  *         description: We have sent you an email
  *  */
 router.post('/forgot-password', checkValidEmail, validateResult, userController.forgotPassword);
+
+
 /**
  * @swagger
  *
- * /api/v1/auth/reset-password:
+ * /api/v1/auth/reset-password/{token}:
  *   put:
  *     security: []
  *     summary: Reset password
@@ -438,6 +440,12 @@ router.post('/forgot-password', checkValidEmail, validateResult, userController.
  *                 type: integer
  *               message:
  *                 type: string
+ *     parameters:
+ *       - name: token
+ *         description: Token sent through email.
+ *         in: path
+ *         requiered: true
+ *         type: string
  *     responses:
  *       200:
  *         description: We have sent you an email
