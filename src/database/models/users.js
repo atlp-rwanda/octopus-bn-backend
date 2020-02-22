@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     isVerified: DataTypes.BOOLEAN,
+    isUpdated: DataTypes.BOOLEAN,
     gender: DataTypes.STRING,
     birthDate: DataTypes.DATE,
     preferedLang: DataTypes.STRING,

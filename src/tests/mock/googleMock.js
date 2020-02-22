@@ -9,8 +9,9 @@ const googleMock = {
       id: '105366742150310895902',
       lastName: 'Izabayo',
       firstName: 'Blaise',
-      email: 'izabayoblaise82@gmail.com',
+      email: 'izabayoblaise81@gmail.com',
       method: 'google',
+      isUpdated: true
     }
   }
 };

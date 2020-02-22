@@ -3,6 +3,7 @@ import tripsController from 'controllers/tripsController';
 import checkUser from 'middlewares/checkUser';
 import tripRequestValidator from 'middlewares/tripRequestValidator';
 import validateMultiCity from 'validation/multiCity.validation';
+import dateValidator from 'middlewares/tripRequestDateValidator';
 
 const router = express.Router();
 
@@ -68,7 +69,7 @@ const router = express.Router();
  *       201:
  *         description: Travel request successfully created
  */
-router.post('/request', [checkUser, tripRequestValidator], tripsController.createTrip);
+router.post('/request', [checkUser, dateValidator, tripRequestValidator], tripsController.createTrip);
 
 /**
  * @swagger

@@ -32,13 +32,13 @@ class tripsController {
     try {
       const {
         body: {
-          type, passportNumber, gender, fromCountry,
+          type, fromCountry,
           fromCity, toCountry, toCity,
           reason, departureDate, accommodation,
           returnDate
         },
         user: {
-          email, userID, role
+          email, userID, role, passportNumber, gender
         }
       } = req;
       if (role !== 'requester') {

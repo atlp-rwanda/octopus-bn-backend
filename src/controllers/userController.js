@@ -16,7 +16,6 @@ class userController {
   static async socialLogin(req, res) {
     try {
       const { Users } = Models;
-      const isVerified = true;
       const password = 'null';
       const userID = req.user.id;
       const {
@@ -32,7 +31,8 @@ class userController {
           method,
           email,
           password,
-          isVerified
+          isVerified: true,
+          isUpdated: false
         }
       });
       const Token = encode({
@@ -43,7 +43,7 @@ class userController {
         status: 200,
         message: i18n.__('loginSuccessfully'),
         data: {
-          email, userID, firstName, lastName, method, isVerified
+          email, userID, firstName, lastName, method
         },
         Token
       });
@@ -85,7 +85,7 @@ class userController {
       } = req.body;
       const hash = await bcrypt.hash(password, 10);
       const newUser = await Models.Users.create({
-        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: false
+        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: false, isUpdated: false
       });
       const data = {
         userID: newUser.userID,

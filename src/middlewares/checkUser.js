@@ -15,12 +15,18 @@ const checkUser = async (req, res, next) => {
   const { email } = payload;
   const user = await Users.findOne({ where: { email } });
   const {
-    isVerified
+    isVerified, isUpdated
   } = user;
   if (!isVerified) {
     return res.status(403).json({
       status: 403,
       error: req.i18n.__('PleaseVerify')
+    });
+  }
+  if (!isUpdated) {
+    return res.status(403).json({
+      status: 403,
+      error: 'Please update your profile information to continue'
     });
   }
   req.user = user;

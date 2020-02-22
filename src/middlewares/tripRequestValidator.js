@@ -8,31 +8,55 @@ const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 const tripRequestValidator = (req, res, next) => {
   const schema = Joi.object().keys({
     type: Joi.string().valid('one way', 'return').required().error(() => ({
-      message: 'type should not be empty. Only use the following values [one way, return, multi city] (Note: only one way trip requests allowed for now)'
+      message: 'Please provide a valid request type: [one way, return, multi city]'
     })),
-    passportNumber: Joi.string().regex(/[a-zA-Z]{2}[0-9]{7}/).required(),
-    gender: Joi.string().valid('male', 'other', 'female').required().error(() => ({
-      message: 'gender should not be empty.Make sure that your gender is written in lowercase. example [male, other, female]'
-    })),
+
     fromCountry: Joi.string().country().required().error(() => ({
-      message: 'fromCountry should not be empty. Please use country letter representations example [KN, Rw, USA, UG, ...]'
+      message: 'Please provide a valid from country: eg [KN, Rw, USA, UG, ...]'
     })),
-    fromCity: Joi.string().required(),
+
+    fromCity: Joi.string().required().error(() => ({
+      message: 'Please provide a valid from city: eg [Kigali, kampala, ....]'
+    })),
+
+    toCountry: Joi.string().country().required().error(() => ({
+      message: 'Please provide a valid to country: eg [USA, RW, UG, ...]'
+    })),
+
+    toCity: Joi.string().required().error(() => ({
+      message: 'Please provide a valid from CITY: eg [Kigali, kampala, ....]'
+    })),
+
     accommodation: Joi.string().valid('yes', 'no').required().error(() => ({
-      message: 'accommodation should not be empty.Please if you need accommodation enter [yes] if no enter [no]'
+      message: 'Please provide a valid accommodation value: [yes, no]'
     })),
-    toCountry: Joi.string().country().required(),
-    toCity: Joi.string().required(),
-    departureDate: Joi.date().format('YYYY-MM-DD').min(moment().format('YYYY-MM-DD')).required()
+
+    departureDate: Joi.date().format('YYYY-MM-DD').error(() => ({
+      message: 'Date format must be YYYY-MM-DD'
+    })).min(moment().format('YYYY-MM-DD'))
+      .required()
       .error(() => ({
-        message: 'No trips to the past, date format must be YYYY-MM-DD'
+        message: 'Please provide a valid departure date'
       })),
-    returnDate: Joi.date().format('YYYY-MM-DD').min(Joi.ref('departureDate')).when('type', { is: Joi.string().regex(/^return$/), then: Joi.required(), otherwise: Joi.date().max(0) })
-      .error(() => ({
-        message: 'Only provide a return date on a return trip request, Please provide valid date for return, date format must be YYYY-MM-DD'
+
+    returnDate: Joi.date().format('YYYY-MM-DD').error(() => ({
+      message: 'Date format must be YYYY-MM-DD'
+    })).when('type', {
+      is: Joi.string().regex(/^return$/),
+      then: Joi.date().min(Joi.ref('departureDate')).required()
+        .error(() => ({
+          message: `Please provide valid date for return, date must not be allowed than your departure date ${req.body.departureDate}`
+        })),
+      otherwise: Joi.date().max(0).error(() => ({
+        message: 'Only provide a return date on a return trip request'
       })),
-    reason: Joi.string().min(10).required()
+    }),
+
+    reason: Joi.string().min(20).required().error(() => ({
+      message: 'Please provide a reason (more than 20 char)'
+    })),
   });
+
   const { error } = Joi.validate(req.body, schema);
   if (error) {
     return res.status(400).json({
