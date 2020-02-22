@@ -56,5 +56,9 @@
 	"mReason": "Please provide a reason for stoping in this city",
 	"notSuperAdmin": "You have to be loggen in as a super administrator to assign roles to users",
 	"userDon'tExist": "The User you are assigning the role to don't exist",
-	"roleUpgrade": "Your role was upgraded to"
+	"roleUpgrade": "Your role was upgraded to",
+	"typeErrorJoi": "type should not be empty. Only use the following values [one way, return, multi city] (Note: only one way trip requests allowed for now)",
+	"PleaseUpdateProfile":"Please update your profile information to continue",
+	"managerEmailNotExist":"Manager is not found, choose another one"
 }
+

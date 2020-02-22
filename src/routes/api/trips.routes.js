@@ -4,6 +4,7 @@ import checkUser from 'middlewares/checkUser';
 import tripRequestValidator from 'middlewares/tripRequestValidator';
 import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
+import isProfileUpdated from 'middlewares/isProfileUpdated';
 
 const router = express.Router();
 
@@ -69,7 +70,7 @@ const router = express.Router();
  *       201:
  *         description: Travel request successfully created
  */
-router.post('/request', [checkUser, dateValidator, tripRequestValidator], tripsController.createTrip);
+router.post('/request', [checkUser, isProfileUpdated, dateValidator, tripRequestValidator], tripsController.createTrip);
 
 /**
  * @swagger
@@ -129,6 +130,6 @@ router.post('/request', [checkUser, dateValidator, tripRequestValidator], tripsC
  *       201:
  *         description: Your multi city trip request has been recorded.
  */
-router.post('/multi-city', [checkUser, validateMultiCity, validateStops], tripsController.multiCityTrip);
+router.post('/multi-city', [checkUser,isProfileUpdated, validateMultiCity, validateStops], tripsController.multiCityTrip);
 
 export default router;

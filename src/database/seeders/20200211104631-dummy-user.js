@@ -87,6 +87,28 @@ export default {
       bio: 'i love eating a lot. food is bae',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      userID: '000ec6c6-4884-4ca7-94b1-26a2ed842259',
+      firstName: 'CYUZUZO',
+      lastName: 'Emma',
+      method: 'local',
+      isVerified: true,
+      isUpdated: true,
+      email: 'manager@barefoot.com',
+      password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'manager',
+      gender: 'male',
+      preferedLang: 'fr',
+      birthDate: '1995-01-01',
+      preferedCurrency: 'USD',
+      residence: 'Gikondo',
+      department: 'IT',
+      imageUrl: 'https://www.google.com/url?sa=i&url',
+      passportNumber: 'GH1234560',
+      bio: 'Coding is more fun!',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Users', null, {})

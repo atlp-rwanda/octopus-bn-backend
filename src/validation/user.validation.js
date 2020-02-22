@@ -1,28 +1,28 @@
 import { body, validationResult } from 'express-validator';
 import Models from '../database/models';
-import i18n from '../utils/international';
+import setLanguage from '../utils/international';
 
 const { Users } = Models;
 const checkFirstName = [body('firstName')
   .not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('FirstNameRequired')}`)
+  .withMessage('FirstNameRequired')
   .bail()
   .isAlpha()
-  .withMessage(`${i18n.__('FirstNameOnlyLetters')}`)
+  .withMessage('FirstNameOnlyLetters')
 ];
 const checkLastName = [body('lastName').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('LastNameRequired')}`)
+  .withMessage('LastNameRequired')
   .bail()
   .isAlpha()
-  .withMessage(`${i18n.__('LastNameOnlyLetters')}`)
+  .withMessage('LastNameOnlyLetters')
 ];
 const checkValidEmail = [body('email')
   .not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('Emailrequired')}`)
+  .withMessage('Emailrequired')
   .bail()
   .isEmail()
-  .withMessage(`${i18n.__('EmailValid')}`)];
-const checkExistingEmail = [body('email', `${i18n.__('EmailTaken')}`)
+  .withMessage('EmailValid')];
+const checkExistingEmail = [body('email', 'EmailTaken')
   .custom((value = '') => Users.findOne({
     where: {
       email: value
@@ -41,58 +41,58 @@ const checkRoles = [body('role')
   .withMessage('The user role must be one of these roles: travel_administrator, travel_team_member, manager, requester')];
 
 const checkPassword = [body('password').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('PasswordRequired')}`)
+  .withMessage('PasswordRequired')
   .bail()
   .isAlphanumeric()
-  .withMessage(`${i18n.__('AlphaPasswordOnly')}`)
+  .withMessage('AlphaPasswordOnly')
   .isLength({ min: 8 })
-  .withMessage(`${i18n.__('PasswordMoreThan8')}`)];
+  .withMessage('PasswordMoreThan8')];
 const checkGender = [body('gender').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('GenderRequired')}`)
+  .withMessage('GenderRequired')
   .bail()
   .isAlpha()
-  .isIn(['Male', 'M', 'm', 'male', 'F', 'f', 'Female', 'female'])
-  .withMessage(`${i18n.__('GenderInvalid')}`)];
+  .isIn(['male', 'female', 'other'])
+  .withMessage('GenderInvalid')];
 const checkDate = [body('birthDate').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('BirthDateRequired')}`)
+  .withMessage('BirthDateRequired')
 ];
 const checkCurrency = [body('preferedCurrency').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('CurrencyRequired')}`)
+  .withMessage('CurrencyRequired')
   .bail()
   .isAlpha()];
 const checkLocale = [body('preferedLang').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('LangRequired')}`)
+  .withMessage('LangRequired')
   .bail()
   .isAlpha()
   .isIn(['fr', 'en'])
-  .withMessage(`${i18n.__('LangInvalid')}`)];
+  .withMessage('LangInvalid')];
 const checkResidence = [body('residence').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('ResidenceRequired')}`)
+  .withMessage(`${setLanguage().__('ResidenceRequired')}`)
   .bail()
   .isAlpha()];
 const checkDepartment = [body('department').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('departmentRequired')}`)
+  .withMessage('departmentRequired')
   .bail()
   .isAlpha()];
 const checkMangerEmail = [body('managerEmail')
   .not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('Emailrequired')}`)
+  .withMessage('Emailrequired')
   .bail()
   .isEmail()
-  .withMessage(`${i18n.__('EmailValid')}`)];
+  .withMessage('EmailValid')];
 const checkImageUrl = [body('imageUrl').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('ImageUrlRequired')}`)
+  .withMessage('ImageUrlRequired')
   .bail()];
 const checkBio = [body('bio').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('BioRequired')}`)
+  .withMessage('BioRequired')
   .bail()];
 const checkPassportNumber = [body('passportNumber').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${i18n.__('PassportRequired')}`)
+  .withMessage('PassportRequired')
   .bail()
   .isLength({ min: 9 })
-  .withMessage(`${i18n.__('PassportNun9Chars')}`)
+  .withMessage('PassportNun9Chars')
   .matches(/[a-zA-Z]{2}[0-9]{7}/)
-  .withMessage(`${i18n.__('PassportNunInvalid')}`)];
+  .withMessage('PassportNunInvalid')];
 
 const checkConfirmPassword = [body('confirmPassword').not().isEmpty({ ignore_whitespace: true })
   .withMessage('confirmPassword is required')
@@ -112,17 +112,17 @@ const checkConfirmPassword = [body('confirmPassword').not().isEmpty({ ignore_whi
 */
 const validateResult = (req, res, next) => {
   const result = validationResult(req);
-
   if (result.isEmpty()) {
     return next();
   }
+  const { prefLocale } = req.i18n;
   const { errors } = result;
-  const errorMessageArr = errors.map((el) => el.msg);
+  const errorMessageArr = errors.map((el) => setLanguage(prefLocale).__(el.msg));
 
-  if (errorMessageArr.includes(`${i18n.__('EmailTaken')}`)) {
+  if (errorMessageArr.includes(`${setLanguage(prefLocale).__('EmailExist')}`)) {
     return res.status(409).json({
       status: 409,
-      message: i18n.__('EmailExist'),
+      message: setLanguage(prefLocale).__('EmailExist'),
     });
   }
   return res.status(422).json({

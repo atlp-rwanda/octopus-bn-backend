@@ -54,6 +54,13 @@
     "mReason": "Veuillez indiquer la raison de votre arrêt dans cette ville",
     "notSuperAdmin": "Vous devez être connecté en tant que super administrateur pour attribuer des rôles aux utilisateurs",
     "userDon'tExist": "L'utilisateur auquel vous attribuez le rôle n'existe pas",
-    "roleUpgrade": "Votre rôle a été mis à niveau vers"
+    "roleUpgrade": "Votre rôle a été mis à niveau vers",
+    "typeErrorJoi": "le type ne doit pas être vide. Utilisez uniquement les valeurs suivantes [aller simple, aller-retour, multi-villes] (Remarque: seules les demandes de voyage aller simple sont autorisées pour l'instant)",
+    "PleaseUpdateProfile":"Veuillez mettre à jour les informations de votre profil pour continuer",
+    "managerEmailNotExist":"Le gestionnaire est introuvable, choisissez-en un autre"
 }
+
+
+
+
 

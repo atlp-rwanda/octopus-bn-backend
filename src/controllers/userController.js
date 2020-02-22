@@ -6,7 +6,7 @@ import { sendVerificationEmail, sendNotificationEmail, sendPasswordResetLink } f
 import { successResponse, errorResponse } from 'utils/responses';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
-import i18n from '../utils/international';
+import setLanguage from '../utils/international';
 
 /**
  * @description This class contains all the methods relating to the user
@@ -21,7 +21,6 @@ class userController {
       const {
         email, firstName, lastName, method
       } = req.user;
-
       await Users.findOrCreate({
         where: { email },
         defaults: {
@@ -41,7 +40,7 @@ class userController {
       localStorage.setItem('Token', Token);
       return res.status(200).json({
         status: 200,
-        message: i18n.__('loginSuccessfully'),
+        message: req.i18n.__('loginSuccessfully'),
         data: {
           email, userID, firstName, lastName, method
         },
@@ -58,16 +57,22 @@ class userController {
 
   static async logout(req, res) {
     const token = localStorage.getItem('Token');
+    let preferLang;
+    if (token) {
+      const payload = decode(token);
+      const { preferedLang } = payload;
+      preferLang = preferedLang;
+    }
     if (!token) {
       return res.status(403).json({
         status: 403,
-        message: 'Please login first',
+        message: setLanguage(preferLang).__('Pleaselog'),
       });
     }
     localStorage.removeItem('Token', 0);
     return res.status(200).json({
       status: 200,
-      message: i18n.__('outSuccessfully'),
+      message: setLanguage(preferLang).__('outSuccessfully'),
     });
   }
 
@@ -79,6 +84,7 @@ class userController {
      * @memberof userController
      */
   static async signUp(req, res) {
+    const { prefLocale } = req.i18n;
     try {
       const {
         firstName, lastName, email, password
@@ -92,7 +98,8 @@ class userController {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
-        isVerified: newUser.isVerified
+        isVerified: newUser.isVerified,
+        preferedLang: prefLocale
       };
       const token = encode(data);
       const verificationData = {
@@ -103,7 +110,12 @@ class userController {
 
       sendVerificationEmail(verificationData);
 
-      return successResponse(res, 201, req.i18n.__('signUpSuccess'), data);
+      return res.status(201).json({
+        status: 201,
+        message: setLanguage(prefLocale).__('signUpSuccess'),
+        data,
+        token
+      });
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }
@@ -120,20 +132,32 @@ class userController {
     // eslint-disable-next-line prefer-destructuring
     const token = req.params.token;
     const payload = decode(token);
+    const { prefLocale } = req.i18n;
     const emailExist = await Models.Users.findOne({ where: { email: payload.email } });
 
     if (!emailExist) {
-      return errorResponse(res, 404, i18n.__('onVerifyFailure'));
+      return res.status(404).json({
+        status: 404,
+        error: setLanguage(prefLocale).__('onVerifyFailure')
+      });
     }
 
     if (emailExist.isVerified !== true) {
       await Models.Users.update(
         { isVerified: true }, { where: { email: payload.email } }
       );
-      return successResponse(res, 200, req.i18n.__('onVerifySuccess'));
+
+      return res.status(200).json({
+        status: 200,
+        message: setLanguage(prefLocale).__('onVerifySuccess'),
+        token
+      });
     }
 
-    return successResponse(res, 200, req.i18n.__('onVerifySuccess'));
+    return res.status(200).json({
+      status: 200,
+      message: setLanguage(prefLocale).__('onVerifySuccess')
+    });
   }
 
   /**
@@ -149,7 +173,7 @@ class userController {
     const userExist = await Models.Users.findOne({ where: { email: req.body.email } });
 
     if (!userExist) {
-      return errorResponse(res, 404, i18n.__('userDon\'tExist'));
+      return errorResponse(res, 404, req.i18n.__('userDon\'tExist'));
     }
 
     if (role !== 'super_administrator') {
@@ -180,7 +204,7 @@ class userController {
       if (!registered) {
         return res.status(401).json({
           status: 401,
-          error: i18n.__('IncorrectEmailPassword'),
+          error: req.i18n.__('IncorrectEmailPassword'),
         });
       }
       if (!registered.isUpdated) {
@@ -203,16 +227,17 @@ class userController {
       if (!truePassword) {
         return res.status(401).json({
           status: 401,
-          error: i18n.__('IncorrectEmailPassword'),
+          error: req.i18n.__('IncorrectEmailPassword'),
         });
       }
       const token = encode({
-        email
+        email,
+        preferedLang: registered.preferedLang
       });
       localStorage.setItem('Token', token);
       return res.status(200).json({
         status: 200,
-        message: i18n.__('localLoginSuccess'),
+        message: setLanguage(registered.preferedLang).__('loginSuccessfully'),
         token
       });
     } catch (error) {
@@ -250,7 +275,10 @@ class userController {
 
       const token = encode({ email });
       const user = {
-        name: registered.firstName, email: registered.email, token
+        name: registered.firstName,
+        email: registered.email,
+        token,
+        preferedLang: registered.preferedLang
       };
 
       sendPasswordResetLink(user, req.headers.host);
@@ -299,7 +327,7 @@ class userController {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error: i18n.__('internalServerError')
+        error: req.i18n.__('internalServerError')
       });
     }
   }
@@ -312,10 +340,8 @@ class userController {
      * @memberof userController
      */
   static async updateProfile(req, res) {
-    try {
-      const { body, user } = req;
-      const { userID } = user;
-      const {
+    const {
+      body: {
         firstName,
         lastName,
         gender,
@@ -328,8 +354,23 @@ class userController {
         imageUrl,
         bio,
         passportNumber
-      } = body;
-      const result = await Models.Users.update(
+      },
+      user: {
+        userID
+      },
+      body
+    } = req;
+    try {
+      const user = await Models.Users.findOne({ where: { email: managerEmail } });
+
+      if (!user || user.role !== 'manager') {
+        return res.status(404).json({
+          status: 404,
+          error: setLanguage(preferedLang).__('managerEmailNotExist')
+        });
+      }
+
+      await Models.Users.update(
         {
           firstName,
           lastName,
@@ -353,13 +394,13 @@ class userController {
 
       return res.status(200).json({
         status: 200,
-        message: i18n.__('ProfileUpdated'),
-        data: result[1]
+        message: setLanguage(preferedLang).__('ProfileUpdated'),
+        data: body
       });
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error: i18n.__('internalServerError')
+        error: setLanguage(preferedLang).__('internalServerError')
       });
     }
   }

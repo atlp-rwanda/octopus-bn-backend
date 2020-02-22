@@ -17,7 +17,7 @@ describe('Sign in tests', () => {
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'message', 'token');
         expect(res.body.status).to.be.equal(200);
-        expect(res.body.message).to.be.equal('Successfully logged in');
+        expect(res.body.message).to.be.equal('User login successfully');
         expect(res);
         done();
       });

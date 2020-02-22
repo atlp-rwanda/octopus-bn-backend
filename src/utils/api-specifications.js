@@ -1,6 +1,6 @@
 import path from 'path';
 import os from 'os';
-import i18n from './international';
+import renderContent from './international';
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -8,7 +8,7 @@ const swaggerOptions = {
     info: {
       title: 'Barefoot Nomad',
       version: '1.0.0',
-      description: `${i18n.__('AppDesc')}`,
+      description: `${renderContent('en').__('AppDesc')}`,
       license: {},
       contact: {}
     },
