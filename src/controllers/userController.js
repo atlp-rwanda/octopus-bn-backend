@@ -85,7 +85,7 @@ class userController {
       } = req.body;
       const hash = await bcrypt.hash(password, 10);
       const newUser = await Models.Users.create({
-        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: false, isUpdated: false
+        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: true, isUpdated: false
       });
       const data = {
         userID: newUser.userID,
@@ -103,17 +103,9 @@ class userController {
 
       sendVerificationEmail(verificationData);
 
-      return res.status(201).json({
-        status: 201,
-        message: i18n.__('signUpSuccess'),
-        data,
-        token
-      });
+      return successResponse(res, 201, req.i18n.__('signUpSuccess'), data);
     } catch (error) {
-      return res.status(500).json({
-        status: 500,
-        error: error.message
-      });
+      return errorResponse(res, 500, error.message);
     }
   }
 
@@ -131,28 +123,17 @@ class userController {
     const emailExist = await Models.Users.findOne({ where: { email: payload.email } });
 
     if (!emailExist) {
-      return res.status(404).json({
-        status: 404,
-        error: i18n.__('onVerifyFailure')
-      });
+      return errorResponse(res, 404, i18n.__('onVerifyFailure'));
     }
 
     if (emailExist.isVerified !== true) {
       await Models.Users.update(
         { isVerified: true }, { where: { email: payload.email } }
       );
-
-      return res.status(200).json({
-        status: 200,
-        message: i18n.__('onVerifySuccess'),
-        token
-      });
+      return successResponse(res, 200, req.i18n.__('onVerifySuccess'));
     }
 
-    return res.status(200).json({
-      status: 200,
-      message: i18n.__('onVerifySuccess')
-    });
+    return successResponse(res, 200, req.i18n.__('onVerifySuccess'));
   }
 
   /**
@@ -166,14 +147,13 @@ class userController {
     const { role } = req.user;
     const userRole = req.body.role;
     const userExist = await Models.Users.findOne({ where: { email: req.body.email } });
-    const errorMessage = 'You have to be loggen in as a super administrator to assign roles to users';
 
     if (!userExist) {
-      return errorResponse(res, 404, 'The User you are assigning the role to don\'t exist');
+      return errorResponse(res, 404, i18n.__('userDon\'tExist'));
     }
 
     if (role !== 'super_administrator') {
-      return errorResponse(res, 401, errorMessage);
+      return errorResponse(res, 401, req.i18n.__('notSuperAdmin'));
     }
 
     await Models.Users.update({ role: req.body.role },
@@ -183,7 +163,7 @@ class userController {
 
     sendNotificationEmail(userExist.firstName, userExist.email, userRole);
 
-    return successResponse(res, 200, `Your role was upgraded to ${req.body.role}`);
+    return successResponse(res, 200, `${req.i18n.__('roleUpgrade')} ${req.body.role}`);
   }
 
 
@@ -201,6 +181,12 @@ class userController {
         return res.status(401).json({
           status: 401,
           error: i18n.__('IncorrectEmailPassword'),
+        });
+      }
+      if (!registered.isUpdated) {
+        return res.status(403).json({
+          status: 403,
+          error: 'Please update your profile information to continue'
         });
       }
 
@@ -356,7 +342,8 @@ class userController {
           managerEmail,
           imageUrl,
           bio,
-          passportNumber
+          passportNumber,
+          isUpdated: true
         }, {
           where: { userID },
           returning: true,

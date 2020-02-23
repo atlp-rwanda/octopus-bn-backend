@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 import uuid from 'uuid/v4';
 import { successResponse, errorResponse } from 'utils/responses';
+import tripHelper from 'utils/tripHelper';
 import Models from 'database/models';
 
 const { travelRequests } = Models;
@@ -38,7 +39,7 @@ class tripsController {
           returnDate
         },
         user: {
-          email, userID, role, passportNumber, gender
+          email, userID, role, passportNumber, gender, managerEmail
         }
       } = req;
       if (role !== 'requester') {
@@ -61,6 +62,7 @@ class tripsController {
           to,
           accommodation,
           reason,
+          manager: managerEmail,
           departureDate,
           returnDate,
           status: 'pending'
@@ -93,40 +95,26 @@ class tripsController {
      * @returns {object} response
      * @memberof tripsController
      */
-  static async createMultiCityTrip(req, res) {
+  static async multiCityTrip(req, res) {
     try {
-      const multiTrips = req.body;
-      const { role, userID } = req.user;
-      const id = uuid();
-      const isRequester = await Models.Users.findOne({ where: { role } });
+      const {
+        body: {
+          fromCountry, fromCity, toCountry, toCity, stops
+        },
+        user: {
+          userID, gender, passportNumber, managerEmail
+        }
+      } = req;
+      const from = `${fromCountry} - ${fromCity}`;
+      const to = `${toCountry} - ${toCity}`;
 
-      if (!isRequester) {
-        return errorResponse(res, 401, 'You must be a requester to send this request');
+      if (stops.length <= 1) {
+        return errorResponse(res, 403, req.i18n.__('multiCityFailure'));
       }
 
-      multiTrips.forEach(async (trip) => {
-        const {
-          type, passportNumber, gender, fromCountry,
-          fromCity, toCountry, toCity, departureDate, reason, accommodation
-        } = trip;
-        const from = `${fromCountry} - ${fromCity}`;
-        const to = `${toCountry} - ${toCity}`;
+      await tripHelper.createTrip(userID, passportNumber, gender, from, to, managerEmail, req.body);
 
-        await travelRequests.create({
-          requestId: id,
-          userID,
-          type,
-          passportNumber,
-          gender,
-          from,
-          to,
-          accommodation,
-          reason,
-          departureDate,
-        });
-      });
-
-      successResponse(res, 201, 'Your multi city trip request has been recorded');
+      successResponse(res, 201, req.i18n.__('multiCitySuccess'));
     } catch (error) {
       errorResponse(res, 500, error.message);
     }

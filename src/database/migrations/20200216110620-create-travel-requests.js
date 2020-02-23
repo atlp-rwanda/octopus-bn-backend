@@ -35,7 +35,7 @@ export default {
       type: Sequelize.ENUM('male', 'female', 'other'),
     },
     accommodation: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     from: {
@@ -54,13 +54,17 @@ export default {
       type: Sequelize.STRING
     },
     reason: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     status: {
       allowNull: false,
       type: Sequelize.ENUM('pending', 'approved', 'rejected'),
       defaultValue: 'pending',
+    },
+    stops: {
+      type: Sequelize.ARRAY(Sequelize.JSON),
+      defaultValue: []
     },
     createdAt: {
       allowNull: false,

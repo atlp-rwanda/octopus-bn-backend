@@ -1,48 +1,178 @@
-export const cities = [
-  {
-    type: 'one way',
-    passportNumber: 'JP1239496',
-    gender: 'male',
-    fromCountry: 'rw',
-    fromCity: 'Kigali',
-    toCountry: 'UG',
-    toCity: 'Kampala',
-    departureDate: '2020-07-17',
-    accommodation: 'yes',
-    reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
-  },
-  {
-    type: 'one way',
-    passportNumber: 'JP1239496',
-    gender: 'male',
-    fromCountry: 'UG',
-    fromCity: 'Kampala',
-    toCountry: 'USA',
-    toCity: 'Texas',
-    departureDate: '2020-07-22',
-    accommodation: 'yes',
-    reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
-  }
-];
+export const cities = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'yes',
+      stopCountry: 'Ug',
+      stopCity: 'kampala',
+      arrivalDate: '2020-05-01',
+      departureDate: '2020-05-02',
+      reason: "Visit company's offices in kampala"
+    },
+    {
+      accommodation: 'yes',
+      stopCountry: 'Et',
+      stopCity: 'Addis Ababa',
+      arrivalDate: '2020-05-03',
+      departureDate: '2020-05-10',
+      reason: 'Attend african union summit'
+    },
+    {
+      accommodation: 'yes',
+      stopCountry: 'USA',
+      stopCity: 'Miami',
+      arrivalDate: '2020-05-13',
+      reason: "Visit company's offices in cairo"
+    }
+  ]
+};
 
-export const wrongCities = [
-  {
-    type: 'onway',
-    passportNumber: 'JP1239496',
-    gender: 'mal',
-    fromCountry: 'UGrrbrnnrnrnrnrn',
-    fromCity: 'Kigali',
-    toCountry: 'UG',
-    toCity: 'Kampala',
-    departureDate: '2020-07-17',
-    accommodation: 'h',
-  },
-  {
-    type: 'one way',
-    passportNumber: 'JP1239496',
-    fromCity: 'Kampala',
-    toCountry: 'USA',
-    toCity: 'Texas',
-    reason: 'the employee'
-  }
-];
+export const wrongCity1 = {};
+export const wrongCity2 = {
+  type: 'multi city',
+  fromCountry: 'Rwanda',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Texas',
+  departureDate: '2020-03-11',
+  returnDate: '2020-03-11',
+  accommodation: 'again',
+};
+export const wrongCity3 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Texas',
+  departureDate: '2020-03-11',
+  returnDate: '2020-03-11',
+  accommodation: 'again',
+};
+export const wrongCity4 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Texas',
+  departureDate: '2020-02-11',
+  returnDate: '2020-03-11',
+  accommodation: 'yes',
+};
+export const wrongCity5 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Texas',
+  departureDate: '2020-05-11',
+  returnDate: '2020-03-11',
+  accommodation: 'yes',
+};
+export const wrongCity6 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Texas',
+  departureDate: '2020-05-11',
+  returnDate: '2020-10-11',
+  accommodation: 'yes',
+  reason: 'Meeting the partners to discuss about a new product'
+};
+export const wrongCity7 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'oya',
+      stopCountry: 'Uganda',
+      stopCity: 'kampala',
+      arrivalDate: '2020-05-01',
+      departureDate: '2020-05-02',
+      reason: "Visit company's offices in kampala"
+    },
+  ]
+};
+
+export const wrongCity8 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'oya',
+      stopCountry: 'Ug',
+      stopCity: 'kampala',
+      arrivalDate: '2020-05-01',
+      departureDate: '2020-05-02',
+      reason: "Visit company's offices in kampala"
+    },
+  ]
+};
+export const wrongCity9 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'yes',
+      stopCountry: 'Ug',
+      stopCity: 'kampala',
+      arrivalDate: '2020-05-02',
+      departureDate: '2020-04-02',
+      reason: "Visit company's offices in kampala"
+    },
+  ]
+};
+
+export const wrongCity10 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'yes',
+      stopCountry: 'Ug',
+      stopCity: 'kampala',
+      arrivalDate: '01-01-2020',
+      departureDate: '2020-05-02',
+      reason: "Visit company's offices in kampala"
+    },
+  ]
+};
+
+export const wrongCity11 = {
+  type: 'multi city',
+  fromCountry: 'Rw',
+  fromCity: 'Kigali',
+  toCountry: 'USA',
+  toCity: 'Miami',
+  departureDate: '2020-05-01',
+  stops: [
+    {
+      accommodation: 'yes',
+      stopCountry: 'Ug',
+      stopCity: 'kampala',
+      arrivalDate: '2020-05-01',
+      departureDate: '2020-05-02'
+    },
+  ]
+};
