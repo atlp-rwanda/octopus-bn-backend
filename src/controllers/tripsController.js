@@ -5,6 +5,12 @@ import tripService from 'services/tripsService';
 import Models from 'database/models';
 import setLanguage from 'utils/international';
 import paginate from 'utils/pagination';
+import Sequelize from 'sequelize';
+
+
+const {
+  Op, where, cast, col
+} = Sequelize;
 
 const { travelRequests } = Models;
 
@@ -30,6 +36,7 @@ class tripsController {
       * @return  {string} message
       * @return  {object} data {email, passportNumber, from, to, reason}
       */
+
   static async createTrip(req, res) {
     try {
       const {
@@ -169,6 +176,100 @@ class tripsController {
         message: setLanguage(preferedLang).__('retrievedSuccessfully'),
         info: pagination.info,
         data: trips
+      });
+    } catch (error) {
+      return errorResponse(res, error.status || 500, error.message);
+    }
+  }
+
+  static async searchTrips(req, res) {
+    const {
+      body: {
+        searchKey
+      },
+      query: {
+        page, limit,
+      },
+      user: {
+        id, role, email, preferedLang
+      }
+    } = req;
+    const pagination = paginate(page, limit);
+    try {
+      let found;
+      const searchQuery = [
+        where(
+          cast(col('travelRequests.requestId'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+        where(
+          cast(col('travelRequests.type'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+        where(
+          cast(col('travelRequests.gender'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+        where(
+          cast(col('travelRequests.status'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+        where(
+          cast(col('travelRequests.stops'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+
+        where(
+          cast(col('travelRequests.status'), 'varchar'),
+          { [Op.like]: `%${searchKey}%` }
+        ),
+        { from: { [Op.like]: `%${searchKey}%`, }, },
+        { to: { [Op.like]: `%${searchKey}%`, }, },
+        { from: { [Op.like]: `%${searchKey}%`, }, },
+        { to: { [Op.like]: `%${searchKey}%`, }, },
+        { reason: { [Op.like]: `%${searchKey}%`, }, },
+      ];
+      if (role === 'requester') {
+        found = await travelRequests.findAll({
+          where: {
+            userID: id,
+            [Op.or]: searchQuery
+          },
+          attributes: {
+            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+          },
+          offset: pagination.offset,
+          limit: pagination.limit,
+        });
+      }
+      if (role === 'manager') {
+        found = await travelRequests.findAll({
+          where: {
+            manager: email,
+            [Op.or]: searchQuery
+          },
+          attributes: {
+            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+          },
+          offset: pagination.offset,
+          limit: pagination.limit,
+        });
+      }
+      found = await travelRequests.findAll({
+        where: {
+          [Op.or]: searchQuery
+        },
+        attributes: {
+          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+        },
+        offset: pagination.offset,
+        limit: pagination.limit,
+      });
+      return res.status(200).json({
+        status: 200,
+        message: setLanguage(preferedLang).__('retrievedSuccessfully'),
+        info: pagination.info,
+        data: found
       });
     } catch (error) {
       return errorResponse(res, error.status || 500, error.message);
