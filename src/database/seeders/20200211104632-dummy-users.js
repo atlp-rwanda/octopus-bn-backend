@@ -6,6 +6,7 @@ export default {
       lastName: 'Nuru',
       method: 'local',
       isVerified: true,
+      isUpdated: true,
       email: 'abdoulniyigena@gmail.com',
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
       role: 'super_administrator',

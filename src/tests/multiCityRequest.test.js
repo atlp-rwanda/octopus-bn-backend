@@ -12,7 +12,7 @@ describe('Barefoot nomad should allow multi city trips', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'octopus@andela.com',
+        email: 'blaisefr@gmail.com',
         password: 'password',
       })
       .end((err, res) => {

@@ -36,7 +36,7 @@ describe('trips', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'octopususer@andela.com',
+        email: 'blaisefr@gmail.com',
         password: 'password',
       })
       .end((err, res) => {
@@ -82,14 +82,133 @@ describe('trips', () => {
         done();
       });
   });
+  it('It should not allow request trip without providing type date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2050-06-17',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow request trip without providing a from country', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'one way',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2050-06-17',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow request trip without providing a from city', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'one way',
+        fromCountry: 'rw',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2050-06-17',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow request trip without providing a to country', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'one way',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCity: 'Texas',
+        departureDate: '2050-06-17',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow request trip without providing a to city', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'one way',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        departureDate: '2050-06-17',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow request trip without providing a reason', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '2020-06-15',
+        accommodation: 'yes',
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
   it('It should not allow request trip without providing proper date', (done) => {
     chai
       .request(app)
       .post('/api/v1/trips/request')
       .send({
         type: 'return',
-        passportNumber: 'JP1239496',
-        gender: 'male',
         fromCountry: 'rw',
         fromCity: 'Kigali',
         toCountry: 'USA',

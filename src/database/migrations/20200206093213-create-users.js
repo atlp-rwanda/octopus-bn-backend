@@ -33,18 +33,6 @@ export default {
       allowNull: false,
       type: Sequelize.BOOLEAN
     },
-    // role: {
-    //   allowNull: false,
-    //   type: Sequelize.ENUM,
-    //   defaultValue: 'requester',
-    //   values: [
-    //     'super_administrator',
-    //     'travel_administrator',
-    //     'travel_team_member',
-    //     'manager',
-    //     'requester'
-    //   ],
-    // },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

@@ -9,8 +9,9 @@ const facebookMock = {
       id: '120223229534530',
       lastName: 'Blaise',
       firstName: 'Leon',
-      email: 'izabayoblaise82@gmail.com',
+      email: 'izabayoblaise81@gmail.com',
       method: 'facebook',
+      isUpdated: true
     }
   }
 };
