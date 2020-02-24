@@ -36,7 +36,7 @@ describe('trips', () => {
       .request(app)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'blaisefr@gmail.com',
+        email: 'blaiseen@gmail.com',
         password: 'password',
       })
       .end((err, res) => {
@@ -234,6 +234,45 @@ describe('trips', () => {
         expect(res.body).to.have.keys('status', 'message', 'data');
         expect(res.body.status).to.be.equal(201);
         expect(res.body.message).to.be.equal('Travel request successfully created');
+        expect(res);
+        done();
+      });
+  });
+  it('It should request return trip way successfully', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/trips/request')
+      .send(newReqReturn)
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'message', 'data', 'info');
+        expect(res.body.status).to.be.equal(200);
+        expect(res.body.message).to.be.equal('Requests retrieved successfully');
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow get with wrong params ', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/trips/request?page=-2&limit=3')
+      .send(newReqReturn)
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res.body.error).to.be.equal('Invalid params');
+        expect(res);
+        done();
+      });
+  });
+  it('It should not allow get with wrong params ', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/trips/request?page=2&limit=-3')
+      .send(newReqReturn)
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res.body.error).to.be.equal('Invalid params');
         expect(res);
         done();
       });
