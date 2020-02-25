@@ -6,7 +6,7 @@ import app from '../index';
 
 chai.use(chaiHttp);
 describe('Sign in tests', () => {
-  it('It should login auth successfuly', (done) => {
+  it('It should login successfuly', (done) => {
     chai
       .request(app)
       .post('/api/v1/auth/signin')

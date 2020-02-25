@@ -102,6 +102,13 @@ const checkConfirmPassword = [body('confirmPassword').not().isEmpty({ ignore_whi
   .isLength({ min: 8 })
   .withMessage('password length must be longer than 8')];
 
+const notifyByEmail = [body('notifyByEmail').not().isEmpty({ ignore_whitespace: true })
+  .withMessage('notifyByEmail is required')
+  .bail()
+  .isBoolean()
+  .withMessage('notifyByEmail can either be true or false')
+];
+
 /**
 * @description this method validate user result
 * @param {object} req
@@ -149,5 +156,6 @@ export default {
   checkPassportNumber,
   checkRoles,
   checkConfirmPassword,
+  notifyByEmail,
   validateResult
 };

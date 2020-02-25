@@ -6,6 +6,7 @@ import welcomeRoute from './welcome';
 import userRoutes from './user.routes';
 import tripsRouter from './trips.routes';
 import accommodationRoutes from './accommodation.routes';
+import notificationRoutes from './notification.routes';
 
 const router = Router();
 const swaggerDoc = swaggerJsdoc(swaggerOptions);
@@ -16,5 +17,6 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 router.use('/api/v1/auth', userRoutes);
 router.use('/api/v1/trips', tripsRouter);
 router.use('/api/v1/accommodations', accommodationRoutes);
+router.use('/api/v1/notifications', notificationRoutes);
 
 export default router;
