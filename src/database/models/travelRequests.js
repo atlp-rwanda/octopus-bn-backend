@@ -10,11 +10,13 @@ export default (sequelize, DataTypes) => {
     gender: DataTypes.ENUM('male', 'female', 'other'),
     from: { type: DataTypes.STRING, allowNull: false },
     to: { type: DataTypes.STRING, allowNull: false },
-    accommodation: { type: DataTypes.STRING, allowNull: false },
+    accommodation: { type: DataTypes.STRING, allowNull: true },
     departureDate: { type: DataTypes.STRING, allowNull: false },
     returnDate: { type: DataTypes.STRING },
-    reason: { type: DataTypes.STRING, allowNull: false },
-    status: DataTypes.ENUM('pending', 'approved', 'rejected')
+    reason: { type: DataTypes.STRING, allowNull: true },
+    status: DataTypes.ENUM('pending', 'approved', 'rejected'),
+    stops: { type: DataTypes.ARRAY(DataTypes.JSON) },
+    manager: { type: DataTypes.STRING, allowNull: true }
   }, {});
   travelRequests.associate = (models) => {
     // associations can be defined here

@@ -39,6 +39,21 @@
     "PassportNunInvalid":"Le numéro de passeport n'est pas valide",
     "emailSent" : "Nous vous avons envoyé un e-mail",
     "passwordReset" : "Réinitialisation réussie du mot de passe",
-    "passwordsDontMatch": "Les mots de passe ne correspondent pas"
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+    "multiCitySuccess": "Votre demande de voyage multi-villes a été enregistrée",
+    "multiCityFailure": "Vous n'êtes pas autorisé à créer un voyage multi-villes avec moins de deux arrêts",
+    "provideStops": "Pour un voyage multi-ville, vous devez fournir les arrêts que vous ferez",
+    "typeMustBeMulti": "Le type de cette demande doit être [multi-villes]",
+    "mFromCountry": "fromCountry ne doit pas être vide. Veuillez utiliser l'exemple de représentation des lettres du pays [KN, Rw, USA, UG, ...]",
+    "mDepDate": "Aucun voyage aux dates passées et le format de la date doit être AAAA-MM-JJ",
+    "mStopsDepDate": "Veuillez fournir une date valide comme date de départ et le format de la date doit être AAAA-MM-JJ",
+    "mRetDate": "Veuillez fournir une date valide comme date de retour et le format de la date doit être AAAA-MM-JJ",
+    "sCountry": "stopCountry ne doit pas être vide. Veuillez utiliser l'exemple de représentation des lettres du pays [KN, Rw, USA, UG, ...]",
+    "mAccommodation": "le logement ne doit pas être vide. S'il vous plaît si vous avez besoin d'un logement, entrez [oui] si non entrez [non]",
+    "mArrivalDate": "Entrez une date d'arrivée valide et le format de la date doit être AAAA-MM-JJ",
+    "mReason": "Veuillez indiquer la raison de votre arrêt dans cette ville",
+    "notSuperAdmin": "Vous devez être connecté en tant que super administrateur pour attribuer des rôles aux utilisateurs",
+    "userDon'tExist": "L'utilisateur auquel vous attribuez le rôle n'existe pas",
+    "roleUpgrade": "Votre rôle a été mis à niveau vers"
 }
 

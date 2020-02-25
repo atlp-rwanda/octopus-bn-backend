@@ -41,5 +41,20 @@
 	"PassportNunInvalid":"Passport number is invalid",
 	"emailSent" : "We have sent you an email",
 	"passwordReset" : "Password reset succesfully",
-	"passwordsDontMatch": "Passwords do not match"
+	"passwordsDontMatch": "Passwords do not match",
+	"multiCitySuccess": "Your multi city trip request has been recorded",
+	"multiCityFailure": "You are not allowed to create a multi city trip with less than two stops",
+	"provideStops": "For a multi city trip you must provide the stops you will make",
+	"typeMustBeMulti": "The type for this request must be [multi city]",
+	"mFromCountry": "fromCountry should not be empty. Please use country letter representations example [KN, Rw, USA, UG, ...]",
+	"mDepDate": "No trips to the past dates and the date format must be YYYY-MM-DD",
+	"mStopsDepDate": "Please provide valid date as a departure date and date format must be YYYY-MM-DD",
+	"mRetDate": "Please provide valid date as a return date and date format must be YYYY-MM-DD",
+	"sCountry": "stopCountry should not be empty. Please use country letter representations example [KN, Rw, USA, UG, ...]",
+	"mAccommodation": "accommodation should not be empty.Please if you need accommodation enter [yes] if no enter [no]",
+	"mArrivalDate": "Enter a valid arrival date and the date format must be YYYY-MM-DD",
+	"mReason": "Please provide a reason for stoping in this city",
+	"notSuperAdmin": "You have to be loggen in as a super administrator to assign roles to users",
+	"userDon'tExist": "The User you are assigning the role to don't exist",
+	"roleUpgrade": "Your role was upgraded to"
 }

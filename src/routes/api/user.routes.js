@@ -355,8 +355,8 @@ router.post('/signin', checkValidEmail, checkPassword, userController.signin);
  * /api/v1/auth/logout:
  *   delete:
  *     security: []
- *     summary: Login
- *     description: users can log out their accounts
+ *     summary: Logout
+ *     description: users can log out of their accounts
  *     tags:
  *       - Users
  *     produces:
