@@ -9,7 +9,6 @@ import notMock from './mock/notMock';
 import tripsController from '../controllers/tripsController';
 import app from '../index';
 import { onlineClients } from '../utils/socket';
-import notificationController from '../controllers/notification';
 
 chai.use(chaiHttp);
 

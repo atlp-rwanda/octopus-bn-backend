@@ -45,6 +45,82 @@ class notificationsController {
   }
 
   /**
+   * @description As a requester,
+   * I should be able to see notifications
+   * when my travel request has been approved by my manager
+   * @param {*} user
+   * @param {*} type
+   * @param {*} request
+   * @param {*} host
+   */
+  static async ApprovalStatusNotification(type, request, body, host) {
+    try {
+      const { id, userID } = request,
+        { Users } = Models,
+        user = await Users.findOne({
+          where: {
+            id: userID
+          },
+        }),
+        notification = {
+          requestID: id, receiver: userID, type, body, isRead: false
+        };
+      await Models.Notification.create(notification);
+      const online = onlineClients.get(userID.toString());
+      if (online) {
+        online.emit('notification', notification);
+      }
+
+      if (user.notifyByEmail) {
+        await emailTripRequest(user.firstName, user.email, body, id, host);
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error.message
+      };
+    }
+  }
+
+
+  /**
+   * @description Sending edited trip request notification to the manager
+   * @param {*} user
+   * @param {*} type
+   * @param {*} request
+   * @param {*} host
+   */
+  static async sendEditNotification(user, type, requestId, body, host) {
+    try {
+      const { managerEmail } = user,
+        { Users } = Models,
+        manager = await Users.findOne({
+          where: {
+            email: managerEmail
+          },
+        }),
+        notification = {
+          requestID: requestId, receiver: manager.id, type, body, isRead: false
+        };
+      await Models.Notification.create(notification);
+
+      const online = onlineClients.get(manager.id.toString());
+      if (online) {
+        online.emit('notification', notification);
+      }
+
+      if (manager.notifyByEmail) {
+        await emailTripRequest(manager.firstName, manager.email, body, id, host);
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error.message
+      };
+    }
+  }
+
+  /**
    * @description Disable/enable In-App/Email notifications
    * @param {*} req
    * @param {*} res

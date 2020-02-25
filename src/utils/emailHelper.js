@@ -107,11 +107,11 @@ export const sendPasswordResetLink = async (user, host) => {
  * @param {*} recieverEmail
  * @param {*} body
  */
-export const emailTripRequest = async (manager, recieverEmail, body, requestId, host) => {
+export const emailTripRequest = async (recieverEmail, body, requestId, host) => {
   const emailBody = generateEmail(
-    manager,
-    'New trip request notification',
-    `${body} `,
+    '',
+    '',
+    '',
     'Click the link here to find the request',
     `http://${host}/api/v1/trips/${requestId}`
   );

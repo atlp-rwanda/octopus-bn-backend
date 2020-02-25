@@ -61,7 +61,7 @@ export default {
       isUpdated: true,
       email: 'rusimbipatrick@outlook.com',
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
-      role: 'requester',
+      role: 'manager',
       gender: 'male',
       preferedLang: 'fr',
       birthDate: '1998-02-20',

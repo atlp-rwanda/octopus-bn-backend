@@ -16,13 +16,14 @@
     }
     li {
         margin-bottom: 25px;
-        background-color: rgb(214, 214, 214);
-        border-bottom: 1px solid black;
+        border-top: 2px solid rgb(214, 214, 214);
         padding: 20px;
+        color: rgb(3, 3, 3);
+        margin-left: -30px;
     }
      a {
         text-decoration:none;
-        color: black;
+        color: green;
         font-size: 18px;
      }
      .container {
@@ -32,10 +33,13 @@
      h1{
         color:  blue;
      }
-
-     #userId, #host {
-         display: none;
-         visibility: hidden;
+     input {
+         margin-top: 10px;
+         padding: 3px;
+         width: 100px;
+     }
+     .btn {
+         width: 70px;
      }
     </style>
 </head>
@@ -43,29 +47,27 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <div class="container">
-    <h1>Notifications</h1>
-    <ul id="notifications">
-    </ul>
+        <form action="">
+            <input id="userId" type="text" placeholder="userId" required>
+            <input id="host" type="text" placeholder="host" required>
+            <input class="btn" type="button"  name="" onclick="notify()" value="Log in">
+        </form>
+        <h1>Notifications</h1>
+        <ul id="notifications">
+        </ul>
     </div>
-    <!-- <div id="userId"><%= user.id%></div>
-    <h1 id="host"><%= host %></h1> -->
     <script>
-        // let link;
-        // const host = $("#host").text();
-        // if(host === 'localhost:3000'){
-        //    link = `http://${host}`
-        // } else{
-        //     link = `https://${host}`
-        // }
-
-        const socket = io.connect('https://octopus-bn-backend-staging.herokuapp.com/');
-        // userId = $("#userId").text();
-        socket.emit('connect_user', 'd01cf3f2-4601-4b53-8ffd-fd46b5ded623')
-        socket.on('notification', (notification) =>  {
-            const link = `https://octopus-bn-b-bug-fix-no-atxvhz.herokuapp.com/api/v1/trips/${notification.requestID}`
+        
+        const notify = () => {
+            const user = document.querySelector('#userId').value;
+             const url = document.querySelector('#host').value;
+             const socket = io.connect(`${url}`);
+            socket.emit('connect_user', `${user}`)
+            socket.on('notification', (notification) =>  {
+            const link = `${host}/api/v1/trips/${notification.requestID}`
             $("#notifications").append(`<li><a href=${link} target="_blank">${notification.body}</li>`);
         });
-
+        }
     </script>
 </body>
 </html>
