@@ -74,5 +74,14 @@
 	"InvalidParams": "Invalid params",
 	"managerEmailNotExist": "Manager is not found, choose another one",
 	"mustBeManager": "You must be a manager to get access",
-	"pendingRequestsRetrieved": "All pending requests retrieved successfully"
+	"pendingRequestsRetrieved": "All pending requests retrieved successfully",
+	"PleaseShouldManager":"Please you should be a manager",
+	"TripRejectSuccess":"Trip request is successfuly rejected",
+	"PleaseUseValidId":"Please use a valid trip request ID",
+	"TripNotFound":"Trip request is not found",
+	"TripNotAssigned":"Trip is not assigned to you!",
+	"TripAlreadyRejected":"Trip has been already rejected!",
+	"NotAllowedToRejecApprovedRequest":"You not allowed to reject approved trip request"
 }
+
+

@@ -71,7 +71,7 @@ describe('Reset password tests', () => {
       });
   });
 
-  it('It should return an error user provides an unregistered email', (done) => {
+  it('should return an error user provides an unregistered email', (done) => {
     chai
       .request(app)
       .put(`/api/v1/auth/reset-password/${unRegisteredToken}`)
