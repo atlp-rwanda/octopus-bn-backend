@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 export default (sequelize, DataTypes) => {
   const travelRequests = sequelize.define('travelRequests', {
-    requestId: { type: DataTypes.UUID, allowNull: false },
+    requestId: { type: DataTypes.STRING, allowNull: false },
     userID: { type: DataTypes.STRING, allowNull: false },
     type: DataTypes.ENUM('one way', 'return', 'multi city'),
     passportNumber: { type: DataTypes.STRING, allowNull: false },
@@ -16,7 +16,7 @@ export default (sequelize, DataTypes) => {
     reason: { type: DataTypes.STRING, allowNull: true },
     status: DataTypes.ENUM('pending', 'approved', 'rejected'),
     stops: { type: DataTypes.ARRAY(DataTypes.JSON) },
-    manager: { type: DataTypes.STRING, allowNull: true }
+    manager: { type: DataTypes.STRING, allowNull: false }
   }, {});
   travelRequests.associate = (models) => {
     // associations can be defined here

@@ -72,5 +72,7 @@
 	"ValidReason": "Please provide a reason (more than 20 char)",
 	"retrievedSuccessfully": "Requests retrieved successfully",
 	"InvalidParams": "Invalid params",
-	"managerEmailNotExist": "Manager is not found, choose another one"
+	"managerEmailNotExist": "Manager is not found, choose another one",
+	"mustBeManager": "You must be a manager to get access",
+	"pendingRequestsRetrieved": "All pending requests retrieved successfully"
 }

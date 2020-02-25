@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 export default (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
-    userID: DataTypes.STRING,
     method: DataTypes.STRING,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,

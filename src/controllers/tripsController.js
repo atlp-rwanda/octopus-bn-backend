@@ -1,10 +1,10 @@
 /* eslint-disable require-jsdoc */
 import uuid from 'uuid/v4';
 import { successResponse, errorResponse } from 'utils/responses';
-import tripHelper from 'utils/tripHelper';
+import tripService from 'services/tripsService';
 import Models from 'database/models';
 import setLanguage from 'utils/international';
-import paginate from '../utils/pagination';
+import paginate from 'utils/pagination';
 
 const { travelRequests } = Models;
 
@@ -40,7 +40,7 @@ class tripsController {
           returnDate
         },
         user: {
-          email, userID, passportNumber, gender, managerEmail, preferedLang
+          email, id, passportNumber, gender, managerEmail, preferedLang
         }
       } = req;
 
@@ -49,7 +49,7 @@ class tripsController {
       await travelRequests.create(
         {
           requestId: uuid(),
-          userID,
+          userID: id,
           type,
           passportNumber,
           gender,
@@ -97,7 +97,7 @@ class tripsController {
           fromCountry, fromCity, toCountry, toCity, stops
         },
         user: {
-          userID, gender, passportNumber, managerEmail, preferedLang
+          id, gender, passportNumber, managerEmail, preferedLang
         }
       } = req;
       const from = `${fromCountry} - ${fromCity}`;
@@ -107,9 +107,39 @@ class tripsController {
         return errorResponse(res, 403, setLanguage(preferedLang).__('multiCityFailure'));
       }
 
-      await tripHelper.createTrip(userID, passportNumber, gender, from, to, managerEmail, req.body);
+      await tripService.createTrip(id, passportNumber,
+        gender, from, to, managerEmail, req.body);
 
       successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
+    } catch (error) {
+      errorResponse(res, 500, error.message);
+    }
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   */
+  static async availRequests(req, res) {
+    try {
+      const {
+        query: {
+          page, limit,
+        },
+        user: {
+          role, email, preferedLang
+        }
+      } = req;
+
+      if (role !== 'manager') {
+        return errorResponse(res, 401, setLanguage(preferedLang).__('mustBeManager'));
+      }
+
+      const all = await tripService.availPendingRequests(email, page, limit);
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('pendingRequestsRetrieved'), all);
     } catch (error) {
       errorResponse(res, 500, error.message);
     }
@@ -121,13 +151,13 @@ class tripsController {
         page, limit,
       },
       user: {
-        userID, preferedLang
+        id, preferedLang
       }
     } = req;
     const pagination = paginate(page, limit);
     try {
       const trips = await travelRequests.findAll({
-        where: { userID },
+        where: { userID: id },
         attributes: {
           exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
         },

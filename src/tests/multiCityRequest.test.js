@@ -1,5 +1,6 @@
 import Chai from 'chai';
 import chaiHttp from 'chai-http';
+import setLanguage from 'utils/international';
 import app from '../index';
 import {
   cities, wrongCity1, wrongCity2, wrongCity3, wrongCity4, wrongCity5, wrongCity6,

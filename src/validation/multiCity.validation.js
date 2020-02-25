@@ -2,10 +2,12 @@ import BaseJoi from 'joi';
 import Extension from 'joi-date-extensions';
 import JoiCountryExtension from 'joi-country-extension';
 import moment from 'moment';
+import setLanguage from 'utils/international';
 
 const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 
 export const validateMultiCity = (req, res, next) => {
+  const { preferedLang } = req.user;
   const schema = Joi.object().keys({
     type: Joi.string().valid('multi city').required().error(() => ({
       message: 'typeMustBeMulti'
@@ -33,13 +35,14 @@ export const validateMultiCity = (req, res, next) => {
   if (error) {
     return res.status(400).json({
       status: 400,
-      error: req.i18n.__(error.details[0].message)
+      error: setLanguage(preferedLang).__(error.details[0].message)
     });
   }
   return next();
 };
 
 export const validateStops = (req, res, next) => {
+  const { preferedLang } = req.user;
   const { stops } = req.body;
   const schema = Joi.object().keys({
     stopCountry: Joi.string().country().required().error(() => ({
@@ -66,7 +69,7 @@ export const validateStops = (req, res, next) => {
     let err;
     Joi.validate(item, schema, (error) => {
       if (error) {
-        err = error.details.map((e) => (req.i18n.__(e.message)));
+        err = error.details.map((e) => (setLanguage(preferedLang).__(e.message)));
       }
     });
     return err;
