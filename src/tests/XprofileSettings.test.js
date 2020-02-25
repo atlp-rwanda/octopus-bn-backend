@@ -1,7 +1,7 @@
 import Chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../index';
-import { profile } from './mock/profileSettingsMock';
+import { profile, nonExistManager } from './mock/profileSettingsMock';
 
 Chai.use(chaiHttp);
 Chai.should();
@@ -41,6 +41,18 @@ describe('Profile settings', () => {
         res.body.data.should.have.property('bio', profile.bio);
         res.body.data.should.have.property('passportNumber', profile.passportNumber);
         res.body.should.have.property('message');
+        done();
+      });
+  });
+
+  it('should deny to update profile when manager is not found', (done) => {
+    Chai
+      .request(app)
+      .put('/api/v1/auth/profile-settings')
+      .send(nonExistManager)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.have.property('error', 'Manager is not found, choose another one');
         done();
       });
   });
