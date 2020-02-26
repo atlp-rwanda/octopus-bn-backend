@@ -3,6 +3,8 @@ import uuid from 'uuid/v4';
 import { successResponse, errorResponse } from 'utils/responses';
 import tripHelper from 'utils/tripHelper';
 import Models from 'database/models';
+import setLanguage from 'utils/international';
+import paginate from '../utils/pagination';
 
 const { travelRequests } = Models;
 
@@ -11,8 +13,7 @@ const { travelRequests } = Models;
  * @class travelRequests
  */
 class tripsController {
-  static async createTrip(req, res) {
-    /**
+  /**
       * @memberof tripsController
       * @param  {object} req
       * @param  {object} res
@@ -29,7 +30,7 @@ class tripsController {
       * @return  {string} message
       * @return  {object} data {email, passportNumber, from, to, reason}
       */
-
+  static async createTrip(req, res) {
     try {
       const {
         body: {
@@ -39,15 +40,9 @@ class tripsController {
           returnDate
         },
         user: {
-          email, userID, role, passportNumber, gender, managerEmail
+          email, userID, passportNumber, gender, managerEmail, preferedLang
         }
       } = req;
-      if (role !== 'requester') {
-        return res.status(409).json({
-          status: 409,
-          error: 'with your role you are not allowed to send a trip request'
-        });
-      }
 
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
@@ -70,7 +65,7 @@ class tripsController {
       );
       return res.status(201).json({
         status: 201,
-        message: req.i18n.__('requestSuccessfully'),
+        message: setLanguage(preferedLang).__('requestSuccessfully'),
         data: {
           email,
           passportNumber,
@@ -102,21 +97,51 @@ class tripsController {
           fromCountry, fromCity, toCountry, toCity, stops
         },
         user: {
-          userID, gender, passportNumber, managerEmail
+          userID, gender, passportNumber, managerEmail, preferedLang
         }
       } = req;
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
 
       if (stops.length <= 1) {
-        return errorResponse(res, 403, req.i18n.__('multiCityFailure'));
+        return errorResponse(res, 403, setLanguage(preferedLang).__('multiCityFailure'));
       }
 
       await tripHelper.createTrip(userID, passportNumber, gender, from, to, managerEmail, req.body);
 
-      successResponse(res, 201, req.i18n.__('multiCitySuccess'));
+      successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
     } catch (error) {
       errorResponse(res, 500, error.message);
+    }
+  }
+
+  static async getTrips(req, res) {
+    const {
+      query: {
+        page, limit,
+      },
+      user: {
+        userID, preferedLang
+      }
+    } = req;
+    const pagination = paginate(page, limit);
+    try {
+      const trips = await travelRequests.findAll({
+        where: { userID },
+        attributes: {
+          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+        },
+        offset: pagination.offset,
+        limit: pagination.limit,
+      });
+      return res.status(200).json({
+        status: 200,
+        message: setLanguage(preferedLang).__('retrievedSuccessfully'),
+        info: pagination.info,
+        data: trips
+      });
+    } catch (error) {
+      return errorResponse(res, error.status || 500, error.message);
     }
   }
 }

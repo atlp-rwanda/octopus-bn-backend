@@ -2,58 +2,56 @@ import BaseJoi from 'joi';
 import Extension from 'joi-date-extensions';
 import JoiCountryExtension from 'joi-country-extension';
 import moment from 'moment';
+import setLanguage from 'utils/international';
 
 const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 
 const tripRequestValidator = (req, res, next) => {
+  const { preferedLang } = req.user;
   const schema = Joi.object().keys({
     type: Joi.string().valid('one way', 'return').required().error(() => ({
-      message: 'Please provide a valid request type: [one way, return, multi city]'
+      message: setLanguage(preferedLang).__('validType')
     })),
 
     fromCountry: Joi.string().country().required().error(() => ({
-      message: 'Please provide a valid from country: eg [KN, Rw, USA, UG, ...]'
+      message: setLanguage(preferedLang).__('validFromCountry')
     })),
 
     fromCity: Joi.string().required().error(() => ({
-      message: 'Please provide a valid from city: eg [Kigali, kampala, ....]'
+      message: setLanguage(preferedLang).__('validFromCity')
     })),
 
     toCountry: Joi.string().country().required().error(() => ({
-      message: 'Please provide a valid to country: eg [USA, RW, UG, ...]'
+      message: setLanguage(preferedLang).__('validToCountry')
     })),
 
     toCity: Joi.string().required().error(() => ({
-      message: 'Please provide a valid from CITY: eg [Kigali, kampala, ....]'
+      message: setLanguage(preferedLang).__('validToCity')
     })),
 
     accommodation: Joi.string().valid('yes', 'no').required().error(() => ({
-      message: 'Please provide a valid accommodation value: [yes, no]'
+      message: setLanguage(preferedLang).__('validAccommodation')
     })),
 
-    departureDate: Joi.date().format('YYYY-MM-DD').error(() => ({
-      message: 'Date format must be YYYY-MM-DD'
-    })).min(moment().format('YYYY-MM-DD'))
+    departureDate: Joi.date().format('YYYY-MM-DD').min(moment().format('YYYY-MM-DD'))
       .required()
       .error(() => ({
-        message: 'Please provide a valid departure date'
+        message: setLanguage(preferedLang).__('validDepartureDate')
       })),
 
-    returnDate: Joi.date().format('YYYY-MM-DD').error(() => ({
-      message: 'Date format must be YYYY-MM-DD'
-    })).when('type', {
+    returnDate: Joi.date().format('YYYY-MM-DD').when('type', {
       is: Joi.string().regex(/^return$/),
       then: Joi.date().min(Joi.ref('departureDate')).required()
         .error(() => ({
-          message: `Please provide valid date for return, date must not be allowed than your departure date ${req.body.departureDate}`
+          message: `${setLanguage(preferedLang).__('validReturnOn')} ${req.body.departureDate}`
         })),
       otherwise: Joi.date().max(0).error(() => ({
-        message: 'Only provide a return date on a return trip request'
+        message: setLanguage(preferedLang).__('onlyReturn')
       })),
     }),
 
     reason: Joi.string().min(20).required().error(() => ({
-      message: 'Please provide a reason (more than 20 char)'
+      message: setLanguage(preferedLang).__('ValidReason')
     })),
   });
 

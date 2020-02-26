@@ -1,16 +1,15 @@
 import BaseJoi from 'joi';
 import Extension from 'joi-date-extensions';
 import JoiCountryExtension from 'joi-country-extension';
+import setLanguage from 'utils/international';
 
 const Joi = BaseJoi.extend(Extension, JoiCountryExtension);
 const dateValidator = (req, res, next) => {
+  const { preferedLang } = req.user;
   const dataSchema = Joi.object().keys({
-    departureDate: Joi.date().format('YYYY-MM-DD').error(() => ({
-      message: 'Date format must be YYYY-MM-DD'
-    })),
 
     returnDate: Joi.date().format('YYYY-MM-DD').error(() => ({
-      message: 'Date format must be YYYY-MM-DD'
+      message: setLanguage(preferedLang).__('validReturnDate')
     })),
   }).unknown(true);
 

@@ -5,6 +5,7 @@ import tripRequestValidator from 'middlewares/tripRequestValidator';
 import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
 import isProfileUpdated from 'middlewares/isProfileUpdated';
+import validateParams from '../../middlewares/paramsValidator';
 
 const router = express.Router();
 
@@ -25,10 +26,6 @@ const router = express.Router();
  *             type: object
  *             properties:
  *               type:
- *                 type: string
- *               passportNumber:
- *                 type: string
- *               gender:
  *                 type: string
  *               fromCountry:
  *                 type: string
@@ -130,6 +127,43 @@ router.post('/request', [checkUser, isProfileUpdated, dateValidator, tripRequest
  *       201:
  *         description: Your multi city trip request has been recorded.
  */
-router.post('/multi-city', [checkUser,isProfileUpdated, validateMultiCity, validateStops], tripsController.multiCityTrip);
+router.post('/multi-city', [checkUser, isProfileUpdated, validateMultiCity, validateStops], tripsController.multiCityTrip);
 
+/**
+ * @swagger
+ *
+ * /api/v1/trips/request?page={page}&limit={limit}:
+ *   get:
+ *     security: []
+ *     summary: get trips
+ *     description: get trips
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: limited items.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Requests retrieved successfully
+ *  */
+router.get('/request', checkUser, isProfileUpdated, validateParams, tripsController.getTrips);
 export default router;
