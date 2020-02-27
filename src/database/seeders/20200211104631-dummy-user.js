@@ -1,7 +1,7 @@
 export default {
   up: (queryInterface) => queryInterface.bulkInsert('Users', [
     {
-      userID: '1232123232112',
+      id: '1232123232112',
       firstName: 'Octapus',
       lastName: 'Octapus',
       method: 'facebook',
@@ -14,7 +14,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '123212985492',
+      id: '123212985492',
       firstName: 'Octapus',
       lastName: 'Octapus',
       method: 'local',
@@ -27,7 +27,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
+      id: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       firstName: 'Octapuses',
       lastName: 'Jean',
       method: 'seed',
@@ -40,7 +40,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: 'd0a051d9-447a-49a8-aebc-7e1b031afd62',
+      id: 'd0a051d9-447a-49a8-aebc-7e1b031afd62',
       method: 'local',
       firstName: 'Octopus',
       lastName: 'Octopus',
@@ -53,7 +53,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '123212965431',
+      id: '123212965431',
       firstName: 'Rusimbi',
       lastName: 'Octapus',
       method: 'local',
@@ -66,7 +66,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '0e11ed8c-a1a5-4f49-a3ca-450732bfa49o',
+      id: '0e11ed8c-a1a5-4f49-a3ca-450732bfa49o',
       firstName: 'Izabayo',
       lastName: 'Blaise',
       method: 'local',
@@ -76,7 +76,7 @@ export default {
       password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
       role: 'requester',
       gender: 'male',
-      preferedLang: 'fr',
+      preferedLang: 'en',
       birthDate: '1998-02-20',
       preferedCurrency: 'USD',
       residence: 'kimironko',
@@ -89,7 +89,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '0e11ed8c-a1a5-4f49-a3ca-450732bfa78o',
+      id: '0e11ed8c-a1a5-4f49-a3ca-450732bfa78o',
       firstName: 'Izabayo',
       lastName: 'Blaise',
       method: 'local',
@@ -112,7 +112,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      userID: '000ec6c6-4884-4ca7-94b1-26a2ed842259',
+      id: '000ec6c6-4884-4ca7-94b1-26a2ed842259',
       firstName: 'CYUZUZO',
       lastName: 'Emma',
       method: 'local',

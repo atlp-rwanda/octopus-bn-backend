@@ -17,6 +17,10 @@ describe('Reset password tests', () => {
       html: 'emailTemplate'
     });
   });
+
+  after(() => {
+    sinon.restore();
+  });
   it('It should send a reset password link yo a user as an email', (done) => {
     chai
       .request(app)

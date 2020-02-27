@@ -17,14 +17,14 @@ class userController {
     try {
       const { Users } = Models;
       const password = 'null';
-      const userID = req.user.id;
+      const { id } = req.user;
       const {
         email, firstName, lastName, method
       } = req.user;
       await Users.findOrCreate({
         where: { email },
         defaults: {
-          userID,
+          id,
           firstName,
           lastName,
           method,
@@ -42,7 +42,7 @@ class userController {
         status: 200,
         message: req.i18n.__('loginSuccessfully'),
         data: {
-          email, userID, firstName, lastName, method
+          email, id, firstName, lastName, method
         },
         Token
       });
@@ -91,10 +91,10 @@ class userController {
       } = req.body;
       const hash = await bcrypt.hash(password, 10);
       const newUser = await Models.Users.create({
-        userID: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: true, isUpdated: false
+        id: uuid(), method: 'local', firstName, lastName, email, password: hash, isVerified: false, isUpdated: false
       });
       const data = {
-        userID: newUser.userID,
+        id: newUser.id,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
@@ -168,16 +168,16 @@ class userController {
      * @memberof userController
      */
   static async assignRole(req, res) {
-    const { role } = req.user;
+    const { role, preferedLang } = req.user;
     const userRole = req.body.role;
     const userExist = await Models.Users.findOne({ where: { email: req.body.email } });
 
     if (!userExist) {
-      return errorResponse(res, 404, req.i18n.__('userDon\'tExist'));
+      return errorResponse(res, 404, setLanguage(preferedLang).__('userDon\'tExist'));
     }
 
     if (role !== 'super_administrator') {
-      return errorResponse(res, 401, req.i18n.__('notSuperAdmin'));
+      return errorResponse(res, 401, setLanguage(preferedLang).__('notSuperAdmin'));
     }
 
     await Models.Users.update({ role: req.body.role },
@@ -187,7 +187,7 @@ class userController {
 
     sendNotificationEmail(userExist.firstName, userExist.email, userRole);
 
-    return successResponse(res, 200, `${req.i18n.__('roleUpgrade')} ${req.body.role}`);
+    return successResponse(res, 200, `${setLanguage(preferedLang).__('roleUpgrade')} ${req.body.role}`);
   }
 
 
@@ -356,7 +356,7 @@ class userController {
         passportNumber
       },
       user: {
-        userID
+        id
       },
       body
     } = req;
@@ -386,7 +386,7 @@ class userController {
           passportNumber,
           isUpdated: true
         }, {
-          where: { userID },
+          where: { id },
           returning: true,
           plain: true
         }

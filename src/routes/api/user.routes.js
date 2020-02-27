@@ -39,7 +39,7 @@ router.use(passport.initialize());
 *               data:
 *                 type: object
 *                 properties:
-*                   userID:
+*                   id:
 *                     type: integer
 *                   firstName:
 *                     type: string
@@ -86,7 +86,7 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
 *               data:
 *                 type: object
 *                 properties:
-*                   userID:
+*                   id:
 *                     type: integer
 *                   firstName:
 *                     type: string
@@ -150,8 +150,8 @@ router.get('/google/callback', passport.authenticate('google', {
  *               data:
  *                 type: object
  *                 properties:
- *                   userID:
- *                     type: integer
+ *                   id:
+ *                     type: string
  *                   firstName:
  *                     type: string
  *                   lastName:
@@ -230,8 +230,6 @@ router.get('/verify/:token', userController.verifyAccount);
  *                 type: object
  *                 properties:
  *                   id:
- *                     type: integer
- *                   userID:
  *                     type: string
  *                   method:
  *                     type: string

@@ -1,5 +1,7 @@
 import Chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
+import sendGrid from '@sendgrid/mail';
 import app from '../index';
 import {
   user, token, email, role
@@ -9,7 +11,21 @@ Chai.use(chaiHttp);
 Chai.should();
 
 describe('Barefoot nomad signup tests', () => {
-  it.skip('users should be able to create accounts', (done) => {
+  before(() => {
+    sinon.stub(sendGrid, 'send').returns({
+      to: 'nuruniyigena@gmail.com',
+      from: 'barefoot@noreply',
+      subject: 'Barefoot Nomad Confirmation email',
+      text: 'Hello, Octopus.',
+      html: 'emailTemplate'
+    });
+  });
+
+  after(() => {
+    sinon.restore();
+  });
+
+  it('users should be able to create accounts', (done) => {
     Chai
       .request(app)
       .post('/api/v1/auth/signup')
@@ -24,7 +40,7 @@ describe('Barefoot nomad signup tests', () => {
       });
   });
 
-  it.skip('users should be able to verify their accounts', (done) => {
+  it('users should be able to verify their accounts', (done) => {
     Chai
       .request(app)
       .get(`/api/v1/auth/verify/${token}`)
@@ -49,7 +65,7 @@ describe('Barefoot nomad signup tests', () => {
       });
   });
 
-  it.skip('User should be assigned roles', (done) => {
+  it('User should be assigned roles', (done) => {
     Chai
       .request(app)
       .post('/api/v1/auth/assign-roles')

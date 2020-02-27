@@ -8,7 +8,8 @@ export default {
     },
     requestId: {
       allowNull: false,
-      type: Sequelize.DataTypes.UUID,
+      type: Sequelize.STRING,
+      primarykey: true
     },
     userID: {
       type: Sequelize.STRING,
@@ -17,8 +18,8 @@ export default {
       onUpdate: 'CASCADE',
       references: {
         model: 'Users',
-        key: 'userID',
-        as: 'userID',
+        key: 'id',
+        as: 'id',
       },
     },
     type: {

@@ -7,7 +7,6 @@ const validateParams = (req, res, next) => {
     page: Joi.number().min(0).error(() => ({
       message: setLanguage(preferedLang).__('InvalidParams')
     })),
-
     limit: Joi.number().min(0).error(() => ({
       message: setLanguage(preferedLang).__('InvalidParams')
     })),

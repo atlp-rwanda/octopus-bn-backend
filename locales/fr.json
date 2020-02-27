@@ -70,5 +70,7 @@
     "onlyReturn": "Fournissez uniquement une date de retour sur une demande de retour",
     "ValidReason": "Veuillez fournir une raison (plus de 20 caractères)",
     "retrievedSuccessfully": "Demandes de déplacement récupérées avec succès",
-    "InvalidParams": "Paramètres invalides"
+    "InvalidParams": "Paramètres invalides",
+    "mustBeManager": "Vous devez être un gestionnaire pour avoir accès",
+    "pendingRequestsRetrieved": "Toutes les demandes en attente ont été récupérées avec succès"
 }

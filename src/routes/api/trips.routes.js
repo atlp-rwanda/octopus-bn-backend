@@ -5,7 +5,7 @@ import tripRequestValidator from 'middlewares/tripRequestValidator';
 import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
 import isProfileUpdated from 'middlewares/isProfileUpdated';
-import validateParams from '../../middlewares/paramsValidator';
+import validateParams from 'middlewares/paramsValidator';
 
 const router = express.Router();
 
@@ -128,6 +128,44 @@ router.post('/request', [checkUser, isProfileUpdated, dateValidator, tripRequest
  *         description: Your multi city trip request has been recorded.
  */
 router.post('/multi-city', [checkUser, isProfileUpdated, validateMultiCity, validateStops], tripsController.multiCityTrip);
+
+/**
+ * @swagger
+ *
+ * /api/v1/trips/avail-requests?page={page}&limit={limit}:
+ *   get:
+ *     security: []
+ *     summary: Avail request
+ *     description: show all pending request to the manager for approval
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: Requests per page.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Pending requests retrieved successfully
+ *  */
+router.get('/avail-requests', checkUser, isProfileUpdated, validateParams, tripsController.availRequests);
 
 /**
  * @swagger
