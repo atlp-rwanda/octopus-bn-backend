@@ -72,5 +72,12 @@
     "retrievedSuccessfully": "Demandes de déplacement récupérées avec succès",
     "InvalidParams": "Paramètres invalides",
     "mustBeManager": "Vous devez être un gestionnaire pour avoir accès",
-    "pendingRequestsRetrieved": "Toutes les demandes en attente ont été récupérées avec succès"
+    "pendingRequestsRetrieved": "Toutes les demandes en attente ont été récupérées avec succès",
+    "PleaseShouldManager":"Veuillez être un manager",
+    "TripRejectSuccess":"La demande de voyage a été rejetée avec succès",
+    "PleaseUseValidId":"Veuillez utiliser un ID de demande de voyage valide",
+    "TripNotFound":"La demande de voyage est introuvable",
+    "TripNotAssigned":"Le voyage ne vous est pas assigné!",
+    "TripAlreadyRejected":"Le voyage a déjà été rejeté!",
+    "NotAllowedToRejecApprovedRequest":"Vous n'êtes pas autorisé à rejeter la demande de voyage approuvée"
 }

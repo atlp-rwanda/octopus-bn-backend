@@ -1,11 +1,15 @@
 import express from 'express';
 import tripsController from 'controllers/tripsController';
 import checkUser from 'middlewares/checkUser';
+import isUserManager from 'middlewares/isUserManager';
+import isProfileUpdated from 'middlewares/isProfileUpdated';
 import tripRequestValidator from 'middlewares/tripRequestValidator';
 import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
-import isProfileUpdated from 'middlewares/isProfileUpdated';
 import validateParams from 'middlewares/paramsValidator';
+import {
+  isUuidParamValid, isTripExist, isTripAssigned, isTripRejected, isTripApproved
+} from 'middlewares/validateRejectTrip';
 
 const router = express.Router();
 
@@ -128,6 +132,61 @@ router.post('/request', [checkUser, isProfileUpdated, dateValidator, tripRequest
  *         description: Your multi city trip request has been recorded.
  */
 router.post('/multi-city', [checkUser, isProfileUpdated, validateMultiCity, validateStops], tripsController.multiCityTrip);
+/**
+ * @swagger
+ *
+ * /api/v1/trips/{tripId}/reject:
+ *   put:
+ *     security: []
+ *     summary: Reject trip requests
+ *     description: Reject Request (By Requester’s Manager)
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                  type: object
+ *                  properties:
+ *                   status:
+ *                     type: integer
+ *                   type:
+ *                     type: string
+ *                   from:
+ *                     type: string
+ *                   to:
+ *                     type: string
+ *                   reason:
+ *                     type: string
+ *                   accommodation:
+ *                      type: string
+ *                   departureDate:
+ *                      type: string
+ *                   returnDate:
+ *                      type: string
+ *                   stops:
+ *                      type: array
+ *     parameters:
+ *          - name: tripId
+ *            description: page number.
+ *            in: path
+ *            required: true
+ *            default: 48e9bfdf-6d21-4fd8-8fc7-df654d615be1
+ *            type: string
+ *     responses:
+ *       201:
+ *         description: Trip request is successfuly rejected.
+ */
+router.put('/:tripId/reject', [checkUser, isProfileUpdated,
+  isUserManager, isUuidParamValid, isTripExist, isTripAssigned, isTripRejected,
+  isTripApproved],
+tripsController.rejectTrip);
 
 /**
  * @swagger

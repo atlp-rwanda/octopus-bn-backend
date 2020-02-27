@@ -84,7 +84,7 @@ class tripsController {
     } catch (error) {
       return res.status(error.status || 500).json({
         errors: {
-          error: error.detail
+          error: error.message
         }
       });
     }
@@ -273,6 +273,54 @@ class tripsController {
       });
     } catch (error) {
       return errorResponse(res, error.status || 500, error.message);
+    }
+  }
+
+  /**
+     *
+     * @param {object} req
+     * @param {object} res
+     * @returns {object} response
+     * @memberof tripsController
+     */
+  static async rejectTrip(req, res) {
+    try {
+      const {
+        params: {
+          tripId
+        },
+        user: {
+          preferedLang
+        }
+      } = req;
+      const affectedRow = await travelRequests.update(
+        {
+          status: 'rejected'
+        }, {
+          where: { requestId: tripId },
+          returning: true,
+          plain: true
+        }
+      );
+      const {
+        type, accommodation, from,
+        to, departureDate, returnDate,
+        reason, status, stops
+      } = affectedRow[1];
+      const response = {
+        type,
+        accommodation,
+        from,
+        to,
+        departureDate,
+        returnDate,
+        reason,
+        status,
+        stops
+      };
+      successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
+    } catch (error) {
+      errorResponse(res, 500, error.message);
     }
   }
 }
