@@ -184,11 +184,8 @@ class tripsController {
 
   static async searchTrips(req, res) {
     const {
-      body: {
-        searchKey
-      },
       query: {
-        page, limit,
+        page, limit, searchKey
       },
       user: {
         id, role, email, preferedLang
