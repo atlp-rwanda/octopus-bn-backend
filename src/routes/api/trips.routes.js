@@ -173,8 +173,8 @@ router.get('/avail-requests', checkUser, isProfileUpdated, validateParams, trips
  * /api/v1/trips/request?page={page}&limit={limit}:
  *   get:
  *     security: []
- *     summary: get trips
- *     description: get trips
+ *     summary: Get trips
+ *     description: G et trips
  *     tags:
  *       - Trips
  *     produces:
@@ -204,4 +204,50 @@ router.get('/avail-requests', checkUser, isProfileUpdated, validateParams, trips
  *         description: Requests retrieved successfully
  *  */
 router.get('/request', checkUser, isProfileUpdated, validateParams, tripsController.getTrips);
+
+/**
+ * @swagger
+ *
+ * /api/v1/trips/search?page={page}&limit={limit}:
+ *   get:
+ *     security: []
+ *     summary: Search trips
+ *     description: Search trips
+ *     tags:
+ *       - Trips
+*     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               searchKey:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: limited items.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Requests retrieved successfully
+ *  */
+router.get('/search', checkUser, isProfileUpdated, validateParams, tripsController.searchTrips);
 export default router;

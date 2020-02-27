@@ -58,7 +58,7 @@
 	"userDon'tExist": "The User you are assigning the role to don't exist",
 	"roleUpgrade": "Your role was upgraded to",
 	"typeErrorJoi": "type should not be empty. Only use the following values [one way, return, multi city] (Note: only one way trip requests allowed for now)",
-	"PleaseUpdateProfile":"Please update your profile information to continue",
+	"PleaseUpdateProfile": "Please update your profile information to continue",
 	"validDepartureDate": "Please provide a valid for departure, Date format must be YYYY-MM-DD",
 	"validReturnDate": "Please provide a valid for return, Date format must be YYYY-MM-DD",
 	"validType": "Please provide a valid request type: [one way, return, multi city]",
@@ -74,5 +74,6 @@
 	"InvalidParams": "Invalid params",
 	"managerEmailNotExist": "Manager is not found, choose another one",
 	"mustBeManager": "You must be a manager to get access",
-	"pendingRequestsRetrieved": "All pending requests retrieved successfully"
+	"pendingRequestsRetrieved": "All pending requests retrieved successfully",
+	"\"reason\" is not allowed": "\"reason\" is not allowed"
 }
