@@ -9,7 +9,7 @@ import { validateMultiCity, validateStops } from 'validation/multiCity.validatio
 import validateParams from 'middlewares/paramsValidator';
 import {
   isUuidParamValid, isTripExist, isTripAssigned, isTripRejected, isTripApproved
-} from 'middlewares/validateRejectTrip';
+} from 'middlewares/validateTrip';
 
 const router = express.Router();
 
@@ -306,4 +306,59 @@ router.get('/request', checkUser, isProfileUpdated, validateParams, tripsControl
  *         description: Requests retrieved successfully
  *  */
 router.get('/search', checkUser, isProfileUpdated, validateParams, tripsController.searchTrips);
+/**
+ * @swagger
+ *
+ * /api/v1/trips/{tripId}/approve:
+ *   put:
+ *     security: []
+ *     summary: Approve trip requests
+ *     description: Approve Request (By Requester’s Manager)
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                  type: object
+ *                  properties:
+ *                   status:
+ *                     type: integer
+ *                   type:
+ *                     type: string
+ *                   from:
+ *                     type: string
+ *                   to:
+ *                     type: string
+ *                   reason:
+ *                     type: string
+ *                   accommodation:
+ *                      type: string
+ *                   departureDate:
+ *                      type: string
+ *                   returnDate:
+ *                      type: string
+ *                   stops:
+ *                      type: array
+ *     parameters:
+ *          - name: tripId
+ *            description: page number.
+ *            in: path
+ *            required: true
+ *            default: 48e9bfdf-6d21-4fd8-8fc7-df654d615be1
+ *            type: string
+ *     responses:
+ *       201:
+ *         description: Trip request is successfuly approved.
+ */
+router.put('/:tripId/approve', [checkUser, isProfileUpdated,
+  isUserManager, isUuidParamValid, isTripExist, isTripAssigned, isTripRejected,
+  isTripApproved],
+tripsController.approveTrip);
 export default router;

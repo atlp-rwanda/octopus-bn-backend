@@ -321,9 +321,57 @@ class tripsController {
         status,
         stops
       };
-      successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
+      return successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
     } catch (error) {
-      errorResponse(res, 500, error.message);
+      return errorResponse(res, 500, error.message);
+    }
+  }
+
+  /**
+     *
+     * @param {object} req
+     * @param {object} res
+     * @returns {object} response
+     * @memberof tripsController
+     */
+  static async approveTrip(req, res) {
+    try {
+      const {
+        params: {
+          tripId
+        },
+        user: {
+          preferedLang
+        }
+      } = req;
+      const affectedRow = await travelRequests.update(
+        {
+          status: 'approved'
+        }, {
+          where: { requestId: tripId },
+          returning: true,
+          plain: true
+        }
+      );
+      const {
+        type, accommodation, from,
+        to, departureDate, returnDate,
+        reason, status, stops
+      } = affectedRow[1];
+      const response = {
+        type,
+        accommodation,
+        from,
+        to,
+        departureDate,
+        returnDate,
+        reason,
+        status,
+        stops
+      };
+      return successResponse(res, 200, setLanguage(preferedLang).__('TripApprovedSuccess'), response);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
     }
   }
 }

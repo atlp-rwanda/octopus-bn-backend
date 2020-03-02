@@ -81,7 +81,6 @@
 	"TripNotFound":"Trip request is not found",
 	"TripNotAssigned":"Trip is not assigned to you!",
 	"TripAlreadyRejected":"Trip has been already rejected!",
-	"NotAllowedToRejecApprovedRequest": "You not allowed to reject approved trip request",
 	"validAccommodationName": "Please provide a valid accommodation name",
 	"validCountry": "Please provide a valid country",
 	"validCity": "Please provide a valid city",
@@ -100,5 +99,9 @@
 	"changedpreferences" : "Successfully changed preferences",
     "noNotification" : "You have no notifications",
     "noNewNotification" : "You have no new notifications",
-    "notManager" : "To do this, You have to be a manager"
+    "notManager" : "To do this, You have to be a manager",
+	"NotAllowedToRejecApprovedRequest":"Trip has been already approved",
+	"TripApprovedSuccess":"Trip request is successfully approved"
 }
+
+
