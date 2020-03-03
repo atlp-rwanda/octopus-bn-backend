@@ -1,7 +1,7 @@
 export default {
   up: (queryInterface) => queryInterface.bulkInsert('travelRequests', [
     {
-      requestId: '48e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '48e9bfdf-6d21-4fd8-8fc7-df654d615be1',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1234567',
@@ -17,7 +17,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '46e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '46e9bfdf-6d21-4fd8-8fc7-df654d615be1',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1234569',
@@ -33,7 +33,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '70e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '70e9bfdf-6d21-4fd8-8fc7-df654d615be1',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1204569',
@@ -49,7 +49,8 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '45e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '45e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '45e9bfdf-6d21-4fd8-8fc7-df654d615be1',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1234565',
@@ -65,7 +66,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '44e9bfdf-6d21-4fd8-8fc7-df654d615be1',
+      id: '44e9bfdf-6d21-4fd8-8fc7-df654d615be1',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1234565',
@@ -81,7 +82,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '54e9bfdf-6d21-4fd8-8fc7-df654d615be6',
+      id: '54e9bfdf-6d21-4fd8-8fc7-df654d615be6',
       userID: '0e11ed8c-a1a5-4f49-a3ca-450769bfa49o',
       type: 'one way',
       passportNumber: 'GH1234550',
@@ -97,7 +98,7 @@ export default {
       updatedAt: new Date()
     },
     {
-      requestId: '5086bfdb-37d3-4b03-99f6-1889e33aa048',
+      id: '5086bfdb-37d3-4b03-99f6-1889e33aa048',
       userID: '123212965431',
       type: 'one way',
       passportNumber: 'GH1234550',

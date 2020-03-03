@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 export default (sequelize, DataTypes) => {
   const travelRequests = sequelize.define('travelRequests', {
-    requestId: { type: DataTypes.STRING, allowNull: false },
     userID: { type: DataTypes.STRING, allowNull: false },
     type: DataTypes.ENUM('one way', 'return', 'multi city'),
     passportNumber: { type: DataTypes.STRING, allowNull: false },
@@ -24,6 +23,11 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'userID',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
+    });
+    travelRequests.hasMany(models.Comments, {
+      foreignKey: 'requestId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
   };
   return travelRequests;

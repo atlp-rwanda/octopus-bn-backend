@@ -4,24 +4,21 @@ import { successResponse, errorResponse } from 'utils/responses';
 import tripService from 'services/tripsService';
 import Models from 'database/models';
 import setLanguage from 'utils/international';
-import paginate from 'utils/pagination';
+import paginate from 'utils/paginate';
 import Sequelize from 'sequelize';
 import notificationsController from './notification';
 
 const { sendTripReqNotification } = notificationsController;
+const { Op, where, cast, col } = Sequelize;
 
-const {
-  Op, where, cast, col
-} = Sequelize;
-
-const { travelRequests } = Models;
+const { travelRequests, Comments } = Models;
 
 /**
  * @description This class contains all the methods relating to the trip requests
  * @class travelRequests
  */
 class tripsController {
-  /**
+	/**
       * @memberof tripsController
       * @param  {object} req
       * @param  {object} res
@@ -58,7 +55,7 @@ class tripsController {
       const to = `${toCountry} - ${toCity}`;
       const request = await travelRequests.create(
         {
-          requestId: uuid(),
+          id: uuid(),
           userID: id,
           type,
           passportNumber,
@@ -94,8 +91,61 @@ class tripsController {
       });
     }
   }
+	static async createTrip(req, res) {
+		try {
+			const {
+				body: {
+					type,
+					fromCountry,
+					fromCity,
+					toCountry,
+					toCity,
+					reason,
+					departureDate,
+					accommodation,
+					returnDate
+				},
+				user: { email, id, passportNumber, gender, managerEmail, preferedLang }
+			} = req;
 
-  /**
+			const from = `${fromCountry} - ${fromCity}`;
+			const to = `${toCountry} - ${toCity}`;
+			await travelRequests.create({
+				id: uuid(),
+				userID: id,
+				type,
+				passportNumber,
+				gender,
+				from,
+				to,
+				accommodation,
+				reason,
+				manager: managerEmail,
+				departureDate,
+				returnDate,
+				status: 'pending'
+			});
+			return res.status(201).json({
+				status: 201,
+				message: setLanguage(preferedLang).__('requestSuccessfully'),
+				data: {
+					email,
+					passportNumber,
+					from,
+					to,
+					reason
+				}
+			});
+		} catch (error) {
+			return res.status(error.status || 500).json({
+				errors: {
+					error: error.message
+				}
+			});
+		}
+	}
+
+	/**
      *
      * @param {object} req
      * @param {object} res
@@ -128,204 +178,167 @@ class tripsController {
       return errorResponse(res, 500, error.message);
     }
   }
+	static async multiCityTrip(req, res) {
+		try {
+			const {
+				body: { fromCountry, fromCity, toCountry, toCity, stops },
+				user: { id, gender, passportNumber, managerEmail, preferedLang }
+			} = req;
+			const from = `${fromCountry} - ${fromCity}`;
+			const to = `${toCountry} - ${toCity}`;
 
-  /**
+			if (stops.length <= 1) {
+				return errorResponse(res, 403, setLanguage(preferedLang).__('multiCityFailure'));
+			}
+
+			await tripService.createTrip(id, passportNumber, gender, from, to, managerEmail, req.body);
+
+			return successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
+		} catch (error) {
+			return errorResponse(res, 500, error.message);
+		}
+	}
+
+	/**
    *
    * @param {object} req
    * @param {object} res
    * @returns {object} response
    */
-  static async availRequests(req, res) {
-    try {
-      const {
-        query: {
-          page, limit,
-        },
-        user: {
-          role, email, preferedLang
-        }
-      } = req;
+	static async availRequests(req, res) {
+		try {
+			const { query: { page, limit }, user: { role, email, preferedLang } } = req;
 
-      if (role !== 'manager') {
-        return errorResponse(res, 401, setLanguage(preferedLang).__('mustBeManager'));
-      }
+			if (role !== 'manager') {
+				return errorResponse(res, 401, setLanguage(preferedLang).__('mustBeManager'));
+			}
 
-      const all = await tripService.availPendingRequests(email, page, limit);
+			const all = await tripService.availPendingRequests(email, page, limit);
 
-      return successResponse(res, 200, setLanguage(preferedLang).__('pendingRequestsRetrieved'), all);
-    } catch (error) {
-      errorResponse(res, 500, error.message);
-    }
-  }
+			return successResponse(res, 200, setLanguage(preferedLang).__('pendingRequestsRetrieved'), all);
+		} catch (error) {
+		return	errorResponse(res, 500, error.message);
+		}
+	}
 
-  static async getTrips(req, res) {
-    const {
-      query: {
-        page, limit,
-      },
-      user: {
-        id, preferedLang
-      }
-    } = req;
-    const pagination = paginate(page, limit);
-    try {
-      const trips = await travelRequests.findAll({
-        where: { userID: id },
-        attributes: {
-          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
-        },
-        offset: pagination.offset,
-        limit: pagination.limit,
-      });
-      return res.status(200).json({
-        status: 200,
-        message: setLanguage(preferedLang).__('retrievedSuccessfully'),
-        info: pagination.info,
-        data: trips
-      });
-    } catch (error) {
-      return errorResponse(res, error.status || 500, error.message);
-    }
-  }
-
-  static async searchTrips(req, res) {
-    const {
-      query: {
-        page, limit, searchKey
-      },
-      user: {
-        id, role, email, preferedLang
-      }
-    } = req;
-    const pagination = paginate(page, limit);
-    try {
-      let found;
-      const searchQuery = [
-        where(
-          cast(col('travelRequests.requestId'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.type'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.gender'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.status'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.stops'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-
-        where(
-          cast(col('travelRequests.status'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        { from: { [Op.like]: `%${searchKey}%`, }, },
-        { to: { [Op.like]: `%${searchKey}%`, }, },
-        { from: { [Op.like]: `%${searchKey}%`, }, },
-        { to: { [Op.like]: `%${searchKey}%`, }, },
-        { reason: { [Op.like]: `%${searchKey}%`, }, },
-      ];
-      if (role === 'requester') {
-        found = await travelRequests.findAll({
-          where: {
-            userID: id,
-            [Op.or]: searchQuery
+	static async getTrips(req, res) {
+		const { query: { page, limit }, user: { id, preferedLang, role, email } } = req;
+		const pagination = paginate(page, limit);
+		try {
+			let trips;
+			if (role === 'requester') {
+				trips = await travelRequests.findAll({
+					where: { userID: id },
+					attributes: {
+						exclude: [ 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
+					},
+					include: [ { model: Comments } ],
+					offset: pagination.offset,
+					limit: pagination.limit
+				});
+			}
+			if (role === 'manager') {
+				trips = await travelRequests.findAll({
+					where: {
+						manager: email
+					},
+					attributes: {
+						exclude: [ 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
           },
-          attributes: {
-            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
-          },
-          offset: pagination.offset,
-          limit: pagination.limit,
-        });
-      }
-      if (role === 'manager') {
-        found = await travelRequests.findAll({
-          where: {
-            manager: email,
-            [Op.or]: searchQuery
-          },
-          attributes: {
-            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
-          },
-          offset: pagination.offset,
-          limit: pagination.limit,
-        });
-      }
-      found = await travelRequests.findAll({
-        where: {
-          [Op.or]: searchQuery
+          include: [{
+            model: Comments,
+            attributes: {
+              exclude: ['id' ]
+            }
+          }],
+					offset: pagination.offset,
+					limit: pagination.limit
+				});
+			}
+			trips = await travelRequests.findAll({
+				attributes: {
+					exclude: [ 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
         },
-        attributes: {
-          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
-        },
-        offset: pagination.offset,
-        limit: pagination.limit,
-      });
-      return res.status(200).json({
-        status: 200,
-        message: setLanguage(preferedLang).__('retrievedSuccessfully'),
-        info: pagination.info,
-        data: found
-      });
-    } catch (error) {
-      return errorResponse(res, error.status || 500, error.message);
-    }
-  }
+        include: [ { model: Comments } ],
+				offset: pagination.offset,
+				limit: pagination.limit
+			});
+			return res.status(200).json({
+				status: 200,
+				message: setLanguage(preferedLang).__('retrievedSuccessfully'),
+				info: pagination.info,
+				data: trips
+			});
+		} catch (error) {
+			return errorResponse(res, error.status || 500, error.message);
+		}
+	}
 
-  /**
-     *
-     * @param {object} req
-     * @param {object} res
-     * @returns {object} response
-     * @memberof tripsController
-     */
-  static async rejectTrip(req, res) {
-    try {
-      const {
-        params: {
-          tripId
-        },
-        user: {
-          preferedLang
-        }
-      } = req;
-      const affectedRow = await travelRequests.update(
-        {
-          status: 'rejected'
-        }, {
-          where: { requestId: tripId },
-          returning: true,
-          plain: true
-        }
-      );
-      const {
-        type, accommodation, from,
-        to, departureDate, returnDate,
-        reason, status, stops
-      } = affectedRow[1];
-      const response = {
-        type,
-        accommodation,
-        from,
-        to,
-        departureDate,
-        returnDate,
-        reason,
-        status,
-        stops
-      };
-      return successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
-    } catch (error) {
-      return errorResponse(res, 500, error.message);
-    }
-  }
+	static async searchTrips(req, res) {
+		const { query: { page, limit, searchKey }, user: { id, role, email, preferedLang } } = req;
+		const pagination = paginate(page, limit);
+		try {
+			let found;
+			const searchQuery = [
+				where(cast(col('travelRequests.id'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+				where(cast(col('travelRequests.type'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+				where(cast(col('travelRequests.gender'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+				where(cast(col('travelRequests.status'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+				where(cast(col('travelRequests.stops'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+
+				where(cast(col('travelRequests.status'), 'varchar'), { [Op.like]: `%${searchKey}%` }),
+				{ from: { [Op.like]: `%${searchKey}%` } },
+				{ to: { [Op.like]: `%${searchKey}%` } },
+				{ from: { [Op.like]: `%${searchKey}%` } },
+				{ to: { [Op.like]: `%${searchKey}%` } },
+				{ reason: { [Op.like]: `%${searchKey}%` } }
+			];
+			if (role === 'requester') {
+				found = await travelRequests.findAll({
+					where: {
+						userID: id,
+						[Op.or]: searchQuery
+					},
+					attributes: {
+						exclude: [ 'id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
+					},
+					offset: pagination.offset,
+					limit: pagination.limit
+				});
+			}
+			if (role === 'manager') {
+				found = await travelRequests.findAll({
+					where: {
+						manager: email,
+						[Op.or]: searchQuery
+					},
+					attributes: {
+						exclude: [ 'id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
+					},
+					offset: pagination.offset,
+					limit: pagination.limit
+				});
+			}
+			found = await travelRequests.findAll({
+				where: {
+					[Op.or]: searchQuery
+				},
+				attributes: {
+					exclude: [ 'id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt' ]
+				},
+				offset: pagination.offset,
+				limit: pagination.limit
+			});
+			return res.status(200).json({
+				status: 200,
+				message: setLanguage(preferedLang).__('retrievedSuccessfully'),
+				info: pagination.info,
+				data: found
+			});
+		} catch (error) {
+			return errorResponse(res, error.status || 500, error.message);
+		}
+	}
 
   /**
      *
@@ -348,7 +361,7 @@ class tripsController {
         {
           status: 'approved'
         }, {
-          where: { requestId: tripId },
+          where: { id: tripId },
           returning: true,
           plain: true
         }
@@ -393,7 +406,7 @@ class tripsController {
       const found = await travelRequests.findOne({
         where: {
           userID: id,
-          requestId,
+          id: requestId,
           [Op.or]: [
             { userID: id },
             { manager: email },
@@ -410,6 +423,36 @@ class tripsController {
       errorResponse(res, 500, error.message);
     }
   }
+	static async rejectTrip(req, res) {
+		try {
+			const { params: { tripId }, user: { preferedLang } } = req;
+			const affectedRow = await travelRequests.update(
+				{
+					status: 'rejected'
+				},
+				{
+					where: { id: tripId },
+					returning: true,
+					plain: true
+				}
+			);
+			const { type, accommodation, from, to, departureDate, returnDate, reason, status, stops } = affectedRow[1];
+			const response = {
+				type,
+				accommodation,
+				from,
+				to,
+				departureDate,
+				returnDate,
+				reason,
+				status,
+				stops
+			};
+			successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
+		} catch (error) {
+			errorResponse(res, 500, error.message);
+		}
+	}
 }
 
 

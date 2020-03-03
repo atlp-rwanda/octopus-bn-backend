@@ -22,7 +22,7 @@ class tripHelper {
     const trip = await travelRequests.create(
       {
         ...newTrip,
-        requestId: uuid(),
+        id: uuid(),
         userID: uId,
         from,
         to,
@@ -33,7 +33,7 @@ class tripHelper {
       },
       {
         fields: [
-          'requestId',
+          'id',
           'userID',
           'passportNumber',
           'gender',

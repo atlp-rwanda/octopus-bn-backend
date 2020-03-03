@@ -16,7 +16,7 @@ class notificationsController {
   static async sendTripReqNotification(user, type, request, body, host) {
     try {
       const { managerEmail } = user,
-        { requestId } = request,
+        { id } = request,
         { Users } = Models,
         manager = await Users.findOne({
           where: {
@@ -24,7 +24,7 @@ class notificationsController {
           },
         }),
         notification = {
-          requestID: requestId, receiver: manager.id, type, body, isRead: false
+          requestID: id, receiver: manager.id, type, body, isRead: false
         };
       await Models.Notification.create(notification);
 
@@ -34,7 +34,7 @@ class notificationsController {
       }
 
       if (manager.notifyByEmail) {
-        await emailTripRequest(manager.firstName, manager.email, body, requestId, host);
+        await emailTripRequest(manager.firstName, manager.email, body, id, host);
       }
     } catch (error) {
       return {
