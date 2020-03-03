@@ -259,7 +259,7 @@ describe('trips', () => {
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'error');
         expect(res.body.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Invalid params');
+        expect(res.body.error).to.be.equal('Invalid params (search data)');
         expect(res);
         done();
       });
@@ -272,7 +272,7 @@ describe('trips', () => {
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'error');
         expect(res.body.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Invalid params');
+        expect(res.body.error).to.be.equal('Invalid params (search data)');
         expect(res);
         done();
       });

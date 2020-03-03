@@ -267,21 +267,13 @@ router.get('/request', checkUser, isProfileUpdated, validateParams, tripsControl
 /**
  * @swagger
  *
- * /api/v1/trips/search?page={page}&limit={limit}:
+ * /api/v1/trips/search?page={page}&limit={limit}&searchKey={searchKey}:
  *   get:
  *     security: []
  *     summary: Search trips
  *     description: Search trips
  *     tags:
  *       - Trips
-*     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               searchKey:
- *                 type: string
  *     produces:
  *         application/json:
  *           schema:
@@ -299,10 +291,15 @@ router.get('/request', checkUser, isProfileUpdated, validateParams, tripsControl
  *         default: 1
  *         type: string
  *       - name: limit
- *         description: limited items.
+ *         description: limit items.
  *         in: path
  *         required: false
  *         default: 5
+ *         type: string
+ *       - name: searchKey
+ *         description: searchKey items.
+ *         in: path
+ *         required: false
  *         type: string
  *     responses:
  *       200:

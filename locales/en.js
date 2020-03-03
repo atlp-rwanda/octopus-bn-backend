@@ -71,7 +71,7 @@
 	"onlyReturn": "Only provide a return date on a return trip request",
 	"ValidReason": "Please provide a reason (more than 20 char)",
 	"retrievedSuccessfully": "Requests retrieved successfully",
-	"InvalidParams": "Invalid params",
+	"InvalidParams": "Invalid params (search data)",
 	"managerEmailNotExist": "Manager is not found, choose another one",
 	"mustBeManager": "You must be a manager to get access",
 	"pendingRequestsRetrieved": "All pending requests retrieved successfully",

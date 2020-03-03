@@ -19,10 +19,7 @@ describe('trips', () => {
   it('should not do the search with no user logged in', (done) => {
     chai
       .request(app)
-      .get('/api/v1/trips/search')
-      .send({
-        searchKey: 'needs'
-      })
+      .get('/api/v1/trips/search?searchKey=needs')
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'error');
         expect(res.body.status).to.be.equal(403);
@@ -45,13 +42,10 @@ describe('trips', () => {
         done();
       });
   });
-  it('It should not allow search with wrong page and limits for pagination', (done) => {
+  it('Should not allow search with wrong page and limits for pagination', (done) => {
     chai
       .request(app)
-      .get('/api/v1/trips/search?page=-1&limit=-5')
-      .send({
-        searchKey: 'needs'
-      })
+      .get('/api/v1/trips/search?page=-1&limit=-5&searchKey=needs')
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'error');
         expect(res.body.status).to.be.equal(400);
@@ -59,13 +53,11 @@ describe('trips', () => {
         done();
       });
   });
-  it('It should return search trip successfully', (done) => {
+
+  it('Should return search trip successfully', (done) => {
     chai
       .request(app)
-      .get('/api/v1/trips/search')
-      .send({
-        searchKey: 'needs'
-      })
+      .get('/api/v1/trips/search?searchKey=needs')
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'message', 'data', 'info');
         expect(res.body.status).to.be.equal(200);
