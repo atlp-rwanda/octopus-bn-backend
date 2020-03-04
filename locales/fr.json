@@ -79,5 +79,20 @@
     "TripNotFound":"La demande de voyage est introuvable",
     "TripNotAssigned":"Le voyage ne vous est pas assigné!",
     "TripAlreadyRejected":"Le voyage a déjà été rejeté!",
-    "NotAllowedToRejecApprovedRequest":"Vous n'êtes pas autorisé à rejeter la demande de voyage approuvée"
+    "NotAllowedToRejecApprovedRequest":"Vous n'êtes pas autorisé à rejeter la demande de voyage approuvée",
+	"validAccommodationName": "Veuillez fournir un nom d'hébergement valide",
+	"validCountry": "Veuillez fournir un pays valide",
+	"validCity": "Please provide a valid city",
+	"validImageUrl":"Veuillez fournir une ville valide",
+	"oneAmenity":"Veuillez fournir au moins un équipement",
+	"aroundAccommodation":"Veuillez informer les gens des choses plus intéressantes autour de l'hébergement",
+	"accommodationID":"Veuillez fournir une pièce d'identité valide pour l'hébergement",
+	"roomNumber":"Veuillez fournir un numéro de chambre valide",
+	"validCost":"Veuillez fournir un coût valide",
+	"validCurrency":"Veuillez fournir une devise valide",
+	"validRoomType":"Veuillez fournir un type valide: [Single, Double, Triple, Quad, Queen, King, Twin, Double-double, Studio, Master-Suite, Mini-Suite]",
+	"roomAlreadyRegistered":"Cette salle est déjà enregistrée",
+	"accommodationNotFound":"Le logement que vous essayez d'ajouter également une chambre est introuvable",
+    "roomAdded":"Chambre ajoutée avec succès",
+    "AccommodationCreated": "Hébergement créé avec succès"
 }
