@@ -96,5 +96,11 @@
 	"roomAlreadyRegistered":"This room is already registered",
 	"accommodationNotFound":"The accommodation you are trying to add a room too is not found",
 	"roomAdded":"Room added successfully",
-	"AccommodationCreated": "Accommodation Created successfully"
+	"AccommodationCreated": "Accommodation Created successfully",
+	"changedpreferences" : "Successfully changed preferences",
+    "noNotification" : "You have no notifications",
+    "noNewNotification" : "You have no new notifications",
+    "notManager" : "To do this, You have to be a manager"
 }
+
+

@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <title>Notifications</title>
+    <style>
+    body{
+        display: flex;
+        justify-content: center;
+        font-family: 'Roboto';
+    }
+    ul {
+        list-style-type: none;
+        margin-left: -35px;
+    }
+    li {
+        margin-bottom: 25px;
+    }
+     a {
+        text-decoration:none;
+        color: black;
+        font-size: 18px;
+     }
+     .container {
+         display: flex;
+         flex-direction: column;
+     }
+     h1{
+        color:  blue;
+     }
+
+     #userId, #host {
+         display: none;
+         visibility: hidden;
+     }
+    </style>
+</head>
+<body> 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <div class="container">
+    <h1>Notifications</h1>
+    <ul id="notifications">
+    </ul>
+    </div>
+    <div id="userId"><%= user.id%></div>
+    <h1 id="host"><%= host %></h1>
+    <script>
+        let link;
+        const host = $("#host").text();
+        if(host === 'localhost:3000'){
+           link = `http://${host}`
+        } else{
+            link = `https://${host}`
+        }
+
+        const socket = io.connect(link),
+
+        userId = $("#userId").text();
+        socket.emit('connect_user', `${userId}`);
+        socket.on('notification', (notification) =>  {
+            $("#notifications").append(`<li><a href="#">${notification.body}</li>`);
+        });
+
+    </script>
+</body>
+</html>

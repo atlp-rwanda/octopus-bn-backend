@@ -225,6 +225,145 @@ describe('trips', () => {
         done();
       });
   });
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '2020-06-20',
+        accommodation: 'hello',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '2000-06-20',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '20-06-20',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '',
+        accommodation: 'yes',
+        reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '',
+        accommodation: 'yes',
+        reason: 'not enough'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without providing proper date', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-17',
+        returnDate: '',
+        accommodation: 'yes',
+        reason: ''
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+ 
   it('It should request return trip way successfully', (done) => {
     chai
       .request(app)

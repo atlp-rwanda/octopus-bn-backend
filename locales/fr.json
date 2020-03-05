@@ -94,5 +94,10 @@
 	"roomAlreadyRegistered":"Cette salle est déjà enregistrée",
 	"accommodationNotFound":"Le logement que vous essayez d'ajouter également une chambre est introuvable",
     "roomAdded":"Chambre ajoutée avec succès",
-    "AccommodationCreated": "Hébergement créé avec succès"
+    "AccommodationCreated": "Hébergement créé avec succès",
+    "changedpreferences" : "Préférences modifiées avec succès",
+    "noNotification" : "Vous n'avez aucune notification",
+    "noNewNotification" : "Vous n'avez aucune nouvelle notification",
+    "notManager" : "Pour ce faire, vous devez être un manager"
 }
+

@@ -32,11 +32,20 @@ export default (sequelize, DataTypes) => {
         'requester'
       ],
     },
+    notifyByEmail: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
   }, {});
   Users.associate = (models) => {
     // associations can be defined here
     Users.hasMany(models.travelRequests, {
       foreignKey: 'userID',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
+    Users.hasMany(models.Notification, {
+      foreignKey: 'receiver',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });

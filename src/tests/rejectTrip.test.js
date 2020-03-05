@@ -12,6 +12,30 @@ Chai.use(chaiHttp);
 Chai.should();
 
 describe('Rejecting a trip request', () => {
+  it('logging out', (done) => {
+    Chai
+      .request(app)
+      .delete('/api/v1/auth/logout')
+      .end((err, res) => {
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should login auth successfuly', (done) => {
+    Chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'blaiseen@gmail.com',
+        password: 'password',
+      })
+      .end((err, res) => {
+        expect(res);
+        done();
+      });
+  });
+
   it('should not allow non-manager users', (done) => {
     Chai
       .request(app)
@@ -19,6 +43,16 @@ describe('Rejecting a trip request', () => {
       .end((err, res) => {
         expect(res.body.status).to.be.equal(403);
         expect(res.body.error).to.be.equal('Please you should be a manager');
+        done();
+      });
+  });
+
+  it('logging out', (done) => {
+    Chai
+      .request(app)
+      .delete('/api/v1/auth/logout')
+      .end((err, res) => {
+        expect(res);
         done();
       });
   });

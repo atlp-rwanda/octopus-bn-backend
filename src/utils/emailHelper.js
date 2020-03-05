@@ -99,3 +99,33 @@ export const sendPasswordResetLink = async (user, host) => {
 
   await sendGrid.send(message);
 };
+
+/**
+ *
+ * @param {*} manager
+ * @param {*} requester
+ * @param {*} recieverEmail
+ * @param {*} body
+ */
+export const emailTripRequest = async (manager, recieverEmail, body, requestId, host) => {
+  const emailBody = generateEmail(
+    manager,
+    'New trip request notification',
+    `${body} `,
+    'Click the link here to find the request',
+    `http://${host}/api/v1/trips/request/${requestId}`
+  );
+  // Generate an HTML email with the provided contents
+  const emailTemplate = template.generate(emailBody);
+  const message = {
+    to: `${recieverEmail}`,
+    from: 'barefoot@noreply',
+    subject: 'Barefoot Nomad Password rest',
+    text: `Hello, ${manager}!`,
+    html: emailTemplate
+  };
+
+  sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  await sendGrid.send(message);
+};

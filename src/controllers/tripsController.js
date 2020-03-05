@@ -6,7 +6,9 @@ import Models from 'database/models';
 import setLanguage from 'utils/international';
 import paginate from 'utils/pagination';
 import Sequelize from 'sequelize';
+import notificationsController from './notification';
 
+const { sendTripReqNotification } = notificationsController;
 
 const {
   Op, where, cast, col
@@ -47,13 +49,14 @@ class tripsController {
           returnDate
         },
         user: {
-          email, id, passportNumber, gender, managerEmail, preferedLang
-        }
+          email, id, passportNumber, gender, managerEmail, preferedLang, firstName,
+        },
+        headers: { host }
       } = req;
 
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
-      await travelRequests.create(
+      const request = await travelRequests.create(
         {
           requestId: uuid(),
           userID: id,
@@ -70,6 +73,8 @@ class tripsController {
           status: 'pending'
         }
       );
+      const body = ` ${firstName} made a trip request: - From ${from} to ${to}. Reason: ${reason}`;
+      await sendTripReqNotification(req.user, 'trip request', request, body, host);
       return res.status(201).json({
         status: 201,
         message: setLanguage(preferedLang).__('requestSuccessfully'),
@@ -104,8 +109,9 @@ class tripsController {
           fromCountry, fromCity, toCountry, toCity, stops
         },
         user: {
-          id, gender, passportNumber, managerEmail, preferedLang
-        }
+          id, gender, firstName, passportNumber, managerEmail, preferedLang
+        },
+        header: { host }
       } = req;
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
@@ -113,13 +119,13 @@ class tripsController {
       if (stops.length <= 1) {
         return errorResponse(res, 403, setLanguage(preferedLang).__('multiCityFailure'));
       }
-
-      await tripService.createTrip(id, passportNumber,
+      const request = await tripService.createTrip(id, passportNumber,
         gender, from, to, managerEmail, req.body);
-
+      const notificationbody = ` ${firstName} made a multi-city trip request: - From ${from} to ${to}.`;
+      await sendTripReqNotification(req.user, 'multi-city trip request', request, notificationbody, host);
       successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
     } catch (error) {
-      errorResponse(res, 500, error.message);
+      return errorResponse(res, 500, error.message);
     }
   }
 
