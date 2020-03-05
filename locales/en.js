@@ -108,7 +108,19 @@
 	"CommentPosted":"Comment posted successfully",
 	"commentSorry": "OOPS, it looks like you are not allowed to comment.",
 	"CommentDeleted":"Comment deleted",
-	"NoComment": "No comment found"
+	"NoComment": "No comment found",
+	"noRequestFound": "No request found with the given id",
+	"rejected": "you can not book accommodation for rejected requests",
+	"accommodationsPerDest": "These are the available accomodations on your destination",
+	"bookedSuccess": "You have successfully booked your accommodation",
+	"AccomondationNotExis":"Accomondation id is not found",
+	"RoomIdNotExist":"Room id is not found",
+	"BookAlreadyExist":"You have already booked this accomondation",
+	"ValidCheckInDate":"Check in date must be valid",
+	"ValidCheckoutDate":"Checkout date must be valid",
+	"RoomAlreadyBooked":"Room is unvailable, try another room!",
+	"validCheckoutOn":"Please provide valid date for checking out, hint after or on",
+	"NoAccommondation":"No available accommodation found at your destination"
 }
 
 

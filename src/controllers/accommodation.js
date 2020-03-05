@@ -2,8 +2,10 @@
 import Models from 'database/models';
 import uuid from 'uuid/v4';
 import setLanguage from 'utils/international';
+import { errorResponse, successResponse } from 'utils/responses';
+import bookingService from 'services/bookingService';
 
-const { Accommodations, Rooms } = Models;
+const { Accommodations, Rooms, travelRequests, Booking } = Models;
 
 class accommodation {
   static async create(req, res) {
@@ -69,6 +71,77 @@ class accommodation {
           error: error.message
         }
       });
+    }
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} accomodations
+   */
+  static async getAccommodationPerDestination(req, res) {
+    try {
+      const {
+        query: {
+          page, limit,
+          id
+        },
+        user: {
+          preferedLang
+        }
+      } = req;
+      const findRequest = await travelRequests.findOne({ where: { id } });
+
+      if (!findRequest) {
+        return errorResponse(res, 404, setLanguage(preferedLang).__('noRequestFound'));
+      }
+
+      if (findRequest.status !== 'pending') {
+        return errorResponse(res, 403, setLanguage(preferedLang).__('rejected'));
+      }
+
+      const to = findRequest.to.split(' - ')[1];
+      const accommodations = await bookingService.getAccommodations(to, page, limit);
+      if(accommodations === null){
+        return errorResponse(res, 404, setLanguage(preferedLang).__('NoAccommondation'));
+      }
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('accommodationsPerDest'), accommodations);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
+
+  static async bookAccommodation(req, res) {
+    try {
+      const {
+        body: {
+          accommodationId, roomId, tripId, checkIn, checkOut
+        },
+        user: {
+          preferedLang, id
+        }
+      } = req;
+
+      await Booking.create({
+        id: uuid(),
+        userId: id,
+        accommodationId,
+        roomId,
+        checkOut,
+        tripId,
+        checkIn,
+        isPaid: false
+      });
+
+      await Rooms.update(
+        { status: false }, { where: { id: roomId } }
+      );
+
+      return successResponse(res, 201, setLanguage(preferedLang).__('bookedSuccess'));
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
     }
   }
 }

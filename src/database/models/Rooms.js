@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
+
+    Rooms.hasOne(models.Booking, {
+      foreignKey: 'roomId',
+      onDelete: 'CASCADE'
+    });
   };
   return Rooms;
 };

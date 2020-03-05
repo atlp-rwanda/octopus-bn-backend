@@ -46,6 +46,9 @@ export default (sequelize, DataTypes) => {
     });
     Users.hasMany(models.Notification, {
       foreignKey: 'receiver',
+    });
+    Users.hasMany(models.Booking, {
+      foreignKey: 'tripId',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
