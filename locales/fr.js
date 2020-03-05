@@ -98,5 +98,7 @@
     "changedpreferences" : "Préférences modifiées avec succès",
     "noNotification" : "Vous n'avez aucune notification",
     "noNewNotification" : "Vous n'avez aucune nouvelle notification",
-    "notManager" : "Pour ce faire, vous devez être un manager"
+    "notManager" : "Pour ce faire, vous devez être un manager",
+    "TripApprovedSuccess":"La demande de voyage est approuvée avec succès"
 }
+

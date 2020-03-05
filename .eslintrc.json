@@ -40,8 +40,8 @@
     }
   },
   "parserOptions": {
-    "ecmaVersion": 11,
     "sourceType": "module",
+    "ecmaVersion": 11,
     "allowImportExportEverywhere": true
-}
+  }
 }

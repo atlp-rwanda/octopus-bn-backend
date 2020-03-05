@@ -16,7 +16,7 @@ export const isUuidParamValid = (req, res, next) => {
   });
   const schema = Joi.validate(req.params, uuiDchemas);
   if (schema.error) {
-    errorResponse(res, 400, setLanguage(preferedLang).__('PleaseUseValidId'));
+    return errorResponse(res, 400, setLanguage(preferedLang).__('PleaseUseValidId'));
   }
   next();
 };
@@ -32,7 +32,7 @@ export const isTripExist = async (req, res, next) => {
   } = req;
   const trip = await travelRequests.findOne({ where: { requestId: tripId } });
   if (!trip) {
-    errorResponse(res, 404, setLanguage(preferedLang).__('TripNotFound'));
+    return errorResponse(res, 404, setLanguage(preferedLang).__('TripNotFound'));
   }
   req.trip = trip;
   next();
@@ -48,7 +48,7 @@ export const isTripRejected = async (req, res, next) => {
     }
   } = req;
   if (status === 'rejected') {
-    errorResponse(res, 403, setLanguage(preferedLang).__('TripAlreadyRejected'));
+    return errorResponse(res, 403, setLanguage(preferedLang).__('TripAlreadyRejected'));
   }
   next();
 };
@@ -63,7 +63,7 @@ export const isTripApproved = async (req, res, next) => {
     }
   } = req;
   if (status === 'approved') {
-    errorResponse(res, 403, setLanguage(preferedLang).__('NotAllowedToRejecApprovedRequest'));
+    return errorResponse(res, 403, setLanguage(preferedLang).__('NotAllowedToRejecApprovedRequest'));
   }
   next();
 };
@@ -79,7 +79,7 @@ export const isTripAssigned = async (req, res, next) => {
     } = req,
     foundAssign = await travelRequests.findOne({ where: { manager: email, requestId: tripId } });
   if (!foundAssign) {
-    errorResponse(res, 403, setLanguage(preferedLang).__('TripNotAssigned'));
+    return errorResponse(res, 403, setLanguage(preferedLang).__('TripNotAssigned'));
   }
   next();
 };
