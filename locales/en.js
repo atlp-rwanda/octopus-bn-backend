@@ -101,7 +101,8 @@
     "noNewNotification" : "You have no new notifications",
     "notManager" : "To do this, You have to be a manager",
 	"NotAllowedToRejecApprovedRequest":"Trip has been already approved",
-	"TripApprovedSuccess":"Trip request is successfully approved"
+	"TripApprovedSuccess":"Trip request is successfully approved",
+	"tripIdIsRequired" : "requestId is required"
 }
 
 

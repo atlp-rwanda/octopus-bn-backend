@@ -91,12 +91,4 @@ router.get('/', checkUser, notificationController.getAllNotifications);
  *  */
 router.get('/unread', checkUser, notificationController.unReadNotifications);
 
-router.get('/static', checkUser, (req, res) => {
-  const {
-    user,
-    headers: { host }
-  } = req;
-  res.render('notification', { user, host });
-});
-
 export default router;

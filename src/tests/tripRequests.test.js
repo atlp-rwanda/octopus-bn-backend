@@ -363,7 +363,7 @@ describe('trips', () => {
       });
   });
 
- 
+
   it('It should request return trip way successfully', (done) => {
     chai
       .request(app)
@@ -403,15 +403,50 @@ describe('trips', () => {
         done();
       });
   });
-  it('It should not allow get with wrong params ', (done) => {
+
+  it('should logout user', (done) => {
     chai
       .request(app)
-      .get('/api/v1/trips/request?page=2&limit=-3')
-      .send(newReqReturn)
+      .delete('/api/v1/auth/logout')
+      .end((err, res) => {
+        expect(res);
+        done();
+      });
+  });
+
+  it('should sign in a user first', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'rusimbipatrick@outlook.com',
+        password: 'password',
+      })
+      .end((err, res) => {
+        expect(res.body.status).to.be.equal(200);
+        expect(res);
+        done();
+      });
+  });
+  it('It should get one trip request ', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/trips/5086bfdb-37d3-4b03-99f6-1889e33aa048')
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'message');
+        expect(res.body.status).to.be.equal(200);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should send error message if trip request is not found', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/trips/5086bfdb-3')
       .end((err, res) => {
         expect(res.body).to.have.keys('status', 'error');
-        expect(res.body.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Invalid params (search data)');
+        expect(res.body.status).to.be.equal(404);
         expect(res);
         done();
       });

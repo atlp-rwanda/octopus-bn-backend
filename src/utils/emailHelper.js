@@ -113,14 +113,14 @@ export const emailTripRequest = async (manager, recieverEmail, body, requestId, 
     'New trip request notification',
     `${body} `,
     'Click the link here to find the request',
-    `http://${host}/api/v1/trips/request/${requestId}`
+    `http://${host}/api/v1/trips/${requestId}`
   );
   // Generate an HTML email with the provided contents
   const emailTemplate = template.generate(emailBody);
   const message = {
     to: `${recieverEmail}`,
     from: 'barefoot@noreply',
-    subject: 'Barefoot Nomad Password rest',
+    subject: 'New trip request notification',
     text: `Hello, ${manager}!`,
     html: emailTemplate
   };

@@ -20,8 +20,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
 
 // serve static files
-app.set('view engine', 'ejs');
-app.use('/static', express.static('./public'));
+app.use('/static', express.static(path.join(__dirname, '../public')));
 
 app.use(morgan('dev'));
 
