@@ -361,4 +361,36 @@ router.put('/:tripId/approve', [checkUser, isProfileUpdated,
   isUserManager, isUuidParamValid, isTripExist, isTripAssigned, isTripRejected,
   isTripApproved],
 tripsController.approveTrip);
+
+/**
+ * @swagger
+ *
+ * /api/v1/trips/{requestId}:
+ *   get:
+ *     security: []
+ *     summary: view one trip request
+ *     description: view one trip request
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: requestId
+ *         description: trip request id.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Request retrieved successfully
+ *  */
+router.get('/:requestId', checkUser, tripsController.getOnetripRequest);
+
 export default router;

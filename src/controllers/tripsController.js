@@ -374,6 +374,43 @@ class tripsController {
       return errorResponse(res, 500, error.message);
     }
   }
+
+  /**
+   * @description Get one trip request
+   * @param {*} req
+   * @param {*} res
+   */
+  static async getOnetripRequest(req, res) {
+    try {
+      const {
+        params: {
+          requestId
+        },
+        user: {
+          id, email, preferedLang
+        }
+      } = req;
+      const found = await travelRequests.findOne({
+        where: {
+          userID: id,
+          requestId,
+          [Op.or]: [
+            { userID: id },
+            { manager: email },
+          ]
+        }
+      });
+
+      if (!found) {
+        return errorResponse(res, 404, setLanguage(preferedLang).__('TripNotFound'));
+      }
+
+      return successResponse(res, 200, found);
+    } catch (error) {
+      errorResponse(res, 500, error.message);
+    }
+  }
 }
+
 
 export default tripsController;

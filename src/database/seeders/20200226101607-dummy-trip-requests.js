@@ -95,6 +95,22 @@ export default {
       status: 'pending',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      requestId: '5086bfdb-37d3-4b03-99f6-1889e33aa048',
+      userID: '123212965431',
+      type: 'one way',
+      passportNumber: 'GH1234550',
+      gender: 'male',
+      from: 'Kigali',
+      to: 'Nyagatare',
+      accommodation: 'no',
+      reason: 'farming',
+      manager: 'itsafact57@gmail.com',
+      departureDate: '2020-05-24',
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('travelRequests', null, {})
