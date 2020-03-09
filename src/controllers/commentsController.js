@@ -47,6 +47,29 @@ class commentsController {
       errorResponse(res, error.status || 500, error.message);
     }
   }
+  async deleteComment(req, res) {
+    try {
+        const { query: { commentId }, body: { comment }, user: { id, email, preferedLang } } = req;
+        const found = await Comments.findOne({
+            where: {
+                id: commentId,
+                userID: id
+            }
+        });
+        if (found) {
+            await Comments.destroy({
+                where: {
+                    id: commentId
+                }
+            }).then((data) => {
+                return successResponse(res, 200, setLanguage(preferedLang).__('CommentDeleted'));
+            });
+        }
+        return errorResponse(res, 404, setLanguage(preferedLang).__('NoComment'));
+    } catch (error) {
+        errorResponse(res, error.status || 500, error.message);
+    }
+}
 }
 
 

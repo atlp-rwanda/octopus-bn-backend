@@ -68,12 +68,12 @@ class tripHelper {
         status: 'pending', manager: email
       },
       attributes: {
-        exclude: ['id', 'userID', 'gender', 'manager', 'createdAt', 'updatedAt', 'passportNumber']
+        exclude: ['userID', 'gender', 'manager', 'createdAt', 'updatedAt', 'passportNumber']
       },
       include: [{
         model: Users,
         attributes: {
-          exclude: ['id', 'method', 'password', 'isVerified', 'isUpdated', 'gender', 'birthDate', 'preferedLang',
+          exclude: [ 'method', 'password', 'isVerified', 'isUpdated', 'gender', 'birthDate', 'preferedLang',
             'preferedCurrency', 'residence', 'managerEmail', 'imageUrl', 'bio', 'role', 'createdAt', 'updatedAt']
         }
       }],
