@@ -105,7 +105,6 @@ describe('Rejecting a trip request', () => {
       .request(app)
       .put(`/api/v1/trips/${rejectedTripId}/reject`)
       .end((err, res) => {
-        console.log(res);
         expect(res.body.status).to.be.equal(403);
         expect(res.body.error).to.be.equal('Trip has been already rejected!');
         done();

@@ -4,8 +4,8 @@ export const newReqReturn = {
   fromCity: 'Kigali',
   toCountry: 'USA',
   toCity: 'Texas',
-  departureDate: '2020-03-11',
-  returnDate: '2020-03-13',
+  departureDate: '2020-09-11',
+  returnDate: '2020-09-13',
   accommodation: 'yes',
   reason: 'the employee needs to attend a conference where the presence of a company representative is needed'
 };

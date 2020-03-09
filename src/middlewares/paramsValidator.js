@@ -13,6 +13,9 @@ const validateParams = (req, res, next) => {
     searchKey: Joi.string().min(0).error(() => ({
       message: setLanguage(preferedLang).__('InvalidParams')
     })),
+    id: Joi.string().min(0).error(() => ({
+      message: setLanguage(preferedLang).__('InvalidParams')
+    })),
   });
   const { error } = Joi.validate(req.query, Schemas);
   if (error) {

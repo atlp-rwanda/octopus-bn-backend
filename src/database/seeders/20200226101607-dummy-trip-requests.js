@@ -112,6 +112,38 @@ export default {
       status: 'pending',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      id: '81821f4e-0d90-460c-b8c5-17da573f5e19',
+      userID: 'd01cf3f2-4601-4b53-8ffd-fd46b6ded623',
+      type: 'one way',
+      passportNumber: 'GH1234850',
+      gender: 'male',
+      from: 'Kamonyi',
+      to: 'Kigali',
+      accommodation: 'yes',
+      reason: 'farming',
+      manager: 'needs.grid@gmail.com',
+      departureDate: '2020-04-24',
+      status: 'approved',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: '2b5e4cd5-7137-48b8-86ca-52fdf7929a97',
+      userID: 'd01cf3f2-4601-4b53-8ffd-fd46b6ded623',
+      type: 'one way',
+      passportNumber: 'GH1234850',
+      gender: 'male',
+      from: 'Kamonyi',
+      to: 'Kigali',
+      accommodation: 'yes',
+      reason: 'farming',
+      manager: 'needs.grid@gmail.com',
+      departureDate: '2020-04-24',
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('travelRequests', null, {})
