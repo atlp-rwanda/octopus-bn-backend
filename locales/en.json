@@ -120,7 +120,10 @@
 	"ValidCheckoutDate":"Checkout date must be valid",
 	"RoomAlreadyBooked":"Room is unvailable, try another room!",
 	"validCheckoutOn":"Please provide valid date for checking out, hint after or on",
-	"NoAccommondation":"No available accommodation found at your destination"
+	"NoAccommondation":"No available accommodation found at your destination",
+	"TripRequestTypeNotAvailable":"Such trip request type is not supported!",
+	"TriprequestUpdatedSuccess":"Your trip request has been successfully edited!",
+	"StopsMustBeArray":"Provide stops"
 }
 
 

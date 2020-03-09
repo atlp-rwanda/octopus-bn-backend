@@ -118,6 +118,9 @@
     "ValidCheckoutDate":"La date de départ doit être valide",
     "RoomAlreadyBooked":"La chambre n'est pas disponible, essayez une autre chambre!",
     "validCheckoutOn":"Veuillez fournir une date de départ valide, un indice après ou le",
-    "NoAccommondation":"Aucun logement disponible trouvé à votre destination"
+    "NoAccommondation":"Aucun logement disponible trouvé à votre destination",
+    "TripRequestTypeNotAvailable":"Ce type de demande de voyage n'est pas pris en charge!",
+    "TriprequestUpdatedSuccess":"Votre demande de voyage a bien été modifiée!",
+    "StopsMustBeArray":"Fournir des arrêts"
 }
 

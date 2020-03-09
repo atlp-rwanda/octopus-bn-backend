@@ -6,7 +6,13 @@ import Models from 'database/models';
 import setLanguage from 'utils/international';
 import paginate from 'utils/paginate';
 import Sequelize from 'sequelize';
+import {
+  oneWayTripGenerator,
+  returnTripGenerator,
+  multiCityTripGenerator
+} from 'utils/objectPropertyExcluder';
 import notificationsController from './notification';
+
 
 const { sendTripReqNotification } = notificationsController;
 const { Op, where, cast, col } = Sequelize;
@@ -390,8 +396,10 @@ class tripsController {
 
   /**
    * @description Get one trip request
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
+   * @memberof tripsController
+   * @returns {object} response
    */
   static async getOnetripRequest(req, res) {
     try {
@@ -453,6 +461,46 @@ class tripsController {
 			errorResponse(res, 500, error.message);
 		}
 	}
+
+  /**
+   * @description Edit one way or return or multi city trip requests on one go
+   * @param {object} req
+   * @param {object} res
+   * @memberof tripsController
+   * @returns {object} response
+   */
+  static async editTrip(req, res) {
+    try {
+      const {
+        body: {
+          type
+        },
+        params: {
+          tripId
+        },
+        body,
+        user: {
+          preferedLang
+        }
+      } = req;
+      const oneWayTrip = oneWayTripGenerator(body);
+      const returnTrip = returnTripGenerator(body);
+      const multiCity = multiCityTripGenerator(body);
+      const fineTripRequest = type === 'one way'
+        ? oneWayTrip : type === 'return'
+          ? returnTrip : multiCity;
+      await travelRequests.update(
+        fineTripRequest, {
+          where: { id: tripId },
+          returning: true,
+          plain: true
+        }
+      );
+      return successResponse(res, 200, setLanguage(preferedLang).__('TriprequestUpdatedSuccess'), fineTripRequest);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
 }
 
 

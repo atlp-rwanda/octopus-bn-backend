@@ -8,7 +8,10 @@ import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
 import validateParams from 'middlewares/paramsValidator';
 import {
-  isUuidParamValid, isTripExist, isTripAssigned, isTripRejected, isTripApproved
+  isUuidParamValid, isTripExist,
+  isTripAssigned, isTripRejected,
+  isTripApproved,isEditTripRequestValid,
+  areYouTripOwner
 } from 'middlewares/validateTrip';
 
 const router = express.Router();
@@ -392,5 +395,78 @@ tripsController.approveTrip);
  *         description: Request retrieved successfully
  *  */
 router.get('/:requestId', checkUser, tripsController.getOnetripRequest);
-
+/**
+ * @swagger
+ *
+ * /api/v1/trips/{tripId}:
+ *   patch:
+ *     security: []
+ *     summary: Edit Trip request
+ *     description: Users should be able to edit one of any type of trip requests
+ *     tags:
+ *       - Trips
+ *     parameters:
+ *       - name: tripId
+ *         description: trip request id.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *               fromCountry:
+ *                 type: string
+ *               fromCity:
+ *                 type: string
+ *               toCountry:
+ *                 type: string
+ *               toCity:
+ *                 type: string
+ *               departureDate:
+ *                 type: string
+ *               returnDate:
+ *                 type: string
+ *               accommodation:
+ *                  type: string
+ *               reason:
+ *                  type: string
+ *               stops:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     accommodation:
+ *                       type: string
+ *                     stopCountry:
+ *                       type: string
+ *                     stopCity:
+ *                       type: string
+ *                     arrivalDate:
+ *                       type: string
+ *                     departureDate:
+ *                       type: string
+ *                     reason:
+ *                       type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Your trip request has been successfully edited!
+ */
+router.patch('/:tripId', [checkUser, isProfileUpdated,
+  isUuidParamValid, isTripExist, areYouTripOwner, isTripRejected,
+  isTripApproved, isEditTripRequestValid],
+tripsController.editTrip);
 export default router;
