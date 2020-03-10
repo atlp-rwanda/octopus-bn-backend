@@ -102,7 +102,6 @@
     "TripApprovedSuccess":"La demande de voyage est approuvée avec succès",
     "tripIdIsRequired" : "requestId est requis",
     "validComment": "Veuillez fournir un commentaire valide",
-    "InvalidParamsRequestId": "ID de demande non valide",
     "CommentPosted":"Commentaire publié avec succès",
     "commentSorry": " OOPS, il semble que vous ne soyez pas autorisé à commenter.",
     "CommentDeleted":"Commentaire supprimé",
@@ -121,6 +120,8 @@
     "NoAccommondation":"Aucun logement disponible trouvé à votre destination",
     "TripRequestTypeNotAvailable":"Ce type de demande de voyage n'est pas pris en charge!",
     "TriprequestUpdatedSuccess":"Votre demande de voyage a bien été modifiée!",
-    "StopsMustBeArray":"Fournir des arrêts"
+    "StopsMustBeArray":"Fournir des arrêts",
+    "AccommodationNotFound":"Logement introuvable !!",
+    "ThankFeedback":"Merci pour votre retour",
+    "InvalidParamsRequestId": "Veuillez fournir un identifiant valide"
 }
-

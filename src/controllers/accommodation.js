@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 import Models from 'database/models';
 import uuid from 'uuid/v4';
+import { successResponse, errorResponse } from 'utils/responses';
 import setLanguage from 'utils/international';
-import { errorResponse, successResponse } from 'utils/responses';
 import bookingService from 'services/bookingService';
 
-const { Accommodations, Rooms, travelRequests, Booking } = Models;
+const { Accommodations, Rooms, travelRequests, Booking, Feedbacks } = Models;
 
 class accommodation {
   static async create(req, res) {
@@ -142,6 +142,36 @@ class accommodation {
       return successResponse(res, 201, setLanguage(preferedLang).__('bookedSuccess'));
     } catch (error) {
       return errorResponse(res, 500, error.message);
+    }
+  }
+  static async feedback(req, res){
+    try {
+    const {
+      query: {
+        accommodationId
+      },
+      body: {
+        feedback
+      },
+      user: {
+        id, email, preferedLang
+      }
+    } = req;
+    const data = await Accommodations.findAll({
+      where: {id: accommodationId}
+    })
+    if(data.length <= 0){
+      return errorResponse(res, 404, setLanguage(preferedLang).__('AccommodationNotFound'));
+    }
+      await Feedbacks.create({
+        id: uuid(),
+        accommodationId,
+        feedback,
+        userId: id
+      });
+      return successResponse(res, 201, setLanguage(preferedLang).__('ThankFeedback'));
+    } catch (error) {
+      return errorResponse(res, error.status || 500, error.message);
     }
   }
 }
