@@ -3,13 +3,8 @@ export default {
   up: (queryInterface, Sequelize) => queryInterface.createTable('travelRequests', {
     id: {
       allowNull: false,
-      autoIncrement: true,
-      type: Sequelize.INTEGER,
-    },
-    requestId: {
-      allowNull: false,
+      primaryKey: true,
       type: Sequelize.STRING,
-      primarykey: true
     },
     userID: {
       type: Sequelize.STRING,

@@ -100,6 +100,10 @@
     "noNewNotification" : "Vous n'avez aucune nouvelle notification",
     "notManager" : "Pour ce faire, vous devez être un manager",
     "TripApprovedSuccess":"La demande de voyage est approuvée avec succès",
-    "tripIdIsRequired" : "requestId est requis"
+    "tripIdIsRequired" : "requestId est requis",
+    "validComment": "Veuillez fournir un commentaire valide",
+    "InvalidParamsRequestId": "ID de demande non valide",
+    "CommentPosted":"Commentaire publié avec succès",
+    "commentSorry": " OOPS, il semble que vous ne soyez pas autorisé à commenter."
 }
 

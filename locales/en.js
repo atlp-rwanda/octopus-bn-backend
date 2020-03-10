@@ -102,7 +102,11 @@
     "notManager" : "To do this, You have to be a manager",
 	"NotAllowedToRejecApprovedRequest":"Trip has been already approved",
 	"TripApprovedSuccess":"Trip request is successfully approved",
-	"tripIdIsRequired" : "requestId is required"
+	"tripIdIsRequired" : "requestId is required",
+	"validComment": "Please provide a valid comment",
+	"InvalidParamsRequestId": "Invalid Request Id",
+	"CommentPosted":"Comment posted successfully",
+	"commentSorry": "OOPS, it looks like you are not allowed to comment."
 }
 
 

@@ -139,7 +139,7 @@ export default {
       birthDate: '1998-02-20',
       preferedCurrency: 'USD',
       residence: 'kimironko',
-      managerEmail: 'izabayoblaise82@gmail.com',
+      managerEmail: 'needs.grid@gmail.com',
       department: 'IT',
       imageUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fman-profile&psig=AOvVaw1-_OdOwQ-SYcfMGvGLOYb4&ust=1582456400155000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjsvNCD5ecCFQAAAAAdAAAAABAD',
       passportNumber: 'GH1234567',
