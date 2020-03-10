@@ -106,7 +106,9 @@
 	"validComment": "Please provide a valid comment",
 	"InvalidParamsRequestId": "Invalid Request Id",
 	"CommentPosted":"Comment posted successfully",
-	"commentSorry": "OOPS, it looks like you are not allowed to comment."
+	"commentSorry": "OOPS, it looks like you are not allowed to comment.",
+	"CommentDeleted":"Comment deleted",
+	"NoComment": "No comment found"
 }
 
 

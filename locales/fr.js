@@ -104,5 +104,7 @@
     "validComment": "Veuillez fournir un commentaire valide",
     "InvalidParamsRequestId": "ID de demande non valide",
     "CommentPosted":"Commentaire publié avec succès",
-    "commentSorry": " OOPS, il semble que vous ne soyez pas autorisé à commenter."
+    "commentSorry": " OOPS, il semble que vous ne soyez pas autorisé à commenter.",
+    "CommentDeleted":"Commentaire supprimé",
+	"NoComment": "Aucun commentaire trouvé"
 }

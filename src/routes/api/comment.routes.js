@@ -47,4 +47,35 @@ const comments = new commentsController();
  *         description: Requests retrieved successfully
  *  */
 router.post('/', checkUser, idValidator, commentValidator, comments.addComment);
+/**
+ * @swagger
+ *
+ *  /api/v1/requests/comments?commentId={commentId}:
+ *   delete:
+ *     security: []
+ *     summary: delete a comment
+ *     description: delete a comment
+ *     tags:
+ *       - Trips
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: commentId
+ *         description: commentId.
+ *         in: path
+ *         required: true
+ *         default: please add a comment id here
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: comment deleted
+ *  */
+router.delete('/', checkUser, comments.deleteComment);
 export default router;
