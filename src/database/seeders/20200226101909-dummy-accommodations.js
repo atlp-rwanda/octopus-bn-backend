@@ -20,6 +20,26 @@ export default {
       updatedAt: '2020-03-02T16:13:40.844Z',
       createdAt: '2020-03-02T16:13:40.844Z'
     },
+    {
+      id: '49235c57-2153-4e65-8b2b-68c0502165ab',
+      name: 'Come again',
+      country: 'Kenya',
+      city: 'Nairobi',
+      createdBy: 'd01cf3f2-4601-4b53-8ffd-fd46b6ded623',
+      imageUrl: 'http://wwww.anyimage.com/me.jpeg',
+      amenities: `{"${JSON.stringify({
+        example: 'Diego'
+      }).replace(/"/g, '\\"')}", "${JSON.stringify({
+        example: '10 smoke-free homes'
+      }).replace(/"/g, '\\"')}"}`,
+      around: `{"${JSON.stringify({
+        example: 'Restaurant and bar/lounge'
+      }).replace(/"/g, '\\"')}", "${JSON.stringify({
+        example: 'Pacho'
+      }).replace(/"/g, '\\"')}"}`,
+      updatedAt: '2020-03-02T16:13:40.844Z',
+      createdAt: '2020-03-02T16:13:40.844Z'
+    },
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Accommodations', null, {})
 };

@@ -2,10 +2,16 @@ import express from 'express';
 import checkUser from 'middlewares/checkUser';
 import isTravelAdministrator from 'middlewares/isTravelAdministrator';
 import isProfileUpdated from 'middlewares/isProfileUpdated';
+import validateParams from 'middlewares/paramsValidator';
 import accommodationController from '../../controllers/accommodation';
 import accommodationValidator from '../../middlewares/accommodationValidator';
 import roomsValidator from '../../middlewares/roomsValidator';
 import validateAccommodationAndRoom from '../../middlewares/validateAccommodationAndRoom';
+import {
+  isAccomendationExist, isRoomExist, isTripExist,
+  checkInAndCheckoutValidator,isRoomAlreadyBooked,
+  areYouTripOwner
+} from '../../middlewares/validateBooking';
 
 const router = express.Router();
 
@@ -109,4 +115,85 @@ router.post('/', [checkUser, isProfileUpdated, isTravelAdministrator, accommodat
  *         description: Room added successfully
  */
 router.post('/room', [checkUser, isProfileUpdated, isTravelAdministrator, roomsValidator, validateAccommodationAndRoom], accommodationController.addRoom);
+
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations?page={page}&limit={limit}&id={id}:
+ *   get:
+ *     security: []
+ *     summary: Accommodation per destination
+ *     description: show all available accommodation on your destination
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: Requests per page.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *       - name: id
+ *         description: request id.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: These are the available accomodations on your destination
+ *  */
+router.get('/', [checkUser, isProfileUpdated, validateParams], accommodationController.getAccommodationPerDestination);
+
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/book:
+ *   post:
+ *     security: []
+ *     summary: Book accommodation
+ *     description: Users can be able to book accommodations
+ *     tags:
+ *       - Accommodations
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               accommodationId:
+ *                 type: string
+ *               roomId:
+ *                 type: string
+ *               tripId:
+ *                 type: string
+ *               checkIn:
+ *                 type: string
+ *               checkOut:
+ *                 type: string
+ *
+ *     responses:
+ *       201:
+ *         description: You have successfully booked your accommodation
+ */
+router.post('/book', [checkUser, isProfileUpdated,
+  isAccomendationExist,isRoomExist, isTripExist, 
+  checkInAndCheckoutValidator, areYouTripOwner, 
+  isRoomAlreadyBooked],
+accommodationController.bookAccommodation);
+
 export default router;

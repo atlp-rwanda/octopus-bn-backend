@@ -370,6 +370,7 @@ describe('trips', () => {
       .post('/api/v1/trips/request')
       .send(newReqReturn)
       .end((err, res) => {
+        console.log(res);
         expect(res.body).to.have.keys('status', 'message', 'data');
         expect(res.body.status).to.be.equal(201);
         expect(res.body.message).to.be.equal('Travel request successfully created');

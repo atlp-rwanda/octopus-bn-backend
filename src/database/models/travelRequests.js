@@ -29,6 +29,11 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
+    travelRequests.hasOne(models.Booking, {
+      foreignKey: 'tripId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
   };
   return travelRequests;
 };

@@ -106,6 +106,18 @@
     "CommentPosted":"Commentaire publié avec succès",
     "commentSorry": " OOPS, il semble que vous ne soyez pas autorisé à commenter.",
     "CommentDeleted":"Commentaire supprimé",
-	"NoComment": "Aucun commentaire trouvé"
+	"NoComment": "Aucun commentaire trouvé",
+    "noRequestFound": "Aucune demande trouvée avec l'ID donné",
+    "rejected": "vous ne pouvez pas réserver d'hébergement pour les demandes rejetées",
+    "accommodationsPerDest": "Ce sont les hébergements disponibles sur votre destination",
+    "bookedSuccess": "Vous avez bien réservé votre logement",
+    "AccomondationNotExis":"L'identifiant de l'hébergement est introuvable",
+    "RoomIdNotExist":"L'identifiant de la chambre est introuvable",
+    "BookAlreadyExist":"Vous avez déjà réservé ce logement",
+    "ValidCheckInDate":"La date d'arrivée doit être valide",
+    "ValidCheckoutDate":"La date de départ doit être valide",
+    "RoomAlreadyBooked":"La chambre n'est pas disponible, essayez une autre chambre!",
+    "validCheckoutOn":"Veuillez fournir une date de départ valide, un indice après ou le",
+    "NoAccommondation":"Aucun logement disponible trouvé à votre destination"
 }
 
