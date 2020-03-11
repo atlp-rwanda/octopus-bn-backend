@@ -104,7 +104,6 @@
 	"TripApprovedSuccess":"Trip request is successfully approved",
 	"tripIdIsRequired" : "requestId is required",
 	"validComment": "Please provide a valid comment",
-	"InvalidParamsRequestId": "Invalid Request Id",
 	"CommentPosted":"Comment posted successfully",
 	"commentSorry": "OOPS, it looks like you are not allowed to comment.",
 	"CommentDeleted":"Comment deleted",
@@ -123,7 +122,8 @@
 	"NoAccommondation":"No available accommodation found at your destination",
 	"TripRequestTypeNotAvailable":"Such trip request type is not supported!",
 	"TriprequestUpdatedSuccess":"Your trip request has been successfully edited!",
-	"StopsMustBeArray":"Provide stops"
+	"StopsMustBeArray":"Provide stops",
+	"AccommodationNotFound":"Accommodation not found!!",
+	"ThankFeedback":"Thank you for the feedback",
+	"InvalidParamsRequestId": "Please provide a valid Id"
 }
-
-

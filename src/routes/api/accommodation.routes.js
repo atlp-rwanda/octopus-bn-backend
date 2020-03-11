@@ -12,6 +12,8 @@ import {
   checkInAndCheckoutValidator,isRoomAlreadyBooked,
   areYouTripOwner
 } from '../../middlewares/validateBooking';
+import validateId from '../../middlewares/idValidator';
+import feedbackValidator from '../../middlewares/validateFeedback';
 
 const router = express.Router();
 
@@ -195,5 +197,45 @@ router.post('/book', [checkUser, isProfileUpdated,
   checkInAndCheckoutValidator, areYouTripOwner, 
   isRoomAlreadyBooked],
 accommodationController.bookAccommodation);
+
+ /**
+ * @swagger
+ *
+ *  /api/v1/accommodations/feedback?accommodationId={accommodationId}:
+ *   post:
+ *     security: []
+ *     summary: add a to accommodations
+ *     description: add a comment to accommodations
+ *     tags:
+ *       - Accommodations
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               feedback:
+ *                 type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: accommodationId
+ *         description: accommodationId.
+ *         in: path
+ *         required: true
+ *         default: id
+ *         type: Thanks you for the feedback
+ *     responses:
+ *       200:
+ *         description: Requests retrieved successfully
+ *  */
+router.post('/feedback', checkUser, validateId, feedbackValidator, accommodationController.feedback);
 
 export default router;
