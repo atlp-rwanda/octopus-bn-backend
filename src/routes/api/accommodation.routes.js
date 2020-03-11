@@ -9,11 +9,12 @@ import roomsValidator from '../../middlewares/roomsValidator';
 import validateAccommodationAndRoom from '../../middlewares/validateAccommodationAndRoom';
 import {
   isAccomendationExist, isRoomExist, isTripExist,
-  checkInAndCheckoutValidator,isRoomAlreadyBooked,
+  checkInAndCheckoutValidator, isRoomAlreadyBooked,
   areYouTripOwner
 } from '../../middlewares/validateBooking';
 import validateId from '../../middlewares/idValidator';
 import feedbackValidator from '../../middlewares/validateFeedback';
+import validateRating from '../../middlewares/validateRating';
 
 const router = express.Router();
 
@@ -237,5 +238,38 @@ accommodationController.bookAccommodation);
  *         description: Requests retrieved successfully
  *  */
 router.post('/feedback', checkUser, validateId, feedbackValidator, accommodationController.feedback);
+
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/rating:
+ *   post:
+ *     security: []
+ *     summary: rate accommodations
+ *     description: rate accommodations
+ *     tags:
+ *       - Accommodations
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               accommodationId:
+ *                 type: string
+ *               rating:
+ *                 type: number
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Thank you for rating us
+ */
+router.post('/rating', [checkUser, validateRating], accommodationController.addRatings);
 
 export default router;

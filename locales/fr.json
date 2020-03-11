@@ -86,7 +86,8 @@
 	"validImageUrl":"Veuillez fournir une ville valide",
 	"oneAmenity":"Veuillez fournir au moins un équipement",
 	"aroundAccommodation":"Veuillez informer les gens des choses plus intéressantes autour de l'hébergement",
-	"accommodationID":"Veuillez fournir une pièce d'identité valide pour l'hébergement",
+    "accommodationID":"Veuillez fournir une pièce d'identité valide pour l'hébergement",
+    "accommodationIDNot":"Veuillez fournir une pièce d'identité valide pour l'hébergement",
 	"roomNumber":"Veuillez fournir un numéro de chambre valide",
 	"validCost":"Veuillez fournir un coût valide",
 	"validCurrency":"Veuillez fournir une devise valide",
@@ -125,5 +126,9 @@
     "ThankFeedback":"Merci pour votre retour",
     "InvalidParamsRequestId": "Veuillez fournir un identifiant valide",
     "noUnread": "Vous n'avez actuellement aucune notification non lue",
-    "allmarkedAsRead": "toutes vos notifications non lues ont été marquées comme lues"
+    "allmarkedAsRead": "toutes vos notifications non lues ont été marquées comme lues",
+    "notFoundAccommodation":"Logement non trouvé !!!",
+	"ThanksYouRating":"Merci pour votre évaluation",
+    "thanksYouAgain":"Merci encore pour votre note. Veuillez également prendre le temps de laisser des commentaires.",
+    "validRatings": "veuillez fournir une évaluation valide [1-5]"
 }

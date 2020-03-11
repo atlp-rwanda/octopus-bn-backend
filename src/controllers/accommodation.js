@@ -5,7 +5,9 @@ import { successResponse, errorResponse } from 'utils/responses';
 import setLanguage from 'utils/international';
 import bookingService from 'services/bookingService';
 
-const { Accommodations, Rooms, travelRequests, Booking, Feedbacks } = Models;
+const {
+  Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings
+} = Models;
 
 class accommodation {
   static async create(req, res) {
@@ -103,7 +105,7 @@ class accommodation {
 
       const to = findRequest.to.split(' - ')[1];
       const accommodations = await bookingService.getAccommodations(to, page, limit);
-      if(accommodations === null){
+      if (accommodations === null) {
         return errorResponse(res, 404, setLanguage(preferedLang).__('NoAccommondation'));
       }
 
@@ -144,25 +146,26 @@ class accommodation {
       return errorResponse(res, 500, error.message);
     }
   }
-  static async feedback(req, res){
+
+  static async feedback(req, res) {
     try {
-    const {
-      query: {
-        accommodationId
-      },
-      body: {
-        feedback
-      },
-      user: {
-        id, email, preferedLang
+      const {
+        query: {
+          accommodationId
+        },
+        body: {
+          feedback
+        },
+        user: {
+          id, email, preferedLang
+        }
+      } = req;
+      const data = await Accommodations.findAll({
+        where: { id: accommodationId }
+      });
+      if (data.length <= 0) {
+        return errorResponse(res, 404, setLanguage(preferedLang).__('AccommodationNotFound'));
       }
-    } = req;
-    const data = await Accommodations.findAll({
-      where: {id: accommodationId}
-    })
-    if(data.length <= 0){
-      return errorResponse(res, 404, setLanguage(preferedLang).__('AccommodationNotFound'));
-    }
       await Feedbacks.create({
         id: uuid(),
         accommodationId,
@@ -172,6 +175,44 @@ class accommodation {
       return successResponse(res, 201, setLanguage(preferedLang).__('ThankFeedback'));
     } catch (error) {
       return errorResponse(res, error.status || 500, error.message);
+    }
+  }
+
+  static async addRatings(req, res) {
+    try {
+      const { body: { accommodationId, rating }, user: { id, preferedLang } } = req;
+      const data = await Accommodations.findOne({
+        where: { id: accommodationId }
+      });
+      if (!data) {
+        return errorResponse(res, 404, setLanguage(preferedLang).__('notFoundAccommodation'));
+      }
+      const preRatings = await Ratings.findOne({
+        where: { userId: id, accommodationId }
+      });
+      if (preRatings) {
+        await Ratings.update(
+          { rating },
+          {
+            where: { userId: id, accommodationId },
+            returning: true
+          }
+        );
+        return successResponse(res, 200, setLanguage(preferedLang).__('thanksYouAgain'));
+      }
+      await Ratings.create({
+        id: uuid(),
+        userId: id,
+        accommodationId,
+        rating
+      });
+      return successResponse(res, 201, setLanguage(preferedLang).__('ThanksYouRating'));
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        errors: {
+          error: error.message
+        }
+      });
     }
   }
 }
