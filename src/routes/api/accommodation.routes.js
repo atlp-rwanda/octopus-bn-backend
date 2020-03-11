@@ -13,8 +13,9 @@ import {
   areYouTripOwner
 } from '../../middlewares/validateBooking';
 import validateId from '../../middlewares/idValidator';
-import feedbackValidator from '../../middlewares/validateFeedback';
 import validateRating from '../../middlewares/validateRating';
+import feedbackValidator from '../../middlewares/validateFeedback';
+import checkIfAccomodationExist from '../../middlewares/isAccomodation';
 
 const router = express.Router();
 
@@ -194,12 +195,12 @@ router.get('/', [checkUser, isProfileUpdated, validateParams], accommodationCont
  *         description: You have successfully booked your accommodation
  */
 router.post('/book', [checkUser, isProfileUpdated,
-  isAccomendationExist,isRoomExist, isTripExist, 
-  checkInAndCheckoutValidator, areYouTripOwner, 
+  isAccomendationExist, isRoomExist, isTripExist,
+  checkInAndCheckoutValidator, areYouTripOwner,
   isRoomAlreadyBooked],
 accommodationController.bookAccommodation);
 
- /**
+/**
  * @swagger
  *
  *  /api/v1/accommodations/feedback?accommodationId={accommodationId}:
@@ -271,5 +272,67 @@ router.post('/feedback', checkUser, validateId, feedbackValidator, accommodation
  *         description: Thank you for rating us
  */
 router.post('/rating', [checkUser, validateRating], accommodationController.addRatings);
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/likes/{accommodationId}:
+ *   get:
+ *     security: []
+ *     summary: Get likes per accomodation
+ *     description: Get likes per accomodation
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: accommodationId
+ *         description: Get likes per accomodation
+ *         in: path
+ *         requiered: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Get likes per accomodation
+ *  */
+router.get('/likes/:accommodationId', [checkUser, isProfileUpdated, checkIfAccomodationExist], accommodationController.getAccommodationLikes);
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/like-unlike/{accommodationId}:
+ *   post:
+ *     security: []
+ *     summary: Like or unlike accommodation
+ *     description:  Like or unlike accommodation
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *     parameters:
+ *       - name: accommodationId
+ *         description:  Like or unlike accommodation
+ *         in: path
+ *         requiered: true
+ *         type: string
+ *     responses:
+ *       201:
+ *         description:  Like accommodation
+ *       200:
+ *         description:  Unlike accommodation
+ *  */
+router.post('/like-unlike/:accommodationId', [checkUser, isProfileUpdated, checkIfAccomodationExist], accommodationController.LikeOrUnlike);
 
 export default router;

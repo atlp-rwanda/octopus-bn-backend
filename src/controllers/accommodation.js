@@ -5,10 +5,10 @@ import { successResponse, errorResponse } from 'utils/responses';
 import setLanguage from 'utils/international';
 import bookingService from 'services/bookingService';
 
-const {
-  Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings
-} = Models;
 
+const {
+  Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings, AcommodationLikesAndUnlikes
+} = Models;
 class accommodation {
   static async create(req, res) {
     try {
@@ -209,6 +209,82 @@ class accommodation {
       return successResponse(res, 201, setLanguage(preferedLang).__('ThanksYouRating'));
     } catch (error) {
       return res.status(error.status || 500).json({
+        errors: {
+          error: error.message
+        }
+      });
+    }
+  }
+
+
+  static async getAccommodationLikes(req, res) {
+    try {
+      const {
+        params: {
+          accommodationId
+        },
+      } = req;
+      const { count, rows } = await AcommodationLikesAndUnlikes.findAndCountAll({
+        where: {
+          accommodationId
+        },
+        include: [
+          {
+            model: Users,
+            attributes: {
+              exclude: ['createdAt', 'updatedAt', 'password',
+                'notifyByEmail', 'role', 'passportNumber', 'bio',
+                'managerEmail', 'gender', 'department', 'preferedCurrency',
+                'preferedLang', 'residence', 'birthDate', 'method',
+                'email', 'isUpdated', 'isVerified'
+              ]
+            }
+          },
+        ]
+      });
+      return res.status(200).json({
+        status: 200,
+        data: { count, rows }
+      });
+    } catch (error) {
+      return res.status(500).json({
+        errors: {
+          error: error.message
+        }
+      });
+    }
+  }
+
+  static async LikeOrUnlike(req, res) {
+    try {
+      const {
+        params: {
+          accommodationId
+        },
+        user: {
+          id,
+        }
+      } = req;
+      const liked = await AcommodationLikesAndUnlikes.findOne({ where: { userId: id, accommodationId, } });
+      const like = {
+        id: uuid(),
+        userId: id,
+        accommodationId,
+      };
+      if (!liked) {
+        await AcommodationLikesAndUnlikes.create(like);
+        return res.status(201).json({
+          status: 201,
+          message: 'liked',
+        });
+      }
+      await AcommodationLikesAndUnlikes.destroy({ where: { userId: id, accommodationId, } });
+      return res.status(200).json({
+        status: 200,
+        message: 'unliked'
+      });
+    } catch (error) {
+      return res.status(500).json({
         errors: {
           error: error.message
         }
