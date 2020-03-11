@@ -1,3 +1,4 @@
+  
 /* eslint-disable valid-jsdoc */
 /* eslint-disable require-jsdoc */
 import { emailTripRequest } from '../utils/emailHelper';
@@ -35,6 +36,82 @@ class notificationsController {
 
       if (manager.notifyByEmail) {
         await emailTripRequest(manager.firstName, manager.email, body, id, host);
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * @description As a requester,
+   * I should be able to see notifications
+   * when my travel request has been approved by my manager
+   * @param {*} user
+   * @param {*} type
+   * @param {*} request
+   * @param {*} host
+   */
+  static async ApprovalStatusNotification(type, request, body, host) {
+    try {
+      const { id, userID } = request,
+        { Users } = Models,
+        user = await Users.findOne({
+          where: {
+            id: userID
+          },
+        }),
+        notification = {
+          requestID: id, receiver: userID, type, body, isRead: false
+        };
+      await Models.Notification.create(notification);
+      const online = onlineClients.get(userID.toString());
+      if (online) {
+        online.emit('notification', notification);
+      }
+
+      if (user.notifyByEmail) {
+        await emailTripRequest(user.firstName, user.email, body, id, host);
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * @description As a requester,
+   * I should be able to see notifications
+   * when my travel request has been approved by my manager
+   * @param {*} user
+   * @param {*} type
+   * @param {*} request
+   * @param {*} host
+   */
+  static async ApprovalStatusNotification(type, request, body, host) {
+    try {
+      const { requestId, userID } = request,
+        { Users } = Models,
+        user = await Users.findOne({
+          where: {
+            id: userID
+          },
+        }),
+        notification = {
+          requestID: requestId, receiver: userID, type, body, isRead: false
+        };
+      await Models.Notification.create(notification);
+      const online = onlineClients.get(userID.toString());
+      if (online) {
+        online.emit('notification', notification);
+      }
+
+      if (user.notifyByEmail) {
+        await emailTripRequest(user.firstName, user.email, body, requestId, host);
       }
     } catch (error) {
       return {
