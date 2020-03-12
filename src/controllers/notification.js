@@ -1,6 +1,7 @@
   
 /* eslint-disable valid-jsdoc */
 /* eslint-disable require-jsdoc */
+import { successResponse, errorResponse } from 'utils/responses';
 import { emailTripRequest } from '../utils/emailHelper';
 import Models from '../database/models';
 import { onlineClients } from '../utils/socket';
@@ -216,6 +217,25 @@ class notificationsController {
         status: 500,
         error: req.i18n.__('internalServerError')
       });
+    }
+  }
+
+  /**
+   * @description This method is used to mark all notifications as read
+   * @param {object} req
+   * @param {object} res
+   */
+  static async markAllNotificationAsRead(req, res) {
+    try {
+      const { id, preferedLang } = req.user;
+
+      await Models.Notification.update({
+        isRead: true
+      }, { where: { receiver: id } });
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('allmarkedAsRead'));
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
     }
   }
 }
