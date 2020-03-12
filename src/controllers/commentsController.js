@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable require-jsdoc */
 import Models from 'database/models';
 import uuid from 'uuid/v4';
@@ -10,7 +11,6 @@ const {
   Op
 } = Sequelize;
 class commentsController {
-  // eslint-disable-next-line class-methods-use-this
   async addComment(req, res) {
     try {
       const {
@@ -42,34 +42,33 @@ class commentsController {
         requestId,
         comment
       });
-      return successResponse(res, 201, setLanguage(preferedLang).__('CommentPosted'), { comment, by: email || id, requestId: found.id});
+      return successResponse(res, 201, setLanguage(preferedLang).__('CommentPosted'), { comment, by: email || id, requestId: found.id });
     } catch (error) {
       errorResponse(res, error.status || 500, error.message);
     }
   }
+
   async deleteComment(req, res) {
     try {
-        const { query: { commentId }, body: { comment }, user: { id, email, preferedLang } } = req;
-        const found = await Comments.findOne({
-            where: {
-                id: commentId,
-                userID: id
-            }
-        });
-        if (found) {
-            await Comments.destroy({
-                where: {
-                    id: commentId
-                }
-            }).then((data) => {
-                return successResponse(res, 200, setLanguage(preferedLang).__('CommentDeleted'));
-            });
+      const { query: { commentId }, body: { comment }, user: { id, email, preferedLang } } = req;
+      const found = await Comments.findOne({
+        where: {
+          id: commentId,
+          userID: id
         }
-        return errorResponse(res, 404, setLanguage(preferedLang).__('NoComment'));
+      });
+      if (found) {
+        await Comments.destroy({
+          where: {
+            id: commentId
+          }
+        }).then((data) => successResponse(res, 200, setLanguage(preferedLang).__('CommentDeleted')));
+      }
+      return errorResponse(res, 404, setLanguage(preferedLang).__('NoComment'));
     } catch (error) {
-        errorResponse(res, error.status || 500, error.message);
+      errorResponse(res, error.status || 500, error.message);
     }
-}
+  }
 }
 
 

@@ -8,7 +8,6 @@ import tripsRouter from './trips.routes';
 import accommodationRoutes from './accommodation.routes';
 import notificationRoutes from './notification.routes';
 import commentRoutes from './comment.routes';
-import chatRoutes from './chat.routes';
 
 const router = Router();
 const swaggerDoc = swaggerJsdoc(swaggerOptions);
@@ -21,6 +20,5 @@ router.use('/api/v1/trips', tripsRouter);
 router.use('/api/v1/accommodations', accommodationRoutes);
 router.use('/api/v1/notifications', notificationRoutes);
 router.use('/api/v1/requests/comments', commentRoutes);
-router.use('/api/v1/chat', chatRoutes);
 
 export default router;
