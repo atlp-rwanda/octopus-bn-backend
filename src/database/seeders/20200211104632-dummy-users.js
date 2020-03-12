@@ -58,6 +58,29 @@ export default {
       bio: 'I love travel administrator',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      id: 'd01cf3f2-4602-4b53-8ffd-fd56b6ded623',
+      firstName: 'Product',
+      lastName: 'Owner',
+      method: 'local',
+      isVerified: true,
+      isUpdated: true,
+      email: 'PO@gmail.com',
+      password: '$2a$10$JUCGXOZMZUDUHXqRpbdoVuQ.0RuEEV26NKwnZUQJ2K1tE4FwW.nE.',
+      role: 'requester',
+      gender: 'male',
+      preferedLang: 'en',
+      birthDate: '1998-02-20',
+      preferedCurrency: 'USD',
+      residence: 'kimironko',
+      managerEmail: 'needs.grid@gmail.com',
+      department: 'travel',
+      imageUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fman-profile&psig=AOvVaw1-_OdOwQ-SYcfMGvGLOYb4&ust=1582456400155000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjsvNCD5ecCFQAAAAAdAAAAABAD',
+      passportNumber: 'RW1234567',
+      bio: 'I love travel administrator',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Users', null, {})

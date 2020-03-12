@@ -19,6 +19,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 // Create global app object
 const app = express();
 
+
 // serve static files
 app.use('/static', express.static(path.join(__dirname, '../public')));
 
@@ -99,5 +100,10 @@ app.use((err, req, res, next) => {
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${server.address().port}`);
 });
-socketio(server);
+
+const io = require('socket.io').listen(server);
+
+socketio(io);
+
+
 export default app;
