@@ -64,8 +64,11 @@
              const socket = io.connect(`${url}`);
             socket.emit('connect_user', `${user}`)
             socket.on('notification', (notification) =>  {
-            const link = `${host}/api/v1/trips/${notification.requestID}`
+            const requestId = notification.requestID
+            const link = `${url}api/v1/trips/${requestId}`
             $("#notifications").append(`<li><a href=${link} target="_blank">${notification.body}</li>`);
+            console.log(link);
+            
         });
         }
     </script>

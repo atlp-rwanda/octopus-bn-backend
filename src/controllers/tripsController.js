@@ -12,7 +12,10 @@ import {
   multiCityTripGenerator
 } from 'utils/objectPropertyExcluder';
 import notificationsController from './notification';
-const { sendTripReqNotification, ApprovalStatusNotification } = notificationsController;
+const { 
+  sendTripReqNotification, ApprovalStatusNotification,
+  sendEditNotification
+ } = notificationsController;
 
 const {
   Op, where, cast, col
@@ -53,7 +56,9 @@ class tripsController {
           returnDate
         },
         user: {
-          email, id, passportNumber, gender, managerEmail, preferedLang, firstName,
+          email, id, passportNumber,
+          gender, managerEmail, preferedLang, 
+          firstName, lastName
         },
         headers: { host }
       } = req;
@@ -77,7 +82,8 @@ class tripsController {
           status: 'pending'
         }
       );
-      const body = ` ${firstName} made a trip request: - From ${from} to ${to}`;
+      const name = `${firstName} ${lastName}`,
+      body = ` ${name} made a trip request: - From ${from} to ${to}`;
       await sendTripReqNotification(req.user, 'trip request', request, body, host);
       return res.status(201).json({
         status: 201,
@@ -113,7 +119,9 @@ class tripsController {
           fromCountry, fromCity, toCountry, toCity, stops
         },
         user: {
-          id, gender, firstName, passportNumber, managerEmail, preferedLang
+          id, gender, firstName, 
+          lastName, passportNumber, 
+          managerEmail, preferedLang
         },
         header: { host }
       } = req;
@@ -125,7 +133,9 @@ class tripsController {
       }
       const request = await tripService.createTrip(id, passportNumber,
         gender, from, to, managerEmail, req.body);
-      const notificationbody = ` ${firstName} made a multi-city trip request: - From ${from} to ${to}.`;
+      
+        const name = `${firstName} ${lastName}`,
+      notificationbody = ` ${name} made a multi-city trip request: - From ${from} to ${to}.`;
       await sendTripReqNotification(req.user, 'multi-city trip request', request, notificationbody, host);
       successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
     } catch (error) {
@@ -176,7 +186,7 @@ class tripsController {
       const trips = await travelRequests.findAll({
         where: { userID: id },
         attributes: {
-          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+          exclude: ['userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
         },
         offset: pagination.offset,
         limit: pagination.limit,
@@ -297,7 +307,7 @@ class tripsController {
           tripId
         },
         user: {
-          firstName, preferedLang
+          firstName, lastName, preferedLang
         },
         header: { host }
       } = req;
@@ -326,7 +336,8 @@ class tripsController {
         status,
         stops
       };
-      const body = `${firstName} rejected your trip request: - From ${from} to ${to}.`;
+      const name = `${firstName} ${lastName}`,
+      body = `${name} rejected your trip request: - From ${from} to ${to}.`;
       await ApprovalStatusNotification('rejected request', affectedRow[1], body, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
     } catch (error) {
@@ -348,7 +359,7 @@ class tripsController {
           tripId
         },
         user: {
-          firstName, preferedLang
+          firstName, lastName, preferedLang
         },
         headers: { host }
       } = req;
@@ -377,7 +388,8 @@ class tripsController {
         status,
         stops
       };
-      const body = `${firstName} approved your trip request: - From ${from} to ${to}.`;
+      const name = `${firstName} ${lastName}`,
+      body = `${name} approved your trip request: - From ${from} to ${to}.`;
       await ApprovalStatusNotification('approved request', affectedRow[1], body, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TripApprovedSuccess'), response);
     } catch (error) {
@@ -472,8 +484,9 @@ class tripsController {
         },
         body,
         user: {
-          preferedLang
-        }
+           firstName, lastName, preferedLang
+        },
+        headers: { host }
       } = req;
       const oneWayTrip = oneWayTripGenerator(body);
       const returnTrip = returnTripGenerator(body);
@@ -488,6 +501,9 @@ class tripsController {
           plain: true
         }
       );
+      const name = `${firstName} ${lastName}`,
+      notification = ` ${name} edited a trip request.`;
+      await sendEditNotification(req.user, 'edited trip request', tripId, notification, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TriprequestUpdatedSuccess'), fineTripRequest);
     } catch (error) {
       return errorResponse(res, 500, error.message);
