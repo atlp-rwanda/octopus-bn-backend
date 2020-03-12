@@ -82,36 +82,35 @@ class notificationsController {
       };
     }
   }
-
+  
   /**
-   * @description As a requester,
-   * I should be able to see notifications
-   * when my travel request has been approved by my manager
+   * @description Sending edited trip request notification to the manager
    * @param {*} user
    * @param {*} type
    * @param {*} request
    * @param {*} host
    */
-  static async ApprovalStatusNotification(type, request, body, host) {
+  static async sendEditNotification(user, type, requestId, body, host) {
     try {
-      const { requestId, userID } = request,
+      const { managerEmail } = user,
         { Users } = Models,
-        user = await Users.findOne({
+        manager = await Users.findOne({
           where: {
-            id: userID
+            email: managerEmail
           },
         }),
         notification = {
-          requestID: requestId, receiver: userID, type, body, isRead: false
+          requestID: requestId, receiver: manager.id, type, body, isRead: false
         };
       await Models.Notification.create(notification);
-      const online = onlineClients.get(userID.toString());
+
+      const online = onlineClients.get(manager.id.toString());
       if (online) {
         online.emit('notification', notification);
       }
 
-      if (user.notifyByEmail) {
-        await emailTripRequest(user.firstName, user.email, body, requestId, host);
+      if (manager.notifyByEmail) {
+        await emailTripRequest(manager.firstName, manager.email, body, id, host);
       }
     } catch (error) {
       return {
