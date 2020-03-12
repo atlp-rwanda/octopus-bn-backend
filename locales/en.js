@@ -125,5 +125,8 @@
 	"StopsMustBeArray":"Provide stops",
 	"AccommodationNotFound":"Accommodation not found!!",
 	"ThankFeedback":"Thank you for the feedback",
-	"InvalidParamsRequestId": "Please provide a valid Id"
+	"InvalidParamsRequestId": "Please provide a valid Id",
+	"noUnread": "You currently have no unread notifications",
+	"allmarkedAsRead": "all your unread notifications was marked as read"
 }
+

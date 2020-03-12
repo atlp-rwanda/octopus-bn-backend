@@ -123,5 +123,7 @@
     "StopsMustBeArray":"Fournir des arrêts",
     "AccommodationNotFound":"Logement introuvable !!",
     "ThankFeedback":"Merci pour votre retour",
-    "InvalidParamsRequestId": "Veuillez fournir un identifiant valide"
+    "InvalidParamsRequestId": "Veuillez fournir un identifiant valide",
+    "noUnread": "Vous n'avez actuellement aucune notification non lue",
+    "allmarkedAsRead": "toutes vos notifications non lues ont été marquées comme lues"
 }
