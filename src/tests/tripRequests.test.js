@@ -378,7 +378,7 @@ describe('trips', () => {
         done();
       });
   });
-  it('It should request return trip way successfully', (done) => {
+  it('It should retrieve requests successfully', (done) => {
     chai
       .request(app)
       .get('/api/v1/trips/request')

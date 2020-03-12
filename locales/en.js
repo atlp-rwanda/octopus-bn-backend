@@ -88,6 +88,7 @@
 	"oneAmenity":"Please provide at least one amenity",
 	"aroundAccommodation":"Please let people know more interesting things around the accommodation",
 	"accommodationID":"Please provide a valid room accommodation ID",
+	"accommodationIDNot":"Please provide a valid accommodation ID",
 	"roomNumber":"Please provide a valid room number",
 	"validCost":"Please provide a valid cost",
 	"validCurrency":"Please provide a valid currency",
@@ -127,6 +128,9 @@
 	"ThankFeedback":"Thank you for the feedback",
 	"InvalidParamsRequestId": "Please provide a valid Id",
 	"noUnread": "You currently have no unread notifications",
-	"allmarkedAsRead": "all your unread notifications was marked as read"
+	"allmarkedAsRead": "all your unread notifications was marked as read",
+	"notFoundAccommodation":"Accommodation not found!!!",
+	"ThanksYouRating":"Thank you for your rating",
+	"thanksYouAgain":"Thank you for your rating again. Please take your time to leave some feedback too",
+	"validRatings": "please provide a valid rating [1-5]"
 }
-
