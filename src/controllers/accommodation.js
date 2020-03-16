@@ -4,6 +4,8 @@ import uuid from 'uuid/v4';
 import { successResponse, errorResponse } from 'utils/responses';
 import setLanguage from 'utils/international';
 import bookingService from 'services/bookingService';
+import accommodationService from 'services/accommodationService';
+import paginate from 'utils/paginate';
 
 
 const {
@@ -198,6 +200,8 @@ class accommodation {
             returning: true
           }
         );
+        await accommodationService.averageRatings(accommodationId);
+
         return successResponse(res, 200, setLanguage(preferedLang).__('thanksYouAgain'));
       }
       await Ratings.create({
@@ -206,6 +210,8 @@ class accommodation {
         accommodationId,
         rating
       });
+      await accommodationService.averageRatings(accommodationId);
+
       return successResponse(res, 201, setLanguage(preferedLang).__('ThanksYouRating'));
     } catch (error) {
       return res.status(error.status || 500).json({
@@ -312,6 +318,43 @@ class accommodation {
       const mostTraveledCentres = await bookingService.getTrendingCentres(page, limit);
 
       return successResponse(res, 200, setLanguage(preferedLang).__('trendingDestinations'), mostTraveledCentres);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
+  
+  /**
+   * @description This method will fetch and display all accommodations
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   */
+  static async getAllAccommodations(req, res) {
+    try {
+      const {
+        query: {
+          page, limit
+        },
+        user: {
+          preferedLang
+        }
+      } = req;
+      const pagination = paginate(page, limit);
+      const allAccommodations = await Accommodations.findAll({
+        attributes: {
+          exclude: ['createdBy', 'imageUrl', 'country', 'createdAt', 'updatedAt']
+        },
+        include: [{
+          model: Rooms,
+          attributes: {
+            exclude: ['accommodationsID', 'createdBy', 'createdAt', 'updatedAt']
+          }
+        }],
+        offset: pagination.offset,
+        limit: pagination.limit
+      });
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('allAccommodations'), allAccommodations);
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }
