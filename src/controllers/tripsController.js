@@ -4,18 +4,19 @@ import { successResponse, errorResponse } from 'utils/responses';
 import tripService from 'services/tripsService';
 import Models from 'database/models';
 import setLanguage from 'utils/international';
-import paginate from '../utils/paginate';
 import Sequelize from 'sequelize';
 import {
   oneWayTripGenerator,
   returnTripGenerator,
   multiCityTripGenerator
 } from 'utils/objectPropertyExcluder';
+import paginate from '../utils/paginate';
 import notificationsController from './notification';
-const { 
+
+const {
   sendTripReqNotification, ApprovalStatusNotification,
   sendEditNotification
- } = notificationsController;
+} = notificationsController;
 
 const {
   Op, where, cast, col
@@ -505,6 +506,28 @@ class tripsController {
       notification = ` ${name} edited a trip request.`;
       await sendEditNotification(req.user, 'edited trip request', tripId, notification, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TriprequestUpdatedSuccess'), fineTripRequest);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
+
+  static async tripStatistics(req, res) {
+    try {
+      const {
+        params: {
+          from, until
+        },
+        user: {
+          id, preferedLang
+        }
+      } = req;
+
+      if (new Date(from).getTime() > new Date(until).getTime()) {
+        return errorResponse(res, 422, setLanguage(preferedLang).__('invalidFromDate'));
+      }
+      const stats = await tripService.getTripstats({ id, from, until });
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('yourStats'), stats);
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }

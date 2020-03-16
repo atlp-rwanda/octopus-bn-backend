@@ -7,10 +7,11 @@ import tripRequestValidator from 'middlewares/tripRequestValidator';
 import dateValidator from 'middlewares/tripRequestDateValidator';
 import { validateMultiCity, validateStops } from 'validation/multiCity.validation';
 import validateParams from 'middlewares/paramsValidator';
+import validateStats from 'validation/validateStatsDate';
 import {
   isUuidParamValid, isTripExist,
   isTripAssigned, isTripRejected,
-  isTripApproved,isEditTripRequestValid,
+  isTripApproved, isEditTripRequestValid,
   areYouTripOwner
 } from 'middlewares/validateTrip';
 
@@ -469,4 +470,42 @@ router.patch('/:tripId', [checkUser, isProfileUpdated,
   isUuidParamValid, isTripExist, areYouTripOwner, isTripRejected,
   isTripApproved, isEditTripRequestValid],
 tripsController.editTrip);
+
+/**
+ * @swagger
+ *
+ * /api/v1/trips/stats/{from}/{until}:
+ *   get:
+ *     security: []
+ *     summary: Travel requests statistics
+ *     description: Show travel requests statistics of a user in a given timeframe
+ *     tags:
+ *       - Trips
+ *     parameters:
+ *       - name: from
+ *         description: from date.
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: until
+ *         description: until date.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Your travel requests statistics between the given dates
+ */
+router.get('/stats/:from/:until', [checkUser, isProfileUpdated, validateStats], tripsController.tripStatistics);
 export default router;

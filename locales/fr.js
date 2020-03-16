@@ -130,5 +130,9 @@
     "notFoundAccommodation":"Logement non trouvé !!!",
 	"ThanksYouRating":"Merci pour votre évaluation",
     "thanksYouAgain":"Merci encore pour votre note. Veuillez également prendre le temps de laisser des commentaires.",
-    "validRatings": "veuillez fournir une évaluation valide [1-5]"
+    "validRatings": "veuillez fournir une évaluation valide [1-5]",
+    "invalidFromDate": "La date de début doit être une date du passé",
+    "yourStats": "Vos statistiques de demandes de voyage entre les dates données",
+    "fromDate": "La date de début est obligatoire et le format est AAAA-MM-JJ",
+    "untilDate": "La date jusqu'au est requise et le format est AAAA-MM-JJ"
 }

@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4';
 import Models from 'database/models';
 import paginate from 'utils/paginate';
+import { Op } from 'sequelize';
 
 const { travelRequests, Users } = Models;
 
@@ -82,6 +83,36 @@ class tripHelper {
     });
 
     return allTrips;
+  }
+
+  /**
+   * @description this method will calculate the stats of a user's requests
+   * @param {object} data
+   * @returns {object} stats
+   */
+  static async getTripstats(data) {
+    const { id, from, until } = data;
+    const { count, rows } = await travelRequests.findAndCountAll({
+      where: {
+        userID: id,
+        createdAt: {
+          [Op.between]: [from, until]
+        }
+      },
+      order: [
+        ['createdAt', 'ASC']
+      ]
+    });
+    const approvedRequests = rows.filter((request) => request.status === 'approved');
+    const pendingRequests = rows.filter((request) => request.status === 'pending');
+    const rejectedRequests = rows.filter((request) => request.status === 'rejected');
+
+    return {
+      allTripRequests: count,
+      approvedRequests: approvedRequests.length,
+      pendingRequests: pendingRequests.length,
+      rejectedRequests: rejectedRequests.length
+    };
   }
 }
 

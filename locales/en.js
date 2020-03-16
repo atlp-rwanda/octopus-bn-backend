@@ -132,5 +132,9 @@
 	"notFoundAccommodation":"Accommodation not found!!!",
 	"ThanksYouRating":"Thank you for your rating",
 	"thanksYouAgain":"Thank you for your rating again. Please take your time to leave some feedback too",
-	"validRatings": "please provide a valid rating [1-5]"
+	"validRatings": "please provide a valid rating [1-5]",
+	"invalidFromDate": "The from date must be a date from the past",
+	"yourStats": "Your travel requests statistics between the given dates",
+	"fromDate": "The from date is required and the format is YYYY-MM-DD",
+	"untilDate": "The until date is required and the format is YYYY-MM-DD"
 }
