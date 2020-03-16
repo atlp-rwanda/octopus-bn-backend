@@ -3,7 +3,10 @@ import Models from 'database/models';
 import paginate from 'utils/paginate';
 import { Op } from 'sequelize';
 
-const { travelRequests, Users } = Models;
+
+const {
+  travelRequests, Users
+} = Models;
 
 /**
  * @description This class contains trip helpers methods
@@ -74,7 +77,7 @@ class tripHelper {
       include: [{
         model: Users,
         attributes: {
-          exclude: [ 'method', 'password', 'isVerified', 'isUpdated', 'gender', 'birthDate', 'preferedLang',
+          exclude: ['method', 'password', 'isVerified', 'isUpdated', 'gender', 'birthDate', 'preferedLang',
             'preferedCurrency', 'residence', 'managerEmail', 'imageUrl', 'bio', 'role', 'createdAt', 'updatedAt']
         }
       }],

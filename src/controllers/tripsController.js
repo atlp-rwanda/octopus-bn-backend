@@ -535,7 +535,6 @@ class tripsController {
     }
   }
 
-
   /**
    * @description Edit one way or return or multi city trip requests on one go
    * @param {object} req

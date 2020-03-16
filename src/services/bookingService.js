@@ -1,7 +1,8 @@
 import Models from 'database/models';
 import paginate from 'utils/paginate';
+import Sequelize from 'sequelize';
 
-const { Accommodations, Rooms } = Models;
+const { Accommodations, Rooms, Booking } = Models;
 
 /**
  * @description This class contains services used while booking an accomodation
@@ -33,6 +34,29 @@ class bookingService {
     });
 
     return accommodations;
+  }
+
+  /**
+   * @param {string} page
+   * @param {string} limit
+   * @returns {object} most traveled centres infos
+   */
+  static async getTrendingCentres(page, limit) {
+    const pagination = paginate(page, limit),
+      mostTraveledCentres = await Booking.findAll({
+        group: ['accommodationId', 'Accommodation.id'],
+        attributes: ['accommodationId', [Sequelize.fn('COUNT', 'accommodationId'), 'peopleVisited']],
+        include: [{
+          model: Accommodations,
+          attributes: {
+            exclude: ['createdBy', 'id', 'createdAt', 'updatedAt']
+          }
+        }],
+        order: [[Sequelize.col('peopleVisited'), 'DESC']],
+        offset: pagination.offset,
+        limit: pagination.limit,
+      });
+    return mostTraveledCentres;
   }
 }
 

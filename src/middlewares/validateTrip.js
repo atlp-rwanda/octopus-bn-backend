@@ -89,14 +89,14 @@ export const isTripAssigned = async (req, res, next) => {
 };
 export const areYouTripOwner = async (req, res, next) => {
   const {
-      user: {
-        preferedLang,
-        id
-      },
-      trip: {
-        userID
-      }
-    } = req;
+    user: {
+      preferedLang,
+      id
+    },
+    trip: {
+      userID
+    }
+  } = req;
   if (userID !== id) {
     return errorResponse(res, 403, setLanguage(preferedLang).__('TripNotAssigned'));
   }
@@ -162,3 +162,4 @@ export const isEditTripRequestValid = (req, res, next) => {
   }
   return next();
 };
+

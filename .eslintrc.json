@@ -42,6 +42,6 @@
     "sourceType": "module",
     "ecmaVersion": 11,
     "allowImportExportEverywhere": true
-  }
+  },
+  "no-nested-ternary": 0
 }
-

@@ -334,5 +334,33 @@ router.get('/likes/:accommodationId', [checkUser, isProfileUpdated, checkIfAccom
  *         description:  Unlike accommodation
  *  */
 router.post('/like-unlike/:accommodationId', [checkUser, isProfileUpdated, checkIfAccomodationExist], accommodationController.LikeOrUnlike);
+/**
+ * @swagger
+ * /api/v1/accommodations/most-traveled-centres?page={page}&limit={limit}:
+ *   get:
+ *     security: []
+ *     summary: Get most traveled destinations
+ *     description: Returns infos about most traveled centres
+ *     data:
+ *       type: array
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: limited items.
+ *         in: path
+ *         required: false
+ *         default: 2
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Trending centres are retrieved successfully
+ *  */
+router.get('/most-traveled-centres', [checkUser, isProfileUpdated],
+  accommodationController.getMostTravelledCentres);
 
 export default router;

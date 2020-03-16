@@ -291,6 +291,31 @@ class accommodation {
       });
     }
   }
+
+  /**
+   * @description Find most traveled destinations
+   * @param {object} req
+   * @param {object} res
+   * @memberof tripsController
+   * @returns {object} response
+   */
+  static async getMostTravelledCentres(req, res) {
+    try {
+      const {
+        user: {
+          preferedLang
+        },
+        query: {
+          page, limit,
+        }
+      } = req;
+      const mostTraveledCentres = await bookingService.getTrendingCentres(page, limit);
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('trendingDestinations'), mostTraveledCentres);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
 }
 
 export default accommodation;
