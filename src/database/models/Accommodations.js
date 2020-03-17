@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'accommodationId',
       onDelete: 'CASCADE',
     });
+
+    Accommodations.hasMany(models.Feedbacks, {
+      foreignKey: 'accommodationId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
   return Accommodations;
 };

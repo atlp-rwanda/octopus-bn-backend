@@ -450,4 +450,37 @@ router.get('/all-accommodations', [checkUser, isProfileUpdated, validateParams],
  *  */
 router.get('/search', [checkUser, isProfileUpdated, validateParams], accommodationController.searchAccommodations);
 
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/{id}:
+ *   get:
+ *     security: []
+ *     summary: view one accommodation
+ *     description: view one accommodation
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *     parameters:
+ *       - name: id
+ *         description: accommodation id.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Accommodation retrieved successfully
+ *  */
+router.get('/:id', [checkUser, isProfileUpdated], accommodationController.getOneAccommodation);
+
 export default router;
