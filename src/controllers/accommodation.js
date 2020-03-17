@@ -7,7 +7,6 @@ import bookingService from 'services/bookingService';
 import accommodationService from 'services/accommodationService';
 import paginate from 'utils/paginate';
 
-
 const {
   Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings, AcommodationLikesAndUnlikes
 } = Models;
@@ -325,6 +324,7 @@ class accommodation {
   
   /**
    * @description This method will fetch and display all accommodations
+   *
    * @param {object} req
    * @param {object} res
    * @returns {object} response
@@ -355,6 +355,30 @@ class accommodation {
       });
 
       return successResponse(res, 200, setLanguage(preferedLang).__('allAccommodations'), allAccommodations);
+    } catch (error) {
+      return errorResponse(res, 500, error.message);
+    }
+  }
+
+   /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   */
+  static async searchAccommodations(req, res) {
+    try {
+      const {
+        query: {
+          page, limit, searchKey
+        },
+        user: {
+          preferedLang
+        }
+      } = req;
+      const results = await accommodationService.searchResults(page, limit, searchKey);
+
+      return successResponse(res, 200, setLanguage(preferedLang).__('results'), results);
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }

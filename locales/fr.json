@@ -137,5 +137,6 @@
     "fromDate": "La date de début est obligatoire et le format est AAAA-MM-JJ",
     "untilDate": "La date jusqu'au est requise et le format est AAAA-MM-JJ",
     "trendingDestinations":"Les centres de tendances sont récupérés avec succès",
-    "allAccommodations": "Tous les hébergements sur les nomades aux pieds nus"
+    "allAccommodations": "Tous les hébergements sur les nomades aux pieds nus",
+    "results": "Résultats de la recherche d'hébergement"
 }
