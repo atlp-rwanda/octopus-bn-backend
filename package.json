@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
+  "nyc": {
+    "include": "src",
+    "exclude": [
+      "build",
+      "**/index.js"
+    ]
+  },
   "scripts": {
     "start": "node --require @babel/polyfill build/index.js",
     "dev": "nodemon --exec babel-node src/index.js",

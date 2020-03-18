@@ -142,5 +142,6 @@
 	"allAccommodations": "All accommodations on barefoot nomad",
 	"results": "Accommodation search results",
 	"oneAccommodation": "Accommodation retrieved successfully",
-	"accommodationIdNotFound": "No accommodation found with the given id"
+	"accommodationIdNotFound": "No accommodation found with the given id",
+	"PleaseOnly": "Only a travel administrator and accommodation supplier are allowed to create accommodations"
 }

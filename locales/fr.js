@@ -140,5 +140,6 @@
     "allAccommodations": "Tous les hébergements sur les nomades aux pieds nus",
     "results": "Résultats de la recherche d'hébergement",
     "oneAccommodation": "Hébergement récupéré avec succès",
-    "accommodationIdNotFound": "Aucun logement trouvé avec l'identifiant donné"
+    "accommodationIdNotFound": "Aucun logement trouvé avec l'identifiant donné",
+    "PleaseOnly": "Seuls un administrateur de voyages et un fournisseur d'hébergement sont autorisés à créer des hébergements"
 }
