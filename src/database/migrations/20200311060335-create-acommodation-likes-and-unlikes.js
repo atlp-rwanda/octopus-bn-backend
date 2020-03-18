@@ -4,22 +4,13 @@ export default {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       userId: {
         type: Sequelize.STRING
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      imageUrl: {
-        type: Sequelize.STRING
-      },
       accommodationId: {
         type: Sequelize.STRING
-      },
-      Like: {
-        type: Sequelize.DataTypes.ENUM('liked', 'unliked',),
       },
       createdAt: {
         allowNull: false,

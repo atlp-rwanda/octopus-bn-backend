@@ -1,3 +1,4 @@
+
 /* eslint-disable valid-jsdoc */
 /* eslint-disable require-jsdoc */
 import { successResponse, errorResponse } from 'utils/responses';
@@ -5,6 +6,8 @@ import { emailTripRequest } from '../utils/emailHelper';
 import Models from '../database/models';
 import { onlineClients } from '../utils/socket';
 import setLanguage from '../utils/international';
+
+const { Users, travelRequests } = Models;
 
 class notificationsController {
   /**
@@ -18,7 +21,6 @@ class notificationsController {
     try {
       const { managerEmail } = user,
         { id } = request,
-        { Users } = Models,
         manager = await Users.findOne({
           where: {
             email: managerEmail
@@ -57,7 +59,6 @@ class notificationsController {
   static async ApprovalStatusNotification(type, request, body, host) {
     try {
       const { id, userID } = request,
-        { Users } = Models,
         user = await Users.findOne({
           where: {
             id: userID
@@ -71,7 +72,6 @@ class notificationsController {
       if (online) {
         online.emit('notification', notification);
       }
-
       if (user.notifyByEmail) {
         await emailTripRequest(user.firstName, user.email, body, id, host);
       }
@@ -82,7 +82,7 @@ class notificationsController {
       };
     }
   }
-  
+
   /**
    * @description Sending edited trip request notification to the manager
    * @param {*} user
@@ -93,7 +93,6 @@ class notificationsController {
   static async sendEditNotification(user, type, requestId, body, host) {
     try {
       const { managerEmail } = user,
-        { Users } = Models,
         manager = await Users.findOne({
           where: {
             email: managerEmail
@@ -108,9 +107,55 @@ class notificationsController {
       if (online) {
         online.emit('notification', notification);
       }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error.message
+      };
+    }
+  }
 
-      if (manager.notifyByEmail) {
-        await emailTripRequest(manager.firstName, manager.email, body, id, host);
+  /**
+ * Send notification on comment
+ * @param {*} user
+ * @param {*} komment
+ */
+  static async CommentNotification(user, komment) {
+    try {
+      const { firstName, lastName, imageUrl } = user;
+      const { userID, requestId, comment } = komment;
+      const trip = await travelRequests.findOne({
+          where: {
+            id: requestId
+          },
+        }),
+        manager = await Users.findOne({
+          where: {
+            email: trip.manager
+          },
+        });
+       const notification = {
+        requestID: requestId,
+        type: 'comment',
+        body: comment,
+        isRead: false,
+        userID,
+      };
+      
+      if(manager.id == userID) {
+        notification.receiver = trip.userID
+      } else{
+        notification.receiver = manager.id
+      }
+      await Models.Notification.create(notification);
+      const data = {
+        ...notification,
+        names: `${firstName} ${lastName}`,
+        imageUrl
+      };
+      const online = onlineClients.get(data.receiver.toString());
+      if (online) {
+        online.emit('notification', data);
       }
     } catch (error) {
       return {

@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import { tripRequestsMock } from './mock/tripRequestsMock';
 import notMock from './mock/notMock';
 import tripsController from '../controllers/tripsController';
+import commentsController from '../controllers/commentsController';
 import app from '../index';
 import { onlineClients } from '../utils/socket';
 
@@ -52,6 +53,7 @@ describe('Notifications', () => {
         notifyByEmail: 'true'
       })
       .end((err, res) => {
+        expect(res.status).to.be.equal(200);
         expect(res.body).to.have.keys('status', 'message');
         expect(res.body.status).to.be.equal(200);
         expect(res.body.message).to.be.equal('Préférences modifiées avec succès');
@@ -143,6 +145,29 @@ describe('Notifications', () => {
 
   it('it should fail if something is wrong with notifications', async () => {
     const data = await tripsController.multiCityTrip(notMock.request, notMock.response);
+    console.log(data);
+    expect(data.statusCode).to.be.equal(500);
+  });
+  it('it should fail if something is wrong with notifications', async () => {
+    const data = await tripsController.availRequests(notMock.request, notMock.response);
+    expect(data.statusCode).to.be.equal(500);
+  });
+  it('it should fail if something is wrong with notifications', async () => {
+    const data = await tripsController.availRequests(notMock.request, notMock.response);
+    console.log(data);
+    expect(data.statusCode).to.be.equal(500);
+  });
+  it('it should fail if something is wrong with notifications', async () => {
+    const data = await tripsController.getOnetripRequest(notMock.request, notMock.response);
+    expect(data.statusCode).to.be.equal(500);
+  });
+  it('it should fail if something is wrong with notifications', async () => {
+    const data = await tripsController.rejectTrip(notMock.request, notMock.response);
+    console.log(data);
+    expect(data.statusCode).to.be.equal(500);
+  });
+  it('it should fail if something is wrong with comment notifications', async () => {
+    const data = await new commentsController().addComment(notMock.request, notMock.response);
     expect(data.statusCode).to.be.equal(500);
   });
 });

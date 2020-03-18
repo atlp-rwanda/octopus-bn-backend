@@ -23,7 +23,8 @@
     }
      a {
         text-decoration:none;
-        color: green;
+        font-weight: bold;
+        color: black;
         font-size: 18px;
      }
      .container {
@@ -41,6 +42,9 @@
      .btn {
          width: 70px;
      }
+     .content {
+         color: blue;
+     }
     </style>
 </head>
 <body> 
@@ -48,7 +52,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <div class="container">
         <form action="">
-            <input id="userId" type="text" placeholder="userId" required>
+            <input id="userId" type="text" placeholder="reciever Id" required>
             <input id="host" type="text" placeholder="host" required>
             <input class="btn" type="button"  name="" onclick="notify()" value="Log in">
         </form>
@@ -65,10 +69,12 @@
             socket.emit('connect_user', `${user}`)
             socket.on('notification', (notification) =>  {
             const requestId = notification.requestID
-            const link = `${url}api/v1/trips/${requestId}`
-            $("#notifications").append(`<li><a href=${link} target="_blank">${notification.body}</li>`);
-            console.log(link);
-            
+            const link = `${url}api/v1/trips/${requestId}`;
+            if(notification.type == 'comment'){
+                const { names, body, createdAt } = notification
+                $("#notifications").append(`<li><a>${names} made a comment: <span class="content">${body}</span></li>`);
+            }
+            $("#notifications").append(`<li><a href=${link} target="_blank">${body}</li>`);
         });
         }
     </script>

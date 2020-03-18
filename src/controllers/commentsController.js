@@ -5,7 +5,9 @@ import uuid from 'uuid/v4';
 import Sequelize from 'sequelize';
 import { successResponse, errorResponse } from 'utils/responses';
 import setLanguage from 'utils/international';
+import notificationsController from './notification';
 
+const { CommentNotification } = notificationsController;
 const { Comments, travelRequests } = Models;
 const {
   Op
@@ -36,15 +38,18 @@ class commentsController {
       if (!found) {
         return errorResponse(res, 403, setLanguage(preferedLang).__('commentSorry'));
       }
-      await Comments.create({
+      const newComment = await Comments.create({
         id: uuid(),
         userID: id,
         requestId,
         comment
       });
+
+      await CommentNotification(req.user, newComment,);
+
       return successResponse(res, 201, setLanguage(preferedLang).__('CommentPosted'), { comment, by: email || id, requestId: found.id });
     } catch (error) {
-      errorResponse(res, error.status || 500, error.message);
+      return errorResponse(res, error.status || 500, error.message);
     }
   }
 
