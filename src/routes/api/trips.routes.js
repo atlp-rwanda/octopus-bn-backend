@@ -229,7 +229,6 @@ tripsController.rejectTrip);
  *         description: Pending requests retrieved successfully
  *  */
 router.get('/avail-requests', checkUser, isProfileUpdated, validateParams, tripsController.availRequests);
-
 /**
  * @swagger
  *
