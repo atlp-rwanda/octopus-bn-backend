@@ -1,6 +1,9 @@
 /* eslint-disable require-jsdoc */
 import uuid from 'uuid/v4';
-import { successResponse, errorResponse } from 'utils/responses';
+import {
+  successResponse,
+  errorResponse
+} from 'utils/responses';
 import tripService from 'services/tripsService';
 import Models from 'database/models';
 import setLanguage from 'utils/international';
@@ -19,10 +22,16 @@ const {
 } = notificationsController;
 
 const {
-  Op, where, cast, col
+  Op,
+  where,
+  cast,
+  col
 } = Sequelize;
 
-const { travelRequests } = Models;
+const {
+  travelRequests,
+  Comments
+} = Models;
 
 /**
  * @description This class contains all the methods relating to the trip requests
@@ -30,61 +39,71 @@ const { travelRequests } = Models;
  */
 class tripsController {
   /**
-      * @memberof tripsController
-      * @param  {object} req
-      * @param  {object} res
-      * @param  {string} passportNumber
-      * @param  {string} gender
-      * @param  {string} fromCountry
-      * @param  {string} fromCity
-      * @param  {string} toCountry
-      * @param  {string} toCity
-      * @param  {string} reason
-      * @param  {string} departureDate
-      * @param  {string} accommodation
-      * @return  {string} status
-      * @return  {string} message
-      * @return  {object} data {email, passportNumber, from, to, reason}
-      */
+   * @memberof tripsController
+   * @param  {object} req
+   * @param  {object} res
+   * @param  {string} passportNumber
+   * @param  {string} gender
+   * @param  {string} fromCountry
+   * @param  {string} fromCity
+   * @param  {string} toCountry
+   * @param  {string} toCity
+   * @param  {string} reason
+   * @param  {string} departureDate
+   * @param  {string} accommodation
+   * @return  {string} status
+   * @return  {string} message
+   * @return  {object} data {email, passportNumber, from, to, reason}
+   */
 
   static async createTrip(req, res) {
     try {
       const {
         body: {
-          type, fromCountry,
-          fromCity, toCountry, toCity,
-          reason, departureDate, accommodation,
+          type,
+          fromCountry,
+          fromCity,
+          toCountry,
+          toCity,
+          reason,
+          departureDate,
+          accommodation,
           returnDate
         },
         user: {
-          email, id, passportNumber,
-          gender, managerEmail, preferedLang, 
-          firstName, lastName
+          email,
+          id,
+          passportNumber,
+          gender,
+          managerEmail,
+          preferedLang,
+          firstName,
+          lastName
         },
-        headers: { host }
+        headers: {
+          host
+        }
       } = req;
 
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
-      const request = await travelRequests.create(
-        {
-          id: uuid(),
-          userID: id,
-          type,
-          passportNumber,
-          gender,
-          from,
-          to,
-          accommodation,
-          reason,
-          manager: managerEmail,
-          departureDate,
-          returnDate,
-          status: 'pending'
-        }
-      );
+      const request = await travelRequests.create({
+        id: uuid(),
+        userID: id,
+        type,
+        passportNumber,
+        gender,
+        from,
+        to,
+        accommodation,
+        reason,
+        manager: managerEmail,
+        departureDate,
+        returnDate,
+        status: 'pending'
+      });
       const name = `${firstName} ${lastName}`,
-      body = ` ${name} made a trip request: - From ${from} to ${to}`;
+        body = ` ${name} made a trip request: - From ${from} to ${to}`;
       await sendTripReqNotification(req.user, 'trip request', request, body, host);
       return res.status(201).json({
         status: 201,
@@ -94,7 +113,7 @@ class tripsController {
           passportNumber,
           from,
           to,
-          reason,
+          reason
         }
       });
     } catch (error) {
@@ -107,24 +126,34 @@ class tripsController {
   }
 
   /**
-     *
-     * @param {object} req
-     * @param {object} res
-     * @returns {object} response
-     * @memberof tripsController
-     */
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   * @memberof tripsController
+   */
   static async multiCityTrip(req, res) {
     try {
       const {
         body: {
-          fromCountry, fromCity, toCountry, toCity, stops
+          fromCountry,
+          fromCity,
+          toCountry,
+          toCity,
+          stops
         },
         user: {
-          id, gender, firstName, 
-          lastName, passportNumber, 
-          managerEmail, preferedLang
+          id,
+          gender,
+          firstName,
+          lastName,
+          passportNumber,
+          managerEmail,
+          preferedLang
         },
-        header: { host }
+        header: {
+          host
+        }
       } = req;
       const from = `${fromCountry} - ${fromCity}`;
       const to = `${toCountry} - ${toCity}`;
@@ -132,11 +161,10 @@ class tripsController {
       if (stops.length <= 1) {
         return errorResponse(res, 403, setLanguage(preferedLang).__('multiCityFailure'));
       }
-      const request = await tripService.createTrip(id, passportNumber,
-        gender, from, to, managerEmail, req.body);
-      
-        const name = `${firstName} ${lastName}`,
-      notificationbody = ` ${name} made a multi-city trip request: - From ${from} to ${to}.`;
+      const request = await tripService.createTrip(id, passportNumber, gender, from, to, managerEmail, req.body);
+
+      const name = `${firstName} ${lastName}`,
+        notificationbody = ` ${name} made a multi-city trip request: - From ${from} to ${to}.`;
       await sendTripReqNotification(req.user, 'multi-city trip request', request, notificationbody, host);
       successResponse(res, 201, setLanguage(preferedLang).__('multiCitySuccess'));
     } catch (error) {
@@ -154,10 +182,13 @@ class tripsController {
     try {
       const {
         query: {
-          page, limit,
+          page,
+          limit
         },
         user: {
-          role, email, preferedLang
+          role,
+          email,
+          preferedLang
         }
       } = req;
 
@@ -176,21 +207,28 @@ class tripsController {
   static async getTrips(req, res) {
     const {
       query: {
-        page, limit,
+        page,
+        limit
       },
       user: {
-        id, preferedLang
+        id,
+        preferedLang
       }
     } = req;
     const pagination = paginate(page, limit);
     try {
       const trips = await travelRequests.findAll({
-        where: { userID: id },
+        where: {
+          userID: id
+        },
         attributes: {
           exclude: ['userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
         },
+        include: [{
+          model: Comments
+        }],
         offset: pagination.offset,
-        limit: pagination.limit,
+        limit: pagination.limit
       });
       return res.status(200).json({
         status: 200,
@@ -206,46 +244,65 @@ class tripsController {
   static async searchTrips(req, res) {
     const {
       query: {
-        page, limit, searchKey
+        page,
+        limit,
+        searchKey
       },
       user: {
-        id, role, email, preferedLang
+        id,
+        role,
+        email,
+        preferedLang
       }
     } = req;
     const pagination = paginate(page, limit);
     try {
       let found;
       const searchQuery = [
-        where(
-          cast(col('travelRequests.id'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.type'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.gender'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.status'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        where(
-          cast(col('travelRequests.stops'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
+        where(cast(col('travelRequests.id'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
+        where(cast(col('travelRequests.type'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
+        where(cast(col('travelRequests.gender'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
+        where(cast(col('travelRequests.status'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
+        where(cast(col('travelRequests.stops'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
 
-        where(
-          cast(col('travelRequests.status'), 'varchar'),
-          { [Op.like]: `%${searchKey}%` }
-        ),
-        { from: { [Op.like]: `%${searchKey}%`, }, },
-        { to: { [Op.like]: `%${searchKey}%`, }, },
-        { from: { [Op.like]: `%${searchKey}%`, }, },
-        { to: { [Op.like]: `%${searchKey}%`, }, },
-        { reason: { [Op.like]: `%${searchKey}%`, }, },
+        where(cast(col('travelRequests.status'), 'varchar'), {
+          [Op.like]: `%${searchKey}%`
+        }),
+        {
+          from: {
+            [Op.like]: `%${searchKey}%`
+          }
+        },
+        {
+          to: {
+            [Op.like]: `%${searchKey}%`
+          }
+        },
+        {
+          from: {
+            [Op.like]: `%${searchKey}%`
+          }
+        },
+        {
+          to: {
+            [Op.like]: `%${searchKey}%`
+          }
+        },
+        {
+          reason: {
+            [Op.like]: `%${searchKey}%`
+          }
+        }
       ];
       if (role === 'requester') {
         found = await travelRequests.findAll({
@@ -254,10 +311,13 @@ class tripsController {
             [Op.or]: searchQuery
           },
           attributes: {
-            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+            exclude: ['userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
           },
+          include: [{
+            model: Comments
+          }],
           offset: pagination.offset,
-          limit: pagination.limit,
+          limit: pagination.limit
         });
       }
       if (role === 'manager') {
@@ -267,10 +327,13 @@ class tripsController {
             [Op.or]: searchQuery
           },
           attributes: {
-            exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+            exclude: ['userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
           },
+          include: [{
+            model: Comments
+          }],
           offset: pagination.offset,
-          limit: pagination.limit,
+          limit: pagination.limit
         });
       }
       found = await travelRequests.findAll({
@@ -278,10 +341,13 @@ class tripsController {
           [Op.or]: searchQuery
         },
         attributes: {
-          exclude: ['id', 'userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
+          exclude: ['userID', 'passportNumber', 'gender', 'createdAt', 'updatedAt']
         },
+        include: [{
+          model: Comments
+        }],
         offset: pagination.offset,
-        limit: pagination.limit,
+        limit: pagination.limit
       });
       return res.status(200).json({
         status: 200,
@@ -295,12 +361,12 @@ class tripsController {
   }
 
   /**
-     *
-     * @param {object} req
-     * @param {object} res
-     * @returns {object} response
-     * @memberof tripsController
-     */
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   * @memberof tripsController
+   */
   static async rejectTrip(req, res) {
     try {
       const {
@@ -308,23 +374,35 @@ class tripsController {
           tripId
         },
         user: {
-          firstName, lastName, preferedLang
+          firstName,
+          lastName,
+          preferedLang
         },
-        header: { host }
-      } = req;
-      const affectedRow = await travelRequests.update(
-        {
-          status: 'rejected'
-        }, {
-          where: { id: tripId },
-          returning: true,
-          plain: true
+        header: {
+          host
         }
-      );
+      } = req;
+      const affectedRow = await travelRequests.update({
+        status: 'rejected'
+      }, {
+        where: {
+          id: tripId
+        },
+        returning: true,
+        plain: true
+      });
       const {
-        id, userID, type, accommodation, from,
-        to, departureDate, returnDate,
-        reason, status, stops
+        id,
+        userID,
+        type,
+        accommodation,
+        from,
+        to,
+        departureDate,
+        returnDate,
+        reason,
+        status,
+        stops
       } = affectedRow[1];
       const response = {
         type,
@@ -338,7 +416,7 @@ class tripsController {
         stops
       };
       const name = `${firstName} ${lastName}`,
-      body = `${name} rejected your trip request: - From ${from} to ${to}.`;
+        body = `${name} rejected your trip request: - From ${from} to ${to}.`;
       await ApprovalStatusNotification('rejected request', affectedRow[1], body, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
     } catch (error) {
@@ -347,12 +425,12 @@ class tripsController {
   }
 
   /**
-     *
-     * @param {object} req
-     * @param {object} res
-     * @returns {object} response
-     * @memberof tripsController
-     */
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response
+   * @memberof tripsController
+   */
   static async approveTrip(req, res) {
     try {
       const {
@@ -360,23 +438,35 @@ class tripsController {
           tripId
         },
         user: {
-          firstName, lastName, preferedLang
+          firstName,
+          lastName,
+          preferedLang
         },
-        headers: { host }
-      } = req;
-      const affectedRow = await travelRequests.update(
-        {
-          status: 'approved'
-        }, {
-          where: { id: tripId },
-          returning: true,
-          plain: true
+        headers: {
+          host
         }
-      );
+      } = req;
+      const affectedRow = await travelRequests.update({
+        status: 'approved'
+      }, {
+        where: {
+          id: tripId
+        },
+        returning: true,
+        plain: true
+      });
       const {
-        userID, id, type, accommodation, from,
-        to, departureDate, returnDate,
-        reason, status, stops
+        userID,
+        id,
+        type,
+        accommodation,
+        from,
+        to,
+        departureDate,
+        returnDate,
+        reason,
+        status,
+        stops
       } = affectedRow[1];
       const response = {
         type,
@@ -390,7 +480,7 @@ class tripsController {
         stops
       };
       const name = `${firstName} ${lastName}`,
-      body = `${name} approved your trip request: - From ${from} to ${to}.`;
+        body = `${name} approved your trip request: - From ${from} to ${to}.`;
       await ApprovalStatusNotification('approved request', affectedRow[1], body, host);
       return successResponse(res, 200, setLanguage(preferedLang).__('TripApprovedSuccess'), response);
     } catch (error) {
@@ -413,18 +503,26 @@ class tripsController {
           requestId
         },
         user: {
-          id, email, preferedLang
+          id,
+          email,
+          preferedLang
         }
       } = req;
       const found = await travelRequests.findOne({
         where: {
           userID: id,
           id: requestId,
-          [Op.or]: [
-            { userID: id },
-            { manager: email },
+          [Op.or]: [{
+            userID: id
+          },
+          {
+            manager: email
+          }
           ]
-        }
+        },
+        include: [{
+          model: Comments
+        }],
       });
 
       if (!found) {
@@ -436,36 +534,7 @@ class tripsController {
       errorResponse(res, 500, error.message);
     }
   }
-	static async rejectTrip(req, res) {
-		try {
-			const { params: { tripId }, user: { preferedLang } } = req;
-			const affectedRow = await travelRequests.update(
-				{
-					status: 'rejected'
-				},
-				{
-					where: { id: tripId },
-					returning: true,
-					plain: true
-				}
-			);
-			const { type, accommodation, from, to, departureDate, returnDate, reason, status, stops } = affectedRow[1];
-			const response = {
-				type,
-				accommodation,
-				from,
-				to,
-				departureDate,
-				returnDate,
-				reason,
-				status,
-				stops
-			};
-			successResponse(res, 200, setLanguage(preferedLang).__('TripRejectSuccess'), response);
-		} catch (error) {
-			errorResponse(res, 500, error.message);
-		}
-	}
+
 
   /**
    * @description Edit one way or return or multi city trip requests on one go
@@ -485,27 +554,34 @@ class tripsController {
         },
         body,
         user: {
-           firstName, lastName, preferedLang
+          firstName,
+          lastName,
+          preferedLang
         },
-        headers: { host }
+        headers: {
+          host
+        }
       } = req;
       const oneWayTrip = oneWayTripGenerator(body);
       const returnTrip = returnTripGenerator(body);
       const multiCity = multiCityTripGenerator(body);
-      const fineTripRequest = type === 'one way'
-        ? oneWayTrip : type === 'return'
-          ? returnTrip : multiCity;
-      await travelRequests.update(
-        fineTripRequest, {
-          where: { id: tripId },
-          returning: true,
-          plain: true
-        }
-      );
+      const fineTripRequest = type === 'one way' ? oneWayTrip : type === 'return' ? returnTrip : multiCity;
+      await travelRequests.update(fineTripRequest, {
+        where: {
+          id: tripId
+        },
+        returning: true,
+        plain: true
+      });
       const name = `${firstName} ${lastName}`,
-      notification = ` ${name} edited a trip request.`;
+        notification = ` ${name} edited a trip request.`;
       await sendEditNotification(req.user, 'edited trip request', tripId, notification, host);
-      return successResponse(res, 200, setLanguage(preferedLang).__('TriprequestUpdatedSuccess'), fineTripRequest);
+      return successResponse(
+        res,
+        200,
+        setLanguage(preferedLang).__('TriprequestUpdatedSuccess'),
+        fineTripRequest
+      );
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }
@@ -533,6 +609,5 @@ class tripsController {
     }
   }
 }
-
 
 export default tripsController;
