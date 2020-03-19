@@ -341,6 +341,8 @@ router.post('/like-unlike/:accommodationId', [checkUser, isProfileUpdated, check
  *     security: []
  *     summary: Get most traveled destinations
  *     description: Returns infos about most traveled centres
+ *     tags:
+ *       - Accommodations
  *     data:
  *       type: array
  *     parameters:
@@ -362,5 +364,45 @@ router.post('/like-unlike/:accommodationId', [checkUser, isProfileUpdated, check
  *  */
 router.get('/most-traveled-centres', [checkUser, isProfileUpdated],
   accommodationController.getMostTravelledCentres);
+
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/all-accommodations?page={page}&limit={limit}:
+ *   get:
+ *     security: []
+ *     summary: All accommodations on barefoot nomad
+ *     description: show all available accommodation on barefoot nomad
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: results per page.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: All accommodations on barefoot nomad
+ *  */
+router.get('/all-accommodations', [checkUser, isProfileUpdated, validateParams], accommodationController.getAllAccommodations);
 
 export default router;

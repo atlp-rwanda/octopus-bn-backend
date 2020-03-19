@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     country: DataTypes.STRING,
     city: DataTypes.STRING,
+    average_ratings: {
+      type: DataTypes.NUMERIC(3, 2),
+      defaultValue: 0.00,
+      allowNull: false
+    },
     imageUrl: DataTypes.STRING,
     amenities: { type: DataTypes.ARRAY(DataTypes.JSON) },
     around: { type: DataTypes.ARRAY(DataTypes.JSON) },

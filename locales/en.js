@@ -138,5 +138,6 @@
 	"yourStats": "Your travel requests statistics between the given dates",
 	"fromDate": "The from date is required and the format is YYYY-MM-DD",
 	"untilDate": "The until date is required and the format is YYYY-MM-DD",
-	"trendingDestinations":"Trending centres are retrieved successfully"
+	"trendingDestinations":"Trending centres are retrieved successfully",
+	"allAccommodations": "All accommodations on barefoot nomad"
 }

@@ -136,5 +136,6 @@
     "yourStats": "Vos statistiques de demandes de voyage entre les dates données",
     "fromDate": "La date de début est obligatoire et le format est AAAA-MM-JJ",
     "untilDate": "La date jusqu'au est requise et le format est AAAA-MM-JJ",
-    "trendingDestinations":"Les centres de tendances sont récupérés avec succès"
+    "trendingDestinations":"Les centres de tendances sont récupérés avec succès",
+    "allAccommodations": "Tous les hébergements sur les nomades aux pieds nus"
 }
