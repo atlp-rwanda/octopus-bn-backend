@@ -138,5 +138,7 @@
     "untilDate": "La date jusqu'au est requise et le format est AAAA-MM-JJ",
     "trendingDestinations":"Les centres de tendances sont récupérés avec succès",
     "allAccommodations": "Tous les hébergements sur les nomades aux pieds nus",
-    "results": "Résultats de la recherche d'hébergement"
+    "results": "Résultats de la recherche d'hébergement",
+    "oneAccommodation": "Hébergement récupéré avec succès",
+    "accommodationIdNotFound": "Aucun logement trouvé avec l'identifiant donné"
 }

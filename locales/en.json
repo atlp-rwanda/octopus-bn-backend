@@ -140,5 +140,7 @@
 	"untilDate": "The until date is required and the format is YYYY-MM-DD",
 	"trendingDestinations":"Trending centres are retrieved successfully",
 	"allAccommodations": "All accommodations on barefoot nomad",
-	"results": "Accommodation search results"
+	"results": "Accommodation search results",
+	"oneAccommodation": "Accommodation retrieved successfully",
+	"accommodationIdNotFound": "No accommodation found with the given id"
 }

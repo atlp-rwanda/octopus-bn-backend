@@ -8,7 +8,7 @@ import accommodationService from 'services/accommodationService';
 import paginate from 'utils/paginate';
 
 const {
-  Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings, AcommodationLikesAndUnlikes
+  Users, Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings
 } = Models;
 class accommodation {
   static async create(req, res) {
@@ -383,6 +383,52 @@ class accommodation {
       return errorResponse(res, 500, error.message);
     }
   }
+
+  /**
+   * 
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} responsd
+   */
+static async getOneAccommodation(req, res) {
+  try {
+    const {
+      params: {
+        id
+      },
+      user: {
+        preferedLang
+      }
+    } = req;
+    const result = await Accommodations.findOne({
+      where: { id },
+      include: [
+        {
+          model: Rooms,
+          attributes: {
+            exclude: ['accommodationsID', 'createdBy', 'createdAt', 'updatedAt']
+          }
+        },
+        {
+          model: Feedbacks,
+          attributes: { exclude: ['id', 'accommodationId', 'userId', 'createdAt', 'updatedAt'] },
+          include: [{
+            model: Users,
+            attributes: ['firstName']
+          }]
+        }
+      ]
+    });
+
+    if (!result) {
+      return errorResponse(res, 404, setLanguage(preferedLang).__('accommodationIdNotFound'));
+    }
+
+    return successResponse(res, 200, setLanguage(preferedLang).__('oneAccommodation'), result);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
 }
 
 export default accommodation;
