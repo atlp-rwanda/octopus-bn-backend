@@ -1,4 +1,3 @@
-  
 /* eslint-disable valid-jsdoc */
 /* eslint-disable require-jsdoc */
 import { successResponse, errorResponse } from 'utils/responses';
