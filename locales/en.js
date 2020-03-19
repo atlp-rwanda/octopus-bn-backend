@@ -139,5 +139,6 @@
 	"fromDate": "The from date is required and the format is YYYY-MM-DD",
 	"untilDate": "The until date is required and the format is YYYY-MM-DD",
 	"trendingDestinations":"Trending centres are retrieved successfully",
-	"allAccommodations": "All accommodations on barefoot nomad"
+	"allAccommodations": "All accommodations on barefoot nomad",
+	"results": "Accommodation search results"
 }

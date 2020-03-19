@@ -405,4 +405,49 @@ router.get('/most-traveled-centres', [checkUser, isProfileUpdated],
  *  */
 router.get('/all-accommodations', [checkUser, isProfileUpdated, validateParams], accommodationController.getAllAccommodations);
 
+/**
+ * @swagger
+ *
+ * /api/v1/accommodations/search?page={page}&limit={limit}&searchKey={searchKey}:
+ *   get:
+ *     security: []
+ *     summary: Search accommodations, you can search by accommodation name or city
+ *     description: Search accommodations
+ *     tags:
+ *       - Accommodations
+ *     produces:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: integer
+ *               message:
+ *                 type: string
+ *               data:
+ *                 type: object
+ *     parameters:
+ *       - name: page
+ *         description: page number.
+ *         in: path
+ *         required: false
+ *         default: 1
+ *         type: string
+ *       - name: limit
+ *         description: limit items.
+ *         in: path
+ *         required: false
+ *         default: 5
+ *         type: string
+ *       - name: searchKey
+ *         description: key to search.
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Requests retrieved successfully
+ *  */
+router.get('/search', [checkUser, isProfileUpdated, validateParams], accommodationController.searchAccommodations);
+
 export default router;

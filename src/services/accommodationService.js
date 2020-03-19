@@ -1,8 +1,10 @@
 import Models from 'database/models';
+import paginate from 'utils/paginate';
+import {
+  Op, where, cast, col
+} from 'sequelize';
 
-const {
-  Accommodations, Ratings
-} = Models;
+const { Accommodations, Ratings } = Models;
 
 /**
  * @description This class contains methods that help to manipulate the accommodations table
@@ -25,6 +27,38 @@ class accommodationService {
       { average_ratings: rating[0].dataValues.ratingAVG },
       { where: { id: accommodationId } },
     );
+  }
+
+  /**
+     * @param {string} page
+     * @param {string} limit
+     * @param {string} searchKey
+     * @returns {obejct} results
+     */
+  static async searchResults(page, limit, searchKey) {
+    const pagination = paginate(page, limit);
+    const key = [
+      where(
+        cast(col('Accommodations.name'), 'varchar'),
+        { [Op.like]: `%${searchKey}%` }
+      ),
+      where(
+        cast(col('Accommodations.city'), 'varchar'),
+        { [Op.like]: `%${searchKey}%` }
+      )
+    ];
+    const results = await Accommodations.findAll({
+      where: {
+        [Op.or]: key
+      },
+      attributes: {
+        exclude: ['createdBy', 'imageUrl', 'createdAt', 'updatedAt']
+      },
+      offset: pagination.offset,
+      limit: pagination.limit
+    });
+
+    return results;
   }
 }
 
