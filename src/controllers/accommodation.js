@@ -8,7 +8,7 @@ import accommodationService from 'services/accommodationService';
 import paginate from 'utils/paginate';
 
 const {
-  Users, Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings
+  Users, Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings, AcommodationLikesAndUnlikes
 } = Models;
 class accommodation {
   static async create(req, res) {
@@ -221,7 +221,6 @@ class accommodation {
     }
   }
 
-
   static async getAccommodationLikes(req, res) {
     try {
       const {
@@ -296,7 +295,7 @@ class accommodation {
       });
     }
   }
-
+  
   /**
    * @description Find most traveled destinations
    * @param {object} req

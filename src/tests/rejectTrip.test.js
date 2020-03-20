@@ -1,6 +1,10 @@
 import Chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../index';
+import sinon from 'sinon';
+import sendGrid from '@sendgrid/mail';
+import { onlineClients } from '../utils/socket';
+import io from 'socket.io-client';
 import {
   invalidUuid, managerCredentials,
   nonExistTripId, tripIdNotAssigned,
@@ -119,6 +123,31 @@ describe('Rejecting a trip request', () => {
         expect(res.body.error).to.be.equal('Trip has been already approved');
         done();
       });
+  });
+
+  before(async () => {
+    const socketURL = 'http://localhost:3000';
+
+    const options = {
+      transports: ['websocket'],
+      'force new connection': true
+    };
+
+    const client = io.connect(socketURL, options);
+    client.on('connect', () => {
+      client.emit('connect_user', '0e22ed1c-a1a5-4f49-a4ca-000732bfa49o');
+    });
+    await onlineClients.set('0e22ed1c-a1a5-4f49-a4ca-000732bfa49o');
+    sinon.stub(sendGrid, 'send').returns({
+      to: 'itsafact57@gmail.com',
+      from: 'barefoot@noreply',
+      subject: 'New trip request',
+      text: 'Hello, Octopus.',
+      html: 'emailTemplate'
+    });
+  });
+  after(() => {
+    sinon.restore();
   });
   it('should reject the trip request', (done) => {
     Chai
