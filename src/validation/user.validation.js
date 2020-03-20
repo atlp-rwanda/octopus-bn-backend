@@ -37,8 +37,8 @@ const checkExistingEmail = [body('email', 'EmailTaken')
 const checkRoles = [body('role')
   .not().isEmpty({ ignore_whitespace: true })
   .withMessage('The role is required')
-  .matches('^travel_administrator$|^travel_team_member$|^manager$|^requester$')
-  .withMessage('The user role must be one of these roles: travel_administrator, travel_team_member, manager, requester')];
+  .matches('^travel_administrator$|^travel_team_member$|^manager$|^requester$|^accommodation_supplier$')
+  .withMessage('The user role must be one of these roles: travel_administrator, travel_team_member, manager, requester, accommodation_supplier')];
 
 const checkPassword = [body('password').not().isEmpty({ ignore_whitespace: true })
   .withMessage('PasswordRequired')
