@@ -89,7 +89,7 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.1",
     "nodemon": "^2.0.2",
     "sequelize-cli": "^5.5.1"
   },

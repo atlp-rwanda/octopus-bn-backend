@@ -30,7 +30,7 @@ const {
 
 const {
   travelRequests,
-  Comments
+  Comments, Users
 } = Models;
 
 /**
@@ -520,8 +520,15 @@ class tripsController {
           }
           ]
         },
-        include: [{
-          model: Comments
+        include: [
+          {
+          model: Comments,
+          include: [{
+            model: Users,
+            attributes: {
+              exclude: ['password']
+            }
+          }]
         }],
       });
 

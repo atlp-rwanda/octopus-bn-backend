@@ -404,6 +404,75 @@ describe('trips', () => {
       });
   });
 
+  it('It should not allow request trip without valid dates', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2020-06-yty',
+        returnDate: '2020-06-20',
+        accommodation: 'yes',
+        reason: 'visit the product owners and demo the project'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without valid type', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'one way',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2022-06-16',
+        returnDate: '2022-06-20',
+        accommodation: 'yes',
+        reason: 'visit the product owners and demo the project'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
+  it('It should not allow request trip without a reason', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/trips/request')
+      .send({
+        type: 'return',
+        fromCountry: 'rw',
+        fromCity: 'Kigali',
+        toCountry: 'USA',
+        toCity: 'Texas',
+        departureDate: '2022-06-16',
+        returnDate: '2022-06-20',
+        accommodation: 'yes',
+        reason: 'vi'
+      })
+      .end((err, res) => {
+        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body.status).to.be.equal(400);
+        expect(res);
+        done();
+      });
+  });
+
   it('should logout user', (done) => {
     chai
       .request(app)

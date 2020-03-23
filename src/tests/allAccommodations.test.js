@@ -30,4 +30,15 @@ describe('View all accommodations', () => {
         done();
       });
   });
+
+  it('should not get all accommodations if the params are wrong', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/accommodations/all-accommodations?page=1&limit=thisiswrong')
+      .end((err, res) => {
+        res.body.should.have.status(400);
+        res.body.should.have.property('error'); 
+        done();
+      });
+  });
 });

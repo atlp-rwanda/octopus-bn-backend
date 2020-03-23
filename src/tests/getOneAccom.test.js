@@ -41,4 +41,36 @@ describe('Barefoot nomad should show a particular accommodation', () => {
         done();
       });
   });
+
+  it('should not get accommodation if the params are wrong', (done) => {
+    Chai
+      .request(app)
+      .get('/api/v1/accommodations?page=1&limit=5&id=   ')
+      .end((err, res) => {
+        res.body.should.have.status(400);
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+
+  it('should not get accommodation if it does\'t exist', (done) => {
+    Chai
+      .request(app)
+      .get('/api/v1/accommodations/likes/3478r65863868')
+      .end((err, res) => {
+        res.body.should.have.status(404);
+        res.body.should.have.property('error');
+        done();
+      });
+  });
+
+  it('should give a like to an existing accommodation', (done) => {
+    Chai
+      .request(app)
+      .get('/api/v1/accommodations/likes/c8e9428a-6d60-4083-8ce3-334c62afe72c')
+      .end((err, res) => {
+        res.body.should.have.status(200);
+        done();
+      });
+  });
 });

@@ -10,12 +10,22 @@ export default {
             allowNull: false
           },
         ),
+        queryInterface.addColumn(
+          'Accommodations',
+          'ratings',
+          {
+            type: Sequelize.INTEGER,
+            defaultValue: 0,
+            allowNull: false
+          },
+        )
       ]);
     },
   
     down(queryInterface) {
       return Promise.all([
         queryInterface.removeColumn('Accommodations', 'average_ratings'),
+        queryInterface.removeColumn('Accommodations', 'ratings')
       ]);
     }
   };

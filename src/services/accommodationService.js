@@ -22,9 +22,17 @@ class accommodationService {
       order: [[Models.sequelize.fn('AVG', Models.sequelize.col('rating')), 'DESC']],
       where: { accommodationId }
     });
+    const totalRating = await Ratings.findAll({
+      attributes: ['accommodationId', [Models.sequelize.fn('COUNT', Models.sequelize.col('rating')), 'ratingTotal']],
+      group: 'accommodationId',
+      order: [[Models.sequelize.fn('COUNT', Models.sequelize.col('rating'))]],
+      where: { accommodationId }
+    });
+
+    console.log('total', totalRating[0].dataValues.ratingTotal);
 
     await Accommodations.update(
-      { average_ratings: rating[0].dataValues.ratingAVG },
+      { average_ratings: rating[0].dataValues.ratingAVG, ratings: totalRating[0].dataValues.ratingTotal},
       { where: { id: accommodationId } },
     );
   }
