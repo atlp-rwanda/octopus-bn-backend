@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,11 +84,15 @@
                     createdAt
                 } = notification
                 if (notification.type == 'comment') {
-                    $("#notifications").append(`<li><a>${names} made a comment: <span class="content">${body}</span></li>`);
+                    $("#notifications").append(`<li><a href=${link} target="_blank">${names} made a comment: <span class="content">${body}</span></li>`);
+                    console.log(notification);
+                } else {
+                    $("#notifications").append(`<li><a href=${link} target="_blank">${body}</li>`);
+                    console.log(notification);
                 }
-                $("#notifications").append(`<li><a href=${link} target="_blank">${body}</li>`);
             });
         }
     </script>
 </body>
+
 </html>
