@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0.00,
       allowNull: false
     },
+    ratings: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
     imageUrl: DataTypes.STRING,
     amenities: { type: DataTypes.ARRAY(DataTypes.JSON) },
     around: { type: DataTypes.ARRAY(DataTypes.JSON) },

@@ -49,6 +49,8 @@ const socketio = async (io) => {
       if (!found) {
         connectedSockets.push({
           id: user.id,
+          image: user.imageUrl,
+          role: user.role,
           username: `${user.firstName} ${user.lastName}`
         });
       }

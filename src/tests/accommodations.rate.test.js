@@ -58,4 +58,16 @@ describe('RATE ACCOMMODATIONS', () => {
       done();
     });
   });
+
+  it('should not rate without wrong rating', (done) => {
+    chai.request(app).post(`${prefix}/rating`).send({
+      "accommodationId":"c8e9428a-6d60-4083-8ce3-334c62afe72c",
+	    "rating": 10
+    }).end((err, res) => {
+      expect(res).to.have.status(400);
+      expect(res.body).to.have.property('error');
+      expect(res.body).to.have.property('status', 400);
+      done();
+    });
+  });
 });

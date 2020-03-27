@@ -352,8 +352,9 @@ class accommodation {
         offset: pagination.offset,
         limit: pagination.limit
       });
+      const mostTraveledCentre = await bookingService.getTrendingCentres(page, limit);
 
-      return successResponse(res, 200, setLanguage(preferedLang).__('allAccommodations'), allAccommodations);
+      return successResponse(res, 200, setLanguage(preferedLang).__('allAccommodations'), { allAccommodations, mostTraveledCentre});
     } catch (error) {
       return errorResponse(res, 500, error.message);
     }
@@ -410,10 +411,12 @@ static async getOneAccommodation(req, res) {
         },
         {
           model: Feedbacks,
-          attributes: { exclude: ['id', 'accommodationId', 'userId', 'createdAt', 'updatedAt'] },
+          attributes: { exclude: ['accommodationId', 'userId', 'createdAt', 'updatedAt'] },
           include: [{
             model: Users,
-            attributes: ['firstName']
+            attributes: {
+              exclude: ['password']
+            }
           }]
         }
       ]

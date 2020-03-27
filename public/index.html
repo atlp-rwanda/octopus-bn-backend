@@ -5,77 +5,88 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <title>Notifications</title>
     <style>
-    body{
-        display: flex;
-        justify-content: center;
-        font-family: 'Roboto';
-    }
-    ul {
-        list-style-type: none;
-        margin-left: -35px;
-    }
-    li {
-        margin-bottom: 25px;
-        border-top: 2px solid rgb(214, 214, 214);
-        padding: 20px;
-        color: rgb(3, 3, 3);
-        margin-left: -30px;
-    }
-     a {
-        text-decoration:none;
-        font-weight: bold;
-        color: black;
-        font-size: 18px;
-     }
-     .container {
-         display: flex;
-         flex-direction: column;
-     }
-     h1{
-        color:  blue;
-     }
-     input {
-         margin-top: 10px;
-         padding: 3px;
-         width: 100px;
-     }
-     .btn {
-         width: 70px;
-     }
-     .content {
-         color: blue;
-     }
+        body {
+            display: flex;
+            justify-content: center;
+            font-family: 'Roboto';
+        }
+        
+        ul {
+            list-style-type: none;
+            margin-left: -35px;
+        }
+        
+        li {
+            margin-bottom: 25px;
+            border-top: 2px solid rgb(214, 214, 214);
+            padding: 20px;
+            color: rgb(3, 3, 3);
+            margin-left: -30px;
+        }
+        
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+            font-size: 18px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1 {
+            color: blue;
+        }
+        
+        input {
+            margin-top: 10px;
+            padding: 3px;
+            width: 100px;
+        }
+        
+        .btn {
+            width: 70px;
+        }
+        
+        .content {
+            color: blue;
+        }
     </style>
 </head>
-<body> 
+<body>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <div class="container">
         <form action="">
             <input id="userId" type="text" placeholder="reciever Id" required>
             <input id="host" type="text" placeholder="host" required>
-            <input class="btn" type="button"  name="" onclick="notify()" value="Log in">
+            <input class="btn" type="button" name="" onclick="notify()" value="Log in">
         </form>
         <h1>Notifications</h1>
         <ul id="notifications">
         </ul>
     </div>
     <script>
-        
         const notify = () => {
             const user = document.querySelector('#userId').value;
-             const url = document.querySelector('#host').value;
-             const socket = io.connect(`${url}`);
+            const url = document.querySelector('#host').value;
+            const socket = io.connect(`${url}`);
             socket.emit('connect_user', `${user}`)
-            socket.on('notification', (notification) =>  {
-            const requestId = notification.requestID
-            const link = `${url}api/v1/trips/${requestId}`;
-            if(notification.type == 'comment'){
-                const { names, body, createdAt } = notification
-                $("#notifications").append(`<li><a>${names} made a comment: <span class="content">${body}</span></li>`);
-            }
-            $("#notifications").append(`<li><a href=${link} target="_blank">${body}</li>`);
-        });
+            socket.on('notification', (notification) => {
+                const requestId = notification.requestID
+                const link = `${url}api/v1/trips/${requestId}`;
+                const {
+                    names,
+                    body,
+                    createdAt
+                } = notification
+                if (notification.type == 'comment') {
+                    $("#notifications").append(`<li><a>${names} made a comment: <span class="content">${body}</span></li>`);
+                }
+                $("#notifications").append(`<li><a href=${link} target="_blank">${body}</li>`);
+            });
         }
     </script>
 </body>

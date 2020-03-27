@@ -30,4 +30,15 @@ describe('Barefoot nomad should allow to search for accommodations', () => {
         done();
       });
   });
+
+  it('should not show accommodation search results if the params are wrong', (done) => {
+    Chai
+      .request(app)
+      .get('/api/v1/accommodations/search?page=1&limit=5&searchKey=    ')
+      .end((err, res) => {
+        res.body.should.have.status(400);
+        res.body.should.have.property('error');
+        done();
+      });
+  });
 });
