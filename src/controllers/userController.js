@@ -6,6 +6,7 @@ import { successResponse, errorResponse } from 'utils/responses';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
 import setLanguage from '../utils/international';
+import getManagerRandomly from '../utils/autoManagerAssigner';
 
 /**
  * @description This class contains all the methods relating to the user
@@ -358,7 +359,6 @@ class userController {
 				preferedCurrency,
 				residence,
 				department,
-				managerEmail,
 				imageUrl,
 				bio,
 				passportNumber
@@ -366,16 +366,11 @@ class userController {
 			user: { id },
 			body
 		} = req;
+		
 		try {
-			const user = await Models.Users.findOne({ where: { email: managerEmail } });
-
-			if (!user || user.role !== 'manager') {
-				return res.status(404).json({
-					status: 404,
-					error: setLanguage(preferedLang).__('managerEmailNotExist')
-				});
-			}
-
+			const {isUpdated, managerEmail} = await Models.Users.findOne({ where: { id } });
+			const automatedEmail = isUpdated?managerEmail
+			:getManagerRandomly(await Models.Users.findAll({ where: { role: 'manager' } })).email;
 			await Models.Users.update(
 				{
 					firstName,
@@ -386,7 +381,7 @@ class userController {
 					preferedCurrency,
 					residence,
 					department,
-					managerEmail,
+					managerEmail: automatedEmail,
 					imageUrl,
 					bio,
 					passportNumber,
@@ -407,7 +402,8 @@ class userController {
 		} catch (error) {
 			return res.status(500).json({
 				status: 500,
-				error: setLanguage(preferedLang).__('internalServerError')
+				error: setLanguage(preferedLang).__('internalServerError'),
+				debug: error.message
 			});
 		}
 	}
