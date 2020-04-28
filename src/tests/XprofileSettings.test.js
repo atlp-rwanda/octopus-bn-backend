@@ -46,17 +46,4 @@ describe('Profile settings', () => {
         done();
       });
   });
-
-  it('should deny to update profile when manager is not found', (done) => {
-    Chai
-      .request(app)
-      .put('/api/v1/auth/profile-settings')
-      .set('x-access-token', `${abdoulniyigena}`)
-      .send(nonExistManager)
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.have.property('error', 'Manager is not found, choose another one');
-        done();
-      });
-  });
 });

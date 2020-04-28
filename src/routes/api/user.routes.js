@@ -277,7 +277,7 @@ router.get('/verify/:token', userController.verifyAccount);
  */
 router.put('/profile-settings', [checkUser, checkFirstName, checkLastName,
   checkGender, checkDate, checkCurrency, checkLocale, checkResidence,
-  checkDepartment, checkMangerEmail, checkImageUrl, checkBio, checkPassportNumber,
+  checkDepartment, checkImageUrl, checkBio, checkPassportNumber,
   validateResult], userController.updateProfile);
 
 /**
