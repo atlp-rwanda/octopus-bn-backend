@@ -57,12 +57,11 @@ router.get('/facebook', passport.authenticate('facebook', {
   scope: ['email'],
   session: false
 }));
-
-
-router.get('/facebook/callback', passport.authenticate('facebook', {
-  // failureRedirect: process.env.FRONT_END_FAIL_REDIRECT,
-// successRedirect: process.env.FRONT_END_SUCCESS_REDIRECT,
-}), userController.socialLogin);
+router.get("/facebook/callback",
+    passport.authenticate("facebook"),
+    (req, res) => {
+        res.redirect(`${process.env.FRONT_END_SUCCESS_REDIRECT}/?data=${JSON.stringify(req.user)}`);
+    });
 
 /**
  * @swagger
@@ -102,16 +101,14 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
 */
 router.get('/google', passport.authenticate('google', {
   session: false,
-  scope: [
-    'https://www.googleapis.com/auth/userinfo.profile',
-    'https://www.googleapis.com/auth/userinfo.email'
-  ]
+  scope:  [ 'email', 'profile' ]
 }));
 
-
-router.get('/google/callback', passport.authenticate('google', {
-}), userController.socialLogin);
-
+router.get("/google/callback",
+    passport.authenticate("google"),
+    (req, res) => {
+        res.redirect(`${process.env.FRONT_END_SUCCESS_REDIRECT}/?data=${JSON.stringify(req.user)}`);
+    });
 /**
  * @swagger
  *
