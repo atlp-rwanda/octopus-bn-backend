@@ -13,53 +13,6 @@ import getManagerRandomly from '../utils/autoManagerAssigner';
  * @class userController
  */
 class userController {
-	static async socialLogin(req, res) {
-		try {
-			const { Users } = Models;
-			const password = 'null';
-			const { id } = req.user;
-			const { email, firstName, lastName, method } = req.user;
-			await Users.findOrCreate({
-				where: { email },
-				defaults: {
-					id,
-					firstName,
-					lastName,
-					method,
-					email,
-					password,
-					isVerified: true,
-					isUpdated: false
-				}
-			});
-			const Token = encode({
-				email,
-				firstName,
-				lastName,
-				method
-			});
-
-			return res.status(200).json({
-				status: 200,
-				message: req.i18n.__('loginSuccessfully'),
-				data: {
-					email,
-					id,
-					firstName,
-					lastName,
-					method
-				},
-				Token
-			});
-		} catch (error) {
-			return res.status(error.status || 500).json({
-				errors: {
-					error
-				}
-			});
-		}
-	}
-
 	/**
      * @description user signUp method
      * @param {object} req
