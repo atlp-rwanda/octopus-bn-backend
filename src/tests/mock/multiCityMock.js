@@ -4,29 +4,29 @@ export const cities = {
   fromCity: 'Kigali',
   toCountry: 'USA',
   toCity: 'Miami',
-  departureDate: '2020-05-01',
+  departureDate: '2020-10-01',
   stops: [
     {
       accommodation: 'yes',
       stopCountry: 'Ug',
       stopCity: 'kampala',
-      arrivalDate: '2020-05-01',
-      departureDate: '2020-05-02',
+      arrivalDate: '2020-10-01',
+      departureDate: '2020-10-01',
       reason: "Visit company's offices in kampala"
     },
     {
       accommodation: 'yes',
       stopCountry: 'Et',
       stopCity: 'Addis Ababa',
-      arrivalDate: '2020-05-03',
-      departureDate: '2020-05-10',
+      arrivalDate: '2020-10-03',
+      departureDate: '2020-10-10',
       reason: 'Attend african union summit'
     },
     {
       accommodation: 'yes',
       stopCountry: 'USA',
       stopCity: 'Miami',
-      arrivalDate: '2020-05-13',
+      arrivalDate: '2020-10-13',
       reason: "Visit company's offices in cairo"
     }
   ]

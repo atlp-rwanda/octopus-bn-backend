@@ -67,9 +67,7 @@ const checkLocale = [body('preferedLang').not().isEmpty({ ignore_whitespace: tru
   .isIn(['fr', 'en'])
   .withMessage('LangInvalid')];
 const checkResidence = [body('residence').not().isEmpty({ ignore_whitespace: true })
-  .withMessage(`${setLanguage().__('ResidenceRequired')}`)
-  .bail()
-  .isAlpha()];
+  .withMessage(`${setLanguage().__('ResidenceRequired')}`)];
 const checkDepartment = [body('department').not().isEmpty({ ignore_whitespace: true })
   .withMessage('departmentRequired')
   .bail()
@@ -83,14 +81,13 @@ const checkMangerEmail = [body('managerEmail')
 const checkImageUrl = [body('imageUrl').not().isEmpty({ ignore_whitespace: true })
   .withMessage('ImageUrlRequired')
   .bail()];
-const checkBio = [body('bio').not().isEmpty({ ignore_whitespace: true })
-  .withMessage('BioRequired')
-  .bail()];
+const checkBio = [body('bio')
+  .matches(/([a-zA-Z]+\s?\b){2,}/)
+  .bail()
+  .withMessage('BioRequired')];
 const checkPassportNumber = [body('passportNumber').not().isEmpty({ ignore_whitespace: true })
   .withMessage('PassportRequired')
   .bail()
-  .isLength({ min: 9 })
-  .withMessage('PassportNun9Chars')
   .matches(/[a-zA-Z]{2}[0-9]{7}/)
   .withMessage('PassportNunInvalid')];
 
