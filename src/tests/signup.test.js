@@ -41,17 +41,6 @@ describe('Barefoot nomad signup tests', () => {
       });
   });
 
-  it('users should be able to verify their accounts', (done) => {
-    Chai
-      .request(app)
-      .get(`/api/v1/auth/verify/${token}`)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('message', 'Your account is verified, you can now login');
-        done();
-      });
-  });
-
   it('User should be assigned roles', (done) => {
     Chai
       .request(app)

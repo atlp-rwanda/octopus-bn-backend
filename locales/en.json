@@ -35,7 +35,7 @@
 	"ResidenceRequired": "residence is required",
 	"departmentRequired": "department is required",
 	"ImageUrlRequired": "Image Url is required",
-	"BioRequired": "Bio is required",
+	"BioRequired": "a bio should be a text with atleast two or more words!",
 	"PassportRequired": "Passport number is required",
 	"PassportNun9Chars": "Passport number must be 9 characters long",
 	"PassportNunInvalid": "Passport number is invalid",

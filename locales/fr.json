@@ -33,7 +33,7 @@
     "ResidenceRequired": "la résidence est obligatoire",
     "departmentRequired": "le département est requis",
     "ImageUrlRequired": "L'URL de l'image est requise",
-    "BioRequired": "Bio est requis",
+    "BioRequired": "une bio doit être un texte avec au moins deux mots ou plus!",
     "PassportRequired":"Le numéro de passeport est requis",
     "PassportNun9Chars":"Le numéro de passeport doit comporter 9 caractères",
     "PassportNunInvalid":"Le numéro de passeport n'est pas valide",

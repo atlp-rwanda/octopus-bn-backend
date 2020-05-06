@@ -35,7 +35,7 @@
 	"ResidenceRequired": "residence is required",
 	"departmentRequired": "department is required",
 	"ImageUrlRequired": "Image Url is required",
-	"BioRequired": "Bio is required",
+	"BioRequired": "a bio should be a text with atleast two or more words!",
 	"PassportRequired": "Passport number is required",
 	"PassportNun9Chars": "Passport number must be 9 characters long",
 	"PassportNunInvalid": "Passport number is invalid",
@@ -144,8 +144,8 @@
 	"oneAccommodation": "Accommodation retrieved successfully",
 	"accommodationIdNotFound": "No accommodation found with the given id",
 	"PleaseOnly": "Only a travel administrator and accommodation supplier are allowed to create accommodations",
-	"Please enter a password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character.": "Please enter a password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character.",
 	"Invalid value": "Invalid value",
-	"Password must be alphanumeric": "Password must be alphanumeric",
-	"Password is required": "Password is required"
+	"residence is required": "residence is required",
+	"Password is required": "Password is required",
+	"Please enter a password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character.": "Please enter a password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character."
 }

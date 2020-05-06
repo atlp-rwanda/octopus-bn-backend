@@ -38,7 +38,6 @@ describe('Profile settings', () => {
         res.body.data.should.have.property('preferedCurrency', profile.preferedCurrency);
         res.body.data.should.have.property('residence', profile.residence);
         res.body.data.should.have.property('department', profile.department);
-        res.body.data.should.have.property('managerEmail', profile.managerEmail);
         res.body.data.should.have.property('imageUrl', profile.imageUrl);
         res.body.data.should.have.property('bio', profile.bio);
         res.body.data.should.have.property('passportNumber', profile.passportNumber);

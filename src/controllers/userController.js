@@ -71,7 +71,7 @@ class userController {
      * @memberof userController
      */
 	static async verifyAccount(req, res) {
-		// eslint-disable-next-line prefer-destructuring
+
 		const token = req.params.token;
 		const payload = decode(token);
 		const { prefLocale } = req.i18n;
@@ -85,19 +85,13 @@ class userController {
 		}
 
 		if (emailExist.isVerified !== true) {
-			await Models.Users.update({ isVerified: true }, { where: { email: payload.email } });
-
-			return res.status(200).json({
-				status: 200,
-				message: setLanguage(prefLocale).__('onVerifySuccess'),
-				token
-			});
+		const verifiedUser = await Models.Users.update({ isVerified: true },
+			 { where: { email: payload.email }, returning: true, plain: true });
+			const {password, ...user} = verifiedUser[1].dataValues;
+			return res.redirect(`${process.env.FRONT_END_VERIFY_PROFILE_REDIRECT}/?update=${encode(user)}`);
 		}
-
-		return res.status(200).json({
-			status: 200,
-			message: setLanguage(prefLocale).__('onVerifySuccess')
-		});
+		const {password, ...user} = emailExist.dataValues;
+		return res.redirect(`${process.env.FRONT_END_VERIFY_PROFILE_REDIRECT}/?update=${encode(user)}`);
 	}
 
 	/**
@@ -316,15 +310,14 @@ class userController {
 				bio,
 				passportNumber
 			},
-			user: { id },
-			body
+			user: { id }
 		} = req;
 		
 		try {
 			const {isUpdated, managerEmail} = await Models.Users.findOne({ where: { id } });
 			const automatedEmail = isUpdated?managerEmail
 			:getManagerRandomly(await Models.Users.findAll({ where: { role: 'manager' } })).email;
-			await Models.Users.update(
+			const updateUser = await Models.Users.update(
 				{
 					firstName,
 					lastName,
@@ -342,21 +335,21 @@ class userController {
 				},
 				{
 					where: { id },
-					returning: true,
+					returning: true, 
 					plain: true
 				}
 			);
-
+            const {password, ...user} = updateUser[1].dataValues;
 			return res.status(200).json({
 				status: 200,
 				message: setLanguage(preferedLang).__('ProfileUpdated'),
-				data: body
+				data: user,
+				token: encode(user)
 			});
 		} catch (error) {
 			return res.status(500).json({
 				status: 500,
 				error: setLanguage(preferedLang).__('internalServerError'),
-				debug: error.message
 			});
 		}
 	}
