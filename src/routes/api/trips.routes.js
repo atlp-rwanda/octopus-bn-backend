@@ -292,7 +292,7 @@ router.get('/avail-requests', checkUser, isProfileUpdated, validateParams, trips
  *       200:
  *         description: Requests retrieved successfully
  *  */
-router.get('/request', checkUser, isProfileUpdated, validateParams, tripsController.getTrips);
+router.get('/request', checkUser, isProfileUpdated, tripsController.getTrips);
 
 /**
  * @swagger

@@ -207,16 +207,11 @@ const {
 
       static async getTrips(req, res) {
           const {
-              query: {
-                  page,
-                  limit
-              },
               user: {
                   id,
                   preferedLang
               }
           } = req;
-          const pagination = paginate(page, limit);
           try {
               const trips = await travelRequests.findAll({
                   where: {
@@ -228,13 +223,10 @@ const {
                   include: [{
                       model: Comments
                   }],
-                  offset: pagination.offset,
-                  limit: pagination.limit
               });
               return res.status(200).json({
                   status: 200,
                   message: setLanguage(preferedLang).__('retrievedSuccessfully'),
-                  info: pagination.info,
                   data: trips
               });
           } catch (error) {

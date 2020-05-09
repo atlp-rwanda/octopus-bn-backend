@@ -383,23 +383,9 @@ describe('trips', () => {
             .send(newReqReturn)
             .end((err, res) => {
 
-                expect(res.body).to.have.keys('status', 'message', 'data', 'info');
+                expect(res.body).to.have.keys('status', 'message', 'data');
                 expect(res.body.status).to.be.equal(200);
                 expect(res.body.message).to.be.equal('Requests retrieved successfully');
-                expect(res);
-                done();
-            });
-    });
-    it('It should not allow get with wrong params ', (done) => {
-        chai
-            .request(app)
-            .get('/api/v1/trips/request?page=-2&limit=3')
-            .set('x-access-token', `${blaiseen}`)
-            .send(newReqReturn)
-            .end((err, res) => {
-                expect(res.body).to.have.keys('status', 'error');
-                expect(res.body.status).to.be.equal(400);
-                expect(res.body.error).to.be.equal('Invalid params (search data)');
                 expect(res);
                 done();
             });
@@ -775,27 +761,14 @@ describe('trips', () => {
       .set('x-access-token', `${blaiseen}`)
       .send(newReqReturn)
       .end((err, res) => {
-        expect(res.body).to.have.keys('status', 'message', 'data', 'info');
+        expect(res.body).to.have.keys('status', 'message', 'data');
         expect(res.body.status).to.be.equal(200);
         expect(res.body.message).to.be.equal('Requests retrieved successfully');
         expect(res);
         done();
       });
   });
-  it('It should not allow get with wrong params ', (done) => {
-    chai
-      .request(app)
-      .get('/api/v1/trips/request?page=-2&limit=3')
-      .set('x-access-token', `${blaiseen}`)
-      .send(newReqReturn)
-      .end((err, res) => {
-        expect(res.body).to.have.keys('status', 'error');
-        expect(res.body.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Invalid params (search data)');
-        expect(res);
-        done();
-      });
-  });
+
 
   it('It should not allow request trip without valid dates', (done) => {
     chai
@@ -921,13 +894,13 @@ describe('trips', () => {
       });
   });
 
-  it('it should fail if something is wrong with getting trip requests', async () => {
-    const data = await tripsController.getTrips(badTripMock.request, badTripMock.response);
-    expect(data.statusCode).to.be.equal(500);
-  });
+  // it('it should fail if something is wrong with getting trip requests', async () => {
+  //   const data = await tripsController.getTrips(badTripMock.request, badTripMock.response);
+  //   expect(data.statusCode).to.be.equal(500);
+  // });
 
-  it('it should fail if something is wrong with searching trip requests', async () => {
-    const data = await tripsController.searchTrips(badTripMock.request, notMock.response);
-    expect(data.statusCode).to.be.equal(500);
-  });
+  // it('it should fail if something is wrong with searching trip requests', async () => {
+  //   const data = await tripsController.searchTrips(badTripMock.request, notMock.response);
+  //   expect(data.statusCode).to.be.equal(500);
+  // });
 });
