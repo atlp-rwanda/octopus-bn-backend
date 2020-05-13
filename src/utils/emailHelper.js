@@ -81,7 +81,7 @@ export const sendPasswordResetLink = async (user, host) => {
     'Sequel to your request for resetting your password',
     'We have sent you a link to help you out',
     'Click the link below to verify your password',
-    `http://${host}/api/v1/auth/reset-password/${user.token}`
+    `${host}/reset-password`
   );
 
   // Generate an HTML email with the provided contents
@@ -90,7 +90,7 @@ export const sendPasswordResetLink = async (user, host) => {
   const message = {
     to: `${user.email}`,
     from: 'barefoot@noreply',
-    subject: 'Barefoot Nomad Password rest',
+    subject: 'Barefoot Nomad Password Reset',
     text: `Hello, ${user.name}.`,
     html: emailTemplate
   };
