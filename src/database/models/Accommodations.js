@@ -36,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
+    Accommodations.hasMany(models.AcommodationLikesAndUnlikes, {
+      foreignKey: 'accommodationId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
   return Accommodations;
 };

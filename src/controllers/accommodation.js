@@ -6,6 +6,7 @@ import setLanguage from 'utils/international';
 import bookingService from 'services/bookingService';
 import accommodationService from 'services/accommodationService';
 import paginate from 'utils/paginate';
+import Sequelize from 'sequelize';
 
 const {
   Users, Accommodations, Rooms, travelRequests, Booking, Feedbacks, Ratings, AcommodationLikesAndUnlikes
@@ -340,15 +341,16 @@ class accommodation {
       } = req;
       const pagination = paginate(page, limit);
       const allAccommodations = await Accommodations.findAll({
-        attributes: {
-          exclude: ['createdBy', 'imageUrl', 'country', 'createdAt', 'updatedAt']
-        },
         include: [{
-          model: Rooms,
-          attributes: {
-            exclude: ['accommodationsID', 'createdBy', 'createdAt', 'updatedAt']
-          }
-        }],
+          model: Rooms
+        },
+        {
+          model: AcommodationLikesAndUnlikes
+        },
+        {
+          model: Feedbacks
+        }
+        ],
         offset: pagination.offset,
         limit: pagination.limit
       });

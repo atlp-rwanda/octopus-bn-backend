@@ -10,6 +10,11 @@ export default(sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
+    AcommodationLikesAndUnlikes.belongsTo(models.Accommodations, {
+      foreignKey: 'accommodationId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    });
   };
   return AcommodationLikesAndUnlikes;
 };
