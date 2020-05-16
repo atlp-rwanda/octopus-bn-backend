@@ -1,15 +1,12 @@
 /* eslint-disable require-jsdoc */
 import uuid from 'uuid/v4';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 import { sendVerificationEmail, sendNotificationEmail, sendPasswordResetLink } from 'utils/emailHelper';
 import { successResponse, errorResponse } from 'utils/responses';
 import { encode, decode } from 'utils/jwtTokenizer';
 import Models from '../database/models';
 import setLanguage from '../utils/international';
 import getManagerRandomly from '../utils/autoManagerAssigner';
-
-dotenv.config();
 
 /**
  * @description This class contains all the methods relating to the user
@@ -242,7 +239,7 @@ class userController {
 				preferedLang: registered.preferedLang
 			};
 
-			sendPasswordResetLink(user, process.env.CLIENT_URL);
+			sendPasswordResetLink(user, req.headers.host);
 			return res.status(200).json({
 				status: 200,
 				message: req.i18n.__('emailSent')
