@@ -239,7 +239,7 @@ class userController {
 				preferedLang: registered.preferedLang
 			};
 
-			sendPasswordResetLink(user, req.headers.host);
+			sendPasswordResetLink(user);
 			return res.status(200).json({
 				status: 200,
 				message: req.i18n.__('emailSent')
