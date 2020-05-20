@@ -75,13 +75,13 @@ export const sendNotificationEmail = async (name, email, role) => {
 
   await sendGrid.send(message);
 };
-export const sendPasswordResetLink = async (user, host) => {
+export const sendPasswordResetLink = async (user) => {
   const emailBody = generateEmail(
     user.name,
     'Sequel to your request for resetting your password',
     'We have sent you a link to help you out',
-    'Click the link below to verify your password',
-    `http://${host}/api/v1/auth/reset-password/${user.token}`
+    'Click to reset password',
+    `${process.env.CLIENT_URL}/reset-password/${user.token}`
   );
 
   // Generate an HTML email with the provided contents
