@@ -182,10 +182,6 @@ const {
       static async availRequests(req, res) {
           try {
               const {
-                  query: {
-                      page,
-                      limit
-                  },
                   user: {
                       role,
                       email,
@@ -197,7 +193,7 @@ const {
                   return errorResponse(res, 401, setLanguage(preferedLang).__('mustBeManager'));
               }
 
-              const all = await tripService.availPendingRequests(email, page, limit);
+              const all = await tripService.availPendingRequests(email);
 
               return successResponse(res, 200, setLanguage(preferedLang).__('pendingRequestsRetrieved'), all);
           } catch (error) {
