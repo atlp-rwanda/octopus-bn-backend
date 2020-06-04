@@ -200,7 +200,7 @@
   <script>
     var url = new URL(window.location.href);
     var token = url.searchParams.get("token");
-    var socket = io.connect('https://octopus-bn-backend-staging.herokuapp.com/', {
+    var socket = io.connect('http://localhost:3000/', {
       query: {
         token
       }
